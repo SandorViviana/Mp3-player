@@ -1,0 +1,157 @@
+﻿$version 12.05
+
+$rect <10,10,210,50>
+$variant SimulationProfile
+vclass Application : Application::Application
+{
+  $rect <20,20,160,60>
+  object WidgetSet::RadioButton RadioButtonStopped
+  {
+    preset Bounds = <873,37,1023,73>;
+    preset Label = "Stopped";
+    preset Appearance = WidgetSet::RadioButton_Small;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::RadioButton RadioButtonPlaying
+  {
+    preset Bounds = <873,91,1023,127>;
+    preset Label = "Playing";
+    preset Appearance = WidgetSet::RadioButton_Small;
+  }
+
+  $rect <20,20,220,60>
+  inherited property Bounds = <0,0,1600,480>;
+
+  $rect <20,20,160,60>
+  object WidgetSet::HorizontalSlider DurationSlider
+  {
+    preset Bounds = <878,155,1078,205>;
+    preset Outlet = ^Duration;
+    preset MaxValue = 500;
+    preset Appearance = WidgetSet::HorizontalSlider_Medium;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::HorizontalSlider CurrentTimeSlider
+  {
+    preset Bounds = <873,217,1073,267>;
+    preset Outlet = ^CurrentTime;
+    preset MaxValue = 100;
+    preset Appearance = WidgetSet::HorizontalSlider_Medium;
+  }
+
+  $rect <1730,210,1930,250>
+  property int32 CurrentTime;
+
+  $rect <1731,250,1931,290>
+  onset CurrentTime
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure CurrentTime == value )
+      return;
+
+    // Remember the property's new value.
+    pure CurrentTime = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+    Application::Device.UpdateCurrentTime( value );
+  }
+
+  $rect <1731,290,1931,330>
+  onget CurrentTime
+  {
+    return pure CurrentTime;
+  }
+
+  $rect <1731,-10,1931,30>
+  property int32 Duration = 100;
+
+  $rect <1731,30,1931,70>
+  onset Duration
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Duration == value )
+      return;
+
+    // Remember the property's new value.
+    pure Duration = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+    Application::Device.UpdateDuration( value );
+    CurrentTimeSlider.MaxValue=value;
+  }
+
+  $rect <1731,70,1931,110>
+  onget Duration
+  {
+    return pure Duration;
+  }
+
+  // Directives to adapt the order of the above members according to how these members 
+  // where arranged when the project content was stored. In this manner the storage 
+  // and the expected order of the members don't depend. Merging of changes in the 
+  // project files is simplified.
+  $member Bounds
+  $member RadioButtonStopped
+  $member RadioButtonPlaying
+  $member DurationSlider
+  $member CurrentTimeSlider
+  $member CurrentTime
+  $member OnSetCurrentTime
+  $member OnGetCurrentTime
+  $member Duration
+  $member OnSetDuration
+  $member OnGetDuration
+}
+
+$rect <10,50,210,90>
+$variant SimulationProfile
+vclass DeviceClass : Application::DeviceClass
+{
+  $rect <0,0,200,40>
+  inherited method Play()
+  {
+    PlayEffect.Value1 = 0;
+    PlayEffect.Value2 = Duration;
+    PlayEffect.CycleDuration = Duration * 1000;
+    signal PlayEffect.StartEffect;
+  }
+
+  $rect <230,40,430,80>
+  object Effects::Int32Effect PlayEffect
+  {
+    preset OnAnimate = OnPlayEffect;
+    preset Outlet = ^CurrentTime;
+  }
+
+  $rect <230,80,430,120>
+  slot OnPlayEffect
+  {
+    UpdateCurrentTime( PlayEffect.Value );
+  }
+
+  $rect <10,140,210,180>
+  inherited method Pause()
+  {
+    signal PlayEffect.StopEffect;
+  }
+
+  // Directives to adapt the order of members belonging to this class so they appear 
+  // correctly arranged relative to the members inherited from the ancestor (super) 
+  // classes. The numbers indicate the order-displacement to apply on the respective 
+  // member once all members have been loaded and combined with members from the 
+  // ancestor classes.
+  $reorder LoopTrack 1
+  $reorder UpdatePlayerState 1
+  $reorder UpdateCurrentTime 1
+  $reorder UpdateTimeFromSlider 1
+  $reorder UpdateDuration 1
+  $reorder InitSlot 1
+  $reorder PlayEffect 1
+  $reorder OnPlayEffect 1
+}

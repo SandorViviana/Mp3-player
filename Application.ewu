@@ -1,0 +1,1367 @@
+﻿$version 12.05
+
+// This is the root component of the entire GUI application.
+$rect <20,20,220,60>
+class Application : Core::Root
+{
+  $rect <820,10,1020,50>
+  inherited property Bounds = <0,0,800,480>;
+
+  // To do:
+  // 
+  // - Adjust the visible size of your application (the thick blue border). It should \
+  // correspond to the size of your target display.
+  // 
+  // - The simplest way to compose the appearance of the application is to use the \
+  // 'Views' and 'Widgets' from the Gallery.
+  // 
+  // - To react to touch or keyboard events use the templates from the Gallery folder \
+  // 'Event Handlers'.
+  // 
+  // - To perform transitions (animations) use the templates from the Gallery folder \
+  // 'Effects'.
+  // 
+  // - To store values use the 'Variable', 'Array' and 'Property' templates available \
+  // in the Gallery folder 'Chora'.
+  // 
+  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
+  // in the Gallery folder 'Chora'.
+  note legend Note1
+  {
+    attr Bounds = <10,500,790,730>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
+  {
+    preset Bounds = <0,0,800,480>;
+    preset Color = #000000FF;
+  }
+
+  $rect <20,20,160,60>
+  object Application::PlayerDialog PlayerDialog
+  {
+    preset Bounds = <0,0,801,480>;
+  }
+}
+
+$rect <430,-100,630,-60>
+$output false
+resource Resources::Font TitleFont
+{
+  attr fontname FontName = Lucida Sans Typewriter;
+  attr fontheight Height = 38;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
+}
+
+$rect <220,20,420,60>
+class PlayerDialog : Core::Group
+{
+  $rect <920,40,1120,80>
+  inherited property Bounds = <0,0,800,480>;
+
+  $rect <19,560,219,600>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <19,520,219,560>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Background
+  {
+    preset Bounds = <0,0,800,489>;
+    preset Bitmap = Application::Background;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Vinyl
+  {
+    preset Bounds = <117,66,434,333>;
+    preset Bitmap = Application::GenericVinyl;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::HorizontalSlider Playback
+  {
+    preset Bounds = <117,387,582,436>;
+    preset OnUpdate = null;
+    preset OnChange = OnLoop;
+    preset OnEnd = OnSliderChange;
+    preset MaxValue = 100;
+    preset CurrentValue = 0;
+    preset Appearance = Application::HorizontalSliderConfig;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Title
+  {
+    preset Bounds = <499,99,645,158>;
+    preset String = "Title";
+    preset Font = Application::TitleFont;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Artist
+  {
+    preset Bounds = <521,156,621,186>;
+    preset String = "Artist";
+    preset Font = Application::Font;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text CurrentTime
+  {
+    preset Bounds = <57,395,118,425>;
+    preset String = "0:00";
+    preset Font = Application::TimeFont;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text Duration
+  {
+    preset Bounds = <582,395,645,425>;
+    preset String = "10:59";
+    preset Font = Application::TimeFont;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ToTheQueue
+  {
+    preset Bounds = <375,436,425,486>;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image ToTheList
+  {
+    preset Bounds = <369,0,419,66>;
+    preset Orientation = Views::Orientation.Rotated_180;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <19,600,219,640>
+  inherited method Init()
+  {
+    deviceRef = Application::Device;
+    //Playback.Outlet = ^deviceRef.CurrentTime;
+    attachobserver OnTimeUpdate, ^deviceRef.CurrentTime;
+    attachobserver OnTimeUpdate, ^deviceRef.Duration;
+    attachobserver OnTimeUpdate, null, 123;
+    attachobserver OnTimeUpdate, null, 124;
+    postsignal OnTimeUpdate;
+
+    //Artist.String=Application::Device.Artist;
+    //Title.String=Application::Device.TitleOfTrack;
+
+    //Playback.MaxValue=Application::Device.Duration;
+    //Duration.String=Application::Device.IntToTimeString(Application::Device.Duration);
+    //trace Application::Device;
+  }
+
+  // Conceptual equivalent to TimeUpdate
+  $rect <280,530,477,570>
+  slot OnSliderChange
+  {
+    deviceRef.UpdateTimeFromSlider(Playback.CurrentValue);
+  }
+
+  $rect <560,530,760,570>
+  $output true
+  var Application::DeviceClass deviceRef = null;
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton Play
+  {
+    preset Bounds = <229,331,309,393>;
+    preset OnRelease = OnPlay;
+    preset IconFrameActive = 0;
+    preset IconFrameFocused = 0;
+    preset IconFrameDefault = 0;
+    preset Icon = Application::PlayIcon;
+    preset Label = "";
+    preset Appearance = Application::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton Pause
+  {
+    preset Bounds = <281,337,369,387>;
+    preset Visible = true;
+    preset OnRelease = OnPause;
+    preset Icon = Application::PauseIcon;
+    preset Label = "";
+    preset Appearance = Application::PushButtonConfig;
+  }
+
+  $rect <900,230,1100,270>
+  $output true
+  slot OnPlay
+  {
+    //Application::Device.Play();
+    deviceRef.Play();
+    //while ( Application::Device.PlayerState==Application::State.Playing) {
+     // Application::Device.CurrentTime=Application::Device.TimeUpdate();
+     // Playback.CurrentValue=Application::Device.CurrentTime;
+     // CurrentTime.String= Application::Device.IntToTimeString( Playback.CurrentValue);
+    //}
+    //Play.Visible=false;
+    //Pause.Visible=true;
+
+  }
+
+  $rect <895,268,1095,308>
+  $output true
+  slot OnPause
+  {
+    //Application::Device.Pause();
+    deviceRef.Pause();
+    //Play.Visible=true;
+    //Pause.Visible=false;
+
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PushButton
+  {
+    preset Bounds = <340,337,410,387>;
+    preset OnRelease = OnLoop;
+    preset Icon = Application::LoopIcon;
+    preset Label = "";
+    preset Appearance = Application::PushButtonConfig;
+  }
+
+  $rect <890,310,1090,350>
+  $output true
+  slot OnLoop
+  {
+    deviceRef.LoopTrack();
+
+  }
+
+  $rect <270,570,470,610>
+  slot OnTimeUpdate
+  {
+    if(Playback.MaxValue != deviceRef.Duration ){
+    Playback.MaxValue=deviceRef.Duration;
+    trace "The maximum value of the slider is ", Playback.MaxValue;
+    }
+    trace "The current value  of the slider is ", Playback.CurrentValue;
+    Playback.CurrentValue=deviceRef.CurrentTime;
+    Duration.String=deviceRef.IntToTimeString(deviceRef.Duration);
+    CurrentTime.String=deviceRef.IntToTimeString(deviceRef.CurrentTime);
+  }
+
+  // Directives to adapt the order of the above members according to how these members 
+  // where arranged when the project content was stored. In this manner the storage 
+  // and the expected order of the members don't depend. Merging of changes in the 
+  // project files is simplified.
+  $member Init
+  $member Bounds
+  $member UpdateLayout
+  $member UpdateViewState
+  $member Background
+  $member Vinyl
+  $member Playback
+  $member Title
+  $member Artist
+  $member CurrentTime
+  $member Duration
+  $member ToTheQueue
+  $member ToTheList
+  $member OnSliderChange
+  $member deviceRef
+  $member Pause
+  $member Play
+  $member OnPlay
+  $member OnPause
+  $member PushButton
+  $member OnLoop
+  $member OnTimeUpdate
+
+  // Directives to adapt the order of members belonging to this class so they appear 
+  // correctly arranged relative to the members inherited from the ancestor (super) 
+  // classes. The numbers indicate the order-displacement to apply on the respective 
+  // member once all members have been loaded and combined with members from the 
+  // ancestor classes.
+  $reorder Init 2
+}
+
+$rect <220,60,420,100>
+$output false
+class ListView : Core::Group
+{
+  $rect <10,230,210,270>
+  inherited property Bounds = <0,0,300,200>;
+
+  $rect <10,390,210,430>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <10,350,210,390>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  // To do:
+  // 
+  // - Adjust the visible size of your component (the thick blue border).
+  // 
+  // - The simplest way to compose the appearance of the component is to use the \
+  // 'Views' and 'Widget Sets' from the Gallery.
+  // 
+  // - To react to touch or keyboard events use the templates from the Gallery folder \
+  // 'Event Handlers'.
+  // 
+  // - To perform transitions (animations) use the templates from the Gallery folder \
+  // 'Effects'.
+  // 
+  // - To implement the interface of the component use the 'Property' template from \
+  // the Gallery folder 'Chora'.
+  // 
+  // - To store values use the 'Variable' and 'Array' templates available in the \
+  // Gallery folder 'Chora'.
+  // 
+  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
+  // in the Gallery folder 'Chora'.
+  // 
+  // - In the method 'UpdateViewState()' you can put code to update the state of \
+  // views enclosed in your component.
+  // 
+  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
+  // calculation for enclosed views.
+  note legend Note1
+  {
+    attr Bounds = <220,230,1000,550>;
+  }
+}
+
+$rect <220,100,420,140>
+$output false
+class QueueView : Core::Group
+{
+  $rect <10,230,210,270>
+  inherited property Bounds = <0,0,300,200>;
+
+  $rect <10,390,210,430>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <10,350,210,390>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  // To do:
+  // 
+  // - Adjust the visible size of your component (the thick blue border).
+  // 
+  // - The simplest way to compose the appearance of the component is to use the \
+  // 'Views' and 'Widget Sets' from the Gallery.
+  // 
+  // - To react to touch or keyboard events use the templates from the Gallery folder \
+  // 'Event Handlers'.
+  // 
+  // - To perform transitions (animations) use the templates from the Gallery folder \
+  // 'Effects'.
+  // 
+  // - To implement the interface of the component use the 'Property' template from \
+  // the Gallery folder 'Chora'.
+  // 
+  // - To store values use the 'Variable' and 'Array' templates available in the \
+  // Gallery folder 'Chora'.
+  // 
+  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
+  // in the Gallery folder 'Chora'.
+  // 
+  // - In the method 'UpdateViewState()' you can put code to update the state of \
+  // views enclosed in your component.
+  // 
+  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
+  // calculation for enclosed views.
+  note legend Note1
+  {
+    attr Bounds = <220,230,1000,550>;
+  }
+}
+
+$rect <640,-100,840,-60>
+$output false
+resource Resources::Bitmap Background
+{
+  attr bitmapfile FileName = .\Images and Icons\background.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <640,-60,840,-20>
+$output false
+resource Resources::Bitmap GenericVinyl
+{
+  attr bitmapfile FileName = .\Images and Icons\genericVinyl.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <430,-60,630,-20>
+$output false
+resource Resources::Font Font
+{
+  attr fontname FontName = Arial;
+  attr fontheight Height = 30;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
+}
+
+$rect <430,-20,630,20>
+$output false
+resource Resources::Font TimeFont
+{
+  attr fontname FontName = Agency FB;
+  attr fontheight Height = 17;
+  attr fontheightmode HeightMode = Popular;
+  attr fontquality Quality = High;
+  attr fontranges Ranges = 0x20-0xFF;
+  attr fontaspectratio AspectRatio = 1.0;
+  attr fontbold Bold = false;
+  attr fontitalic Italic = false;
+  attr fontkerning Kerning = true;
+  attr fontrowdistance RowDistance;
+}
+
+$rect <640,-30,840,10>
+$output false
+resource Resources::Bitmap Thumb
+{
+  attr bitmapfile FileName = .\Images and Icons\thumb.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// This object contains configuration information for a slider widget.
+$rect <490,160,780,200>
+$output false
+autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
+{
+  preset ThumbUpdateAtTouch = true;
+  preset ThumbMarginRight = 0;
+  preset ThumbMarginLeft = 0;
+  preset ThumbFrameActive = 0;
+  preset ThumbFrameFocused = 0;
+  preset ThumbFrameDisabled = 0;
+  preset ThumbFrameDefault = 0;
+  preset ThumbActive = WidgetSet::VerticalScrollbarThumbSmall;
+  preset ThumbFocused = Application::Thumb;
+  preset ThumbDefault = Application::Thumb;
+  preset TrackRightTintActive = #F5F5F593;
+  preset TrackRightTintFocused = #F5F5F593;
+  preset TrackRightTintDefault = #F5F5F593;
+  preset TrackRightFrameActive = 0;
+  preset TrackRightFrameFocused = 0;
+  preset TrackRightFrameDisabled = 0;
+  preset TrackRightFrameDefault = 0;
+  preset TrackRightActive = WidgetSet::MiniHorizontalScrollbarTrackSmall;
+  preset TrackRightFocused = WidgetSet::MiniHorizontalScrollbarTrackSmall;
+  preset TrackRightDefault = WidgetSet::HorizontalSliderTrackSmall;
+  preset TrackLeftTintActive = #FFFFFFFF;
+  preset TrackLeftTintFocused = #FFFFFFFF;
+  preset TrackLeftTintDefault = #FFFFFFFF;
+  preset TrackLeftFrameActive = 0;
+  preset TrackLeftFrameFocused = 0;
+  preset TrackLeftFrameDisabled = 0;
+  preset TrackLeftFrameDefault = 0;
+  preset TrackLeftActive = WidgetSet::HorizontalSliderTrackSmall;
+  preset TrackLeftFocused = WidgetSet::MiniHorizontalScrollbarTrackSmall;
+  preset TrackLeftDefault = WidgetSet::HorizontalSliderTrackSmall;
+}
+
+$rect <-373,112,-173,152>
+inline Inline
+{
+  $if $platform == Web.X.*.*
+     <script src="player.js"></script> 
+  $endif               
+}
+
+$rect <-373,72,-173,112>
+class DeviceClass : Templates::DeviceClass
+{
+  $rect <30,80,230,120>
+  inherited method Done()
+  {
+    // The following section is intended to perform de-initialization-related operations
+    // in the underlying device or middleware. Consequently, the section is taken in
+    // account only when generating code (not during prototyping).
+    $if !$prototyper
+      var object thisObject = this;
+
+      /*
+         TO DO:
+
+         The following native statement is intended to enclose code to communicate with
+         your device API. The variable 'thisObject' contains a pointer to the actually
+         de-initialized Application::DeviceClass object. Use the 'thisObject' pointer to
+         e.g. de-register the object from the middleware if you have registered it
+         beforehand.
+         
+      */
+
+      native ( thisObject )
+      {
+        /*
+           TO DO:
+
+           Depending on your application case you call functions of the underlying
+           middleware (or access the device directly) in order to perform the necessary
+           de-initialization steps. For example, you invoke some 'C' function:
+
+             YourDevice_DeInitialize();
+
+           IMPORTANT:
+           ----------
+
+           The variable 'thisObject' represents the actually de-initialized instance of the
+           Application::DeviceClass. If you have stored this object at the initialization
+           time (in the 'Init' method) in some global C variable or registered it by the
+           middleware, it is important to perform now the opposite operation. Set the
+           global variable to NULL or de-register 'thisObject' object from the middleware.
+           
+        */
+      }
+    $endif
+  }
+
+  $rect <30,40,230,80>
+  inherited method Init()
+  {
+      postsignal InitSlot;
+
+  }
+
+  // Constructor and Destructor
+  note group Note1
+  {
+    attr Bounds = <10,0,250,140>;
+  }
+
+  $rect <590,330,790,370>
+  property Application::State PlayerState;
+
+  $rect <590,370,790,410>
+  onset PlayerState
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure PlayerState == value )
+      return;
+
+    // Remember the property's new value.
+    pure PlayerState = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <580,410,780,450>
+  onget PlayerState
+  {
+    return pure PlayerState;
+  }
+
+  // It should be deduced from the mp3 file tags. It can be omitted in the device \
+  // class
+  $rect <250,510,450,550>
+  property string TitleOfTrack = "Title";
+
+  $rect <250,550,450,590>
+  onset TitleOfTrack
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure TitleOfTrack == value )
+      return;
+
+    // Remember the property's new value.
+    pure TitleOfTrack = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <250,590,450,630>
+  onget TitleOfTrack
+  {
+    return pure TitleOfTrack;
+  }
+
+  // See TitleOfTheTrack
+  $rect <19,510,219,550>
+  property string Artist = "Artist";
+
+  $rect <19,550,219,590>
+  onset Artist
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Artist == value )
+      return;
+
+    // Remember the property's new value.
+    pure Artist = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <19,590,219,630>
+  onget Artist
+  {
+    return pure Artist;
+  }
+
+  $rect <500,190,700,230>
+  method string IntToTimeString( arg int32 aArg1 )
+  {
+    //var string timeString="";
+    //var int32 hours=aArg1/3600;
+    //var int32 minutes=aArg1/60;
+    //var int32 seconds=aArg1%60;
+    //if(hours>0)
+    //{
+    //timeString+=(string)hours+":";
+    //}
+    //return timeString+(string)minutes+":"+(string)seconds;
+
+     $if $platform == Web.*.*
+          native
+       {
+     return EmWiPlayer.formatTime(aArg1);
+       }  
+     $endif
+     return "0:00";
+  }
+
+  // the current playback position in seconds
+  $rect <30,190,230,230>
+  $output true
+  property int32 CurrentTime;
+
+  // Equivalent of the event TimeUpdate
+  $rect <30,230,230,270>
+  onset CurrentTime
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure CurrentTime == value )
+      return;
+
+    // Remember the property's new value.
+    pure CurrentTime = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <30,270,230,310>
+  onget CurrentTime
+  {
+    return pure CurrentTime;
+  }
+
+  $rect <260,190,460,230>
+  $output true
+  property int32 Duration;
+
+  $rect <260,230,460,270>
+  $output true
+  onset Duration
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Duration == value )
+      return;
+
+    // Remember the property's new value.
+    pure Duration = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <260,270,460,310>
+  onget Duration
+  {
+    return pure Duration;
+  }
+
+  $rect <20,370,220,410>
+  $output true
+  property bool Loop = false;
+
+  $rect <20,410,220,450>
+  onset Loop
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Loop == value )
+      return;
+
+    // Remember the property's new value.
+    pure Loop = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <20,450,220,490>
+  onget Loop
+  {
+    return pure Loop;
+  }
+
+  // Source of the file
+  $rect <280,19,480,59>
+  property string Src;
+
+  $rect <280,59,480,99>
+  onset Src
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Src == value )
+      return;
+
+    // Remember the property's new value.
+    pure Src = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <280,99,480,139>
+  onget Src
+  {
+    return pure Src;
+  }
+
+  // It might prove useless
+  $rect <510,19,710,59>
+  property string CurrentSrc;
+
+  $rect <510,59,710,99>
+  onget CurrentSrc
+  {
+    return pure CurrentSrc;
+  }
+
+  $rect <720,10,920,50>
+  $output true
+  method void Play()
+  {
+    $if $platform == Web.*.*
+       native
+       {
+       EmWiPlayer.play();
+       } 
+    $endif
+
+    //this.UpdatePlayerState( Application::State.Playing);              
+  }
+
+  $rect <720,50,920,90>
+  $output true
+  method void Pause()
+  {
+    $if $platform == Web.*.*
+       native
+       {
+       EmWiPlayer.pause();
+       //var audiotrack= document.getElementById("audio");
+       // audiotrack.pause();
+       // console.log("pause");
+       } 
+    $endif
+    //vezi Play()
+    this.UpdatePlayerState( Application::State.Paused);
+  }
+
+  $rect <720,90,920,130>
+  $output true
+  method void LoopTrack()
+  {
+    $if $platform == Web.*.*
+       native
+       {
+     EmWiPlayer.loop();
+       }   
+    $endif 
+
+    this.Loop=!this.Loop;
+  }
+
+  // This method is intended to be called by the device to notify the GUI application \
+  // about an alternation of its setting or state value.
+  $rect <580,450,780,490>
+  $output true
+  method void UpdatePlayerState( arg Application::State aNewValue )
+  {
+    // Only if the reported value does differ from the one stored currently in the property.
+    if ( aNewValue != pure PlayerState )
+    {
+      // Remember the new value in the internal memory of the property.
+      pure PlayerState = aNewValue;
+
+      // Notify all associated property observers.
+      notifyobservers ^PlayerState;
+    }
+  }
+
+  $rect <20,310,220,350>
+  $output true
+  method void UpdateCurrentTime( arg int32 aNewValue )
+  {
+    // Only if the reported value does differ from the one stored currently in the property.
+    if ( aNewValue != pure CurrentTime )
+    {
+      trace "update CurrentTime from ", pure CurrentTime, " to ", aNewValue;
+      // Remember the new value in the internal memory of the property.
+      pure CurrentTime = aNewValue;
+              
+      // Notify all associated property observers.
+      notifyobservers ^CurrentTime;
+      notifyobservers null, 123;
+      }
+     
+  }
+
+  $rect <720,130,920,170>
+  $output true
+  method void UpdateTimeFromSlider( arg int32 aArg1 )
+  {
+    this.UpdateCurrentTime(aArg1);
+    $if $platform == Web.*.*
+       native
+       {
+       
+      EmWiPlayer.seeking(aArg1);
+        }
+       
+    $endif  
+
+  }
+
+  $rect <260,310,460,350>
+  $output true
+  method void UpdateDuration( arg int32 aNewValue )
+  {
+    // Only if the reported value does differ from the one stored currently in the property.
+    if ( aNewValue != pure Duration )
+    {
+      trace "update Duration from ", pure Duration, " to ", aNewValue;
+      // Remember the new value in the internal memory of the property.
+      pure Duration = aNewValue;
+              
+      // Notify all associated property observers.
+      notifyobservers ^Duration;
+      notifyobservers null, 124;
+      }
+     
+  }
+
+  $rect <510,240,710,280>
+  slot InitSlot
+  {
+    $if !$prototyper
+      
+      var object thisObject = this;  
+
+
+      native ( thisObject )
+      {
+           EmWiPlayer.initialize();
+      
+      }
+    $endif
+  }
+}
+
+$rect <30,170,230,210>
+autoobject Application::DeviceClass Device;
+
+$rect <60,230,260,270>
+$output false
+enum State
+{
+  // Equivalent of Ready
+  $rect <10,60,210,100>
+  item CanPlay;
+
+  $rect <10,10,210,50>
+  item Playing;
+
+  $rect <220,10,420,50>
+  item Paused;
+
+  // It exists concomitantely with either Playing or Paused 
+  $rect <440,10,640,50>
+  item Seeking;
+
+  $rect <660,10,860,50>
+  item Error;
+
+  // In a sense, a particular case of Paused. It depends on the implementation. It \
+  // might prove useless.
+  $rect <220,60,420,100>
+  item Ended;
+}
+
+$rect <640,10,840,50>
+$output false
+resource Resources::Bitmap PlayIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\play.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <490,199,730,239>
+$output false
+autoobject WidgetSet::PushButtonConfig PushButtonConfig
+{
+  preset LabelFont = Application::TimeFont;
+  preset FaceFrameActive = 0;
+  preset FaceFrameFocused = 0;
+  preset FaceFrameDefault = 0;
+  preset FaceActive = Application::PlayIcon;
+  preset FaceFocused = Application::PlayIcon;
+  preset FaceDefault = Application::PlayIcon;
+}
+
+$rect <640,50,840,90>
+$output false
+resource Resources::Bitmap PauseIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\pause.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <640,90,840,130>
+$output false
+resource Resources::Bitmap LoopIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\loop.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+// Directives to adapt the order of the above members according to how these members 
+// where arranged when the project content was stored. In this manner the storage 
+// and the expected order of the members don't depend. Merging of changes in the 
+// project files is simplified.
+$member Inline
+$member Application
+$member TitleFont
+$member PlayerDialog
+$member ListView
+$member QueueView
+$member Background
+$member GenericVinyl
+$member Font
+$member TimeFont
+$member Thumb
+$member HorizontalSliderConfig
+$member DeviceClass
+$member Device
+$member State
+$member PlayIcon
+$member PushButtonConfig
+$member PauseIcon
+$member LoopIcon

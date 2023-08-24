@@ -1,0 +1,95 @@
+$version 1.0
+
+attr active = Simulation::DeviceClass;
+attr callStackMonitor_Show = false;
+attr codeColSelect = false;
+attr codeFirstPos = <0,0>;
+attr codeInspector = Simulation::DeviceClass.Play;
+attr codeSelEnd = <30,3>;
+attr codeSelStart = <30,3>;
+attr connectInspectors = false;
+attr debug_TrackUpdates = false;
+attr extractDoc_ClassOverview = true;
+attr extractDoc_DeleteOldFiles = false;
+attr extractDoc_Destination = ./HtmlDoc;
+attr extractDoc_IgnoreAccessors = true;
+attr extractDoc_IgnoreMembers = true;
+attr extractDoc_Navigation = true;
+attr extractDoc_Profiles = false;
+attr extractDoc_Title = Documentation;
+attr extractDoc_Variants = false;
+attr generateClut_ReservedColors = 0;
+attr heapMonitor_Show = false;
+attr language = Default;
+attr profile = SimulationProfile;
+attr profilerMonitor_Show = false;
+attr search_CaseSensitive = false;
+attr search_History = Application::Device;
+attr search_IgnoreDescription = false;
+attr search_IgnoreMosaic = false;
+attr search_LimitToComposer = false;
+attr search_WholeWords = false;
+attr search_WildCards = false;
+attr selectedProfiles = WebGL;
+
+view Project
+{
+  attr enableWireMode = false;
+  attr scrollTo = <-7,-51>;
+  attr zoom = 1.0;
+}
+
+view unit Application
+{
+  attr enableWireMode = false;
+  attr scrollTo = <-474,14>;
+  attr zoom = 1.0;
+}
+
+view class Application::DeviceClass
+{
+  attr codeColSelect = false;
+  attr codeFirstPos = <0,0>;
+  attr codeInspector = UpdateTimeFromSlider;
+  attr codeSelEnd = <29,5>;
+  attr codeSelStart = <29,5>;
+  attr enableWireMode = false;
+  attr scrollTo = <-55,57>;
+  attr zoom = 1.0;
+}
+
+view class Application::PlayerDialog
+{
+  attr codeColSelect = false;
+  attr codeFirstPos = <0,0>;
+  attr codeInspector = OnSliderChange;
+  attr codeSelEnd = <55,0>;
+  attr codeSelStart = <55,0>;
+  attr enableWireMode = false;
+  attr scrollTo = <-44,136>;
+  attr zoom = 0.75;
+}
+
+view vclass Simulation::Application
+{
+  attr codeColSelect = false;
+  attr codeFirstPos = <0,0>;
+  attr codeInspector = OnSetDuration;
+  attr codeSelEnd = <33,11>;
+  attr codeSelStart = <33,11>;
+  attr enableWireMode = false;
+  attr scrollTo = <82,-33>;
+  attr zoom = 0.75;
+}
+
+view vclass Simulation::DeviceClass
+{
+  attr codeColSelect = false;
+  attr codeFirstPos = <0,0>;
+  attr codeInspector = Play;
+  attr codeSelEnd = <30,3>;
+  attr codeSelStart = <30,3>;
+  attr enableWireMode = false;
+  attr scrollTo = <-7,-7>;
+  attr zoom = 1.0;
+}
