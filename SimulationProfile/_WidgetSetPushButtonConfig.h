@@ -118,6 +118,14 @@ EW_DEFINE_FIELDS( WidgetSetPushButtonConfig, WidgetSetWidgetConfig )
   EW_PROPERTY( FaceActive,      ResourcesBitmap )
   EW_PROPERTY( FaceFocused,     ResourcesBitmap )
   EW_PROPERTY( FaceDefault,     ResourcesBitmap )
+  EW_PROPERTY( PressedFeedbackDuration, XInt32 )
+  EW_PROPERTY( IconTintActive,  XColor )
+  EW_PROPERTY( IconTintFocused, XColor )
+  EW_PROPERTY( IconTintDisabled, XColor )
+  EW_PROPERTY( IconTintDefault, XColor )
+  EW_PROPERTY( FaceTintActive,  XColor )
+  EW_PROPERTY( FaceTintFocused, XColor )
+  EW_PROPERTY( FaceTintDefault, XColor )
   EW_PROPERTY( FaceFrameActive, XInt32 )
   EW_PROPERTY( FaceFrameFocused, XInt32 )
   EW_PROPERTY( FaceFrameDefault, XInt32 )
@@ -127,9 +135,41 @@ EW_END_OF_FIELDS( WidgetSetPushButtonConfig )
 EW_DEFINE_METHODS( WidgetSetPushButtonConfig, WidgetSetWidgetConfig )
 EW_END_OF_METHODS( WidgetSetPushButtonConfig )
 
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetPressedFeedbackDuration()' */
+void WidgetSetPushButtonConfig_OnSetPressedFeedbackDuration( WidgetSetPushButtonConfig _this, 
+  XInt32 value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetIconTintActive()' */
+void WidgetSetPushButtonConfig_OnSetIconTintActive( WidgetSetPushButtonConfig _this, 
+  XColor value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetIconTintFocused()' */
+void WidgetSetPushButtonConfig_OnSetIconTintFocused( WidgetSetPushButtonConfig _this, 
+  XColor value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetIconTintDisabled()' */
+void WidgetSetPushButtonConfig_OnSetIconTintDisabled( WidgetSetPushButtonConfig _this, 
+  XColor value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetIconTintDefault()' */
+void WidgetSetPushButtonConfig_OnSetIconTintDefault( WidgetSetPushButtonConfig _this, 
+  XColor value );
+
 /* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetLabelFont()' */
 void WidgetSetPushButtonConfig_OnSetLabelFont( WidgetSetPushButtonConfig _this, 
   ResourcesFont value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetFaceTintActive()' */
+void WidgetSetPushButtonConfig_OnSetFaceTintActive( WidgetSetPushButtonConfig _this, 
+  XColor value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetFaceTintFocused()' */
+void WidgetSetPushButtonConfig_OnSetFaceTintFocused( WidgetSetPushButtonConfig _this, 
+  XColor value );
+
+/* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetFaceTintDefault()' */
+void WidgetSetPushButtonConfig_OnSetFaceTintDefault( WidgetSetPushButtonConfig _this, 
+  XColor value );
 
 /* 'C' function for method : 'WidgetSet::PushButtonConfig.OnSetFaceFrameActive()' */
 void WidgetSetPushButtonConfig_OnSetFaceFrameActive( WidgetSetPushButtonConfig _this, 

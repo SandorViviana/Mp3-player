@@ -93,6 +93,7 @@
 EW_DEFINE_FIELDS( EffectsInt32Effect, EffectsEffect )
   EW_VARIABLE( Value,           XInt32 )
   EW_PROPERTY( Value2,          XInt32 )
+  EW_PROPERTY( Value1,          XInt32 )
 EW_END_OF_FIELDS( EffectsInt32Effect )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::Int32Effect' */

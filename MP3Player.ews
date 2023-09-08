@@ -1,12 +1,12 @@
 $version 1.0
 
-attr active = Simulation::DeviceClass;
+attr active = Application::VinylView;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
-attr codeInspector = Simulation::DeviceClass.Play;
-attr codeSelEnd = <30,3>;
-attr codeSelStart = <30,3>;
+attr codeInspector = Application::VinylView.Rotate;
+attr codeSelEnd = <44,1>;
+attr codeSelStart = <44,1>;
 attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
@@ -42,7 +42,7 @@ view Project
 view unit Application
 {
   attr enableWireMode = false;
-  attr scrollTo = <-474,14>;
+  attr scrollTo = <6,-34>;
   attr zoom = 1.0;
 }
 
@@ -51,22 +51,22 @@ view class Application::DeviceClass
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
   attr codeInspector = UpdateTimeFromSlider;
-  attr codeSelEnd = <29,5>;
-  attr codeSelStart = <29,5>;
+  attr codeSelEnd = <0,0>;
+  attr codeSelStart = <0,0>;
   attr enableWireMode = false;
-  attr scrollTo = <-55,57>;
-  attr zoom = 1.0;
+  attr scrollTo = <-195,-84>;
+  attr zoom = 0.5;
 }
 
 view class Application::PlayerDialog
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = OnSliderChange;
-  attr codeSelEnd = <55,0>;
-  attr codeSelStart = <55,0>;
+  attr codeInspector = OnLoop;
+  attr codeSelEnd = <31,5>;
+  attr codeSelStart = <31,5>;
   attr enableWireMode = false;
-  attr scrollTo = <-44,136>;
+  attr scrollTo = <-44,70>;
   attr zoom = 0.75;
 }
 
@@ -74,21 +74,47 @@ view vclass Simulation::Application
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = OnSetDuration;
-  attr codeSelEnd = <33,11>;
-  attr codeSelStart = <33,11>;
+  attr codeInspector = Init;
+  attr codeSelEnd = <17,4>;
+  attr codeSelStart = <17,4>;
   attr enableWireMode = false;
-  attr scrollTo = <82,-33>;
-  attr zoom = 0.75;
+  attr scrollTo = <-52,-20>;
+  attr zoom = 0.5;
+}
+
+view unit Simulation
+{
+  attr enableWireMode = false;
+  attr scrollTo = <-7,-7>;
+  attr zoom = 1.0;
 }
 
 view vclass Simulation::DeviceClass
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = Play;
-  attr codeSelEnd = <30,3>;
-  attr codeSelStart = <30,3>;
+  attr codeInspector = OnPlayEffect;
+  attr codeSelEnd = <0,0>;
+  attr codeSelStart = <0,0>;
+  attr enableWireMode = false;
+  attr scrollTo = <-55,8>;
+  attr zoom = 1.0;
+}
+
+view enum Application::State
+{
+  attr enableWireMode = false;
+  attr scrollTo = <-7,-7>;
+  attr zoom = 1.0;
+}
+
+view class Application::VinylView
+{
+  attr codeColSelect = false;
+  attr codeFirstPos = <0,0>;
+  attr codeInspector = Rotate;
+  attr codeSelEnd = <44,1>;
+  attr codeSelStart = <44,1>;
   attr enableWireMode = false;
   attr scrollTo = <-7,-7>;
   attr zoom = 1.0;

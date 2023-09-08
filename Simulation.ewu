@@ -4,38 +4,23 @@ $rect <10,10,210,50>
 $variant SimulationProfile
 vclass Application : Application::Application
 {
-  $rect <20,20,160,60>
-  object WidgetSet::RadioButton RadioButtonStopped
-  {
-    preset Bounds = <873,37,1023,73>;
-    preset Label = "Stopped";
-    preset Appearance = WidgetSet::RadioButton_Small;
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::RadioButton RadioButtonPlaying
-  {
-    preset Bounds = <873,91,1023,127>;
-    preset Label = "Playing";
-    preset Appearance = WidgetSet::RadioButton_Small;
-  }
-
   $rect <20,20,220,60>
   inherited property Bounds = <0,0,1600,480>;
 
   $rect <20,20,160,60>
   object WidgetSet::HorizontalSlider DurationSlider
   {
-    preset Bounds = <878,155,1078,205>;
+    preset Bounds = <856,157,1056,207>;
     preset Outlet = ^Duration;
     preset MaxValue = 500;
+    preset CurrentValue = 1;
     preset Appearance = WidgetSet::HorizontalSlider_Medium;
   }
 
   $rect <20,20,160,60>
   object WidgetSet::HorizontalSlider CurrentTimeSlider
   {
-    preset Bounds = <873,217,1073,267>;
+    preset Bounds = <858,218,1058,268>;
     preset Outlet = ^CurrentTime;
     preset MaxValue = 100;
     preset Appearance = WidgetSet::HorizontalSlider_Medium;
@@ -67,7 +52,7 @@ vclass Application : Application::Application
   }
 
   $rect <1731,-10,1931,30>
-  property int32 Duration = 100;
+  property int32 Duration;
 
   $rect <1731,30,1931,70>
   onset Duration
@@ -84,6 +69,7 @@ vclass Application : Application::Application
     // Now you can handle the alternation of the property.
     Application::Device.UpdateDuration( value );
     CurrentTimeSlider.MaxValue=value;
+
   }
 
   $rect <1731,70,1931,110>
@@ -92,13 +78,50 @@ vclass Application : Application::Application
     return pure Duration;
   }
 
+  $rect <1730,390,1930,430>
+  inherited method Init()
+  {
+    attachobserver OnCurrentTimeUpdate, ^Application::Device.CurrentTime;
+    attachobserver OnDurationUpdate, ^Application::Device.Duration;
+    Duration=100;
+
+
+  }
+
+  $rect <1730,430,1930,470>
+  slot OnCurrentTimeUpdate
+  {
+     CurrentTimeSlider.CurrentValue=Application::Device.CurrentTime;
+  }
+
+  $rect <1730,470,1930,510>
+  slot OnDurationUpdate
+  {
+    DurationSlider.CurrentValue=Application::Device.Duration;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text DurationLabel
+  {
+    preset Bounds = <1059,168,1192,199>;
+    preset String = "Duration";
+    preset Font = Resources::FontMedium;
+  }
+
+  $rect <20,20,160,60>
+  object Views::Text CurrentTimeLabel
+  {
+    preset Bounds = <1062,227,1195,258>;
+    preset String = "Current Time";
+    preset Font = Resources::FontMedium;
+  }
+
   // Directives to adapt the order of the above members according to how these members 
   // where arranged when the project content was stored. In this manner the storage 
   // and the expected order of the members don't depend. Merging of changes in the 
   // project files is simplified.
+  $member Init
   $member Bounds
-  $member RadioButtonStopped
-  $member RadioButtonPlaying
   $member DurationSlider
   $member CurrentTimeSlider
   $member CurrentTime
@@ -107,6 +130,10 @@ vclass Application : Application::Application
   $member Duration
   $member OnSetDuration
   $member OnGetDuration
+  $member OnCurrentTimeUpdate
+  $member OnDurationUpdate
+  $member DurationLabel
+  $member CurrentTimeLabel
 }
 
 $rect <10,50,210,90>
@@ -116,29 +143,145 @@ vclass DeviceClass : Application::DeviceClass
   $rect <0,0,200,40>
   inherited method Play()
   {
-    PlayEffect.Value1 = 0;
+    PlayEffect.Value1 = CurrentTime;
+    //PlayEffect.Value1=0;
+    //PlayEffect.Value=CurrentTime;
     PlayEffect.Value2 = Duration;
-    PlayEffect.CycleDuration = Duration * 1000;
+    PlayEffect.CycleDuration = (Duration-CurrentTime) * 1000;
+    this.UpdatePlayerState( Application::State.Playing);
     signal PlayEffect.StartEffect;
+
   }
 
   $rect <230,40,430,80>
   object Effects::Int32Effect PlayEffect
   {
+    preset OnFinished = OnFinishEffect;
     preset OnAnimate = OnPlayEffect;
+    preset NoOfCycles = 1;
+    preset Value2 = 255;
+    preset Value1 = 0;
   }
 
   $rect <230,80,430,120>
   slot OnPlayEffect
   {
-    UpdateCurrentTime( PlayEffect.Value );
+     isPlayEffect = true;
+    UpdateCurrentTime(PlayEffect.Value);
+     isPlayEffect = false;
   }
 
   $rect <0,40,200,80>
   inherited method Pause()
   {
+    this.UpdatePlayerState( Application::State.Paused);
     signal PlayEffect.StopEffect;
   }
+
+  $rect <0,230,200,270>
+  inherited method IntToTimeString()
+  {
+    return (string)(aArg1/60)+":"+(string)(aArg1%60);
+  }
+
+  $rect <0,130,200,170>
+  inherited method UpdateTimeFromSlider()
+  {
+    UpdateCurrentTime(aArg1);
+
+  }
+
+  $rect <0,170,200,210>
+  inherited slot InitSlot
+  {
+    // TO DO: Write your code here ... 
+
+  }
+
+  $rect <0,80,200,120>
+  inherited method LoopTrack()
+  {
+    this.Loop=!this.Loop;
+    if(Loop)
+    {   
+        
+        trace "OnLoop";
+    }
+    else 
+    {
+        trace "NotOnLoopAnymore";
+
+    }
+
+  }
+
+  $rect <230,120,430,160>
+  slot OnFinishEffect
+  {
+    if(this.Loop)
+    {   
+        UpdateCurrentTime(0);
+        //PlayEffect.Value1=0;
+        //signal PlayEffect.StartEffect;
+        this.Play();
+    }
+    else
+    {
+        this.UpdatePlayerState( Application::State.Ended);
+    }
+
+  }
+
+  $rect <500,60,700,100>
+  inherited method UpdateDuration()
+  {
+    // Only if the reported value does differ from the one stored currently in the property.
+    if ( aNewValue != pure Duration )
+    {
+      trace "update Duration from ", pure Duration, " to ", aNewValue;
+      // Remember the new value in the internal memory of the property.
+      pure Duration = aNewValue;
+       
+      PlayEffect.Value2=aNewValue;       
+      // Notify all associated property observers.
+      notifyobservers ^Duration;
+      notifyobservers null, 124;
+      }
+     
+  }
+
+  $rect <500,100,700,140>
+  inherited method UpdateCurrentTime()
+  {
+    if( !isPlayEffect && this.PlayerState==Application::State.Playing ) 
+      signal PlayEffect.StopEffect;
+
+    super(aNewValue);
+
+    if( !isPlayEffect && this.PlayerState==Application::State.Playing )
+       this.Play();
+
+  }
+
+  $rect <481,158,681,198>
+  var bool isPlayEffect = false;
+
+  // Directives to adapt the order of the above members according to how these members 
+  // where arranged when the project content was stored. In this manner the storage 
+  // and the expected order of the members don't depend. Merging of changes in the 
+  // project files is simplified.
+  $member IntToTimeString
+  $member Play
+  $member LoopTrack
+  $member UpdateCurrentTime
+  $member UpdateTimeFromSlider
+  $member UpdateDuration
+  $member InitSlot
+  $member PlayEffect
+  $member OnPlayEffect
+  $member Pause
+  $member OnFinishEffect
+  $member isPlayEffect
 
   // Directives to adapt the order of members belonging to this class so they appear 
   // correctly arranged relative to the members inherited from the ancestor (super) 

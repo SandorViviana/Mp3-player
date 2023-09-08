@@ -161,9 +161,6 @@ EW_DEFINE_FIELDS( WidgetSetPushButton, CoreGroup )
   EW_PROPERTY( OnRelease,       XSlot )
   EW_PROPERTY( Label,           XString )
   EW_VARIABLE( onPressKeyTime,  XUInt32 )
-  EW_PROPERTY( IconFrameActive, XInt32 )
-  EW_PROPERTY( IconFrameFocused, XInt32 )
-  EW_PROPERTY( IconFrameDefault, XInt32 )
 EW_END_OF_FIELDS( WidgetSetPushButton )
 
 /* Virtual Method Table (VMT) for the class : 'WidgetSet::PushButton' */
@@ -235,18 +232,6 @@ void WidgetSetPushButton_onReleaseTouch( WidgetSetPushButton _this, XObject send
 
 /* 'C' function for method : 'WidgetSet::PushButton.onPressTouch()' */
 void WidgetSetPushButton_onPressTouch( WidgetSetPushButton _this, XObject sender );
-
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIconFrameActive()' */
-void WidgetSetPushButton_OnSetIconFrameActive( WidgetSetPushButton _this, XInt32 
-  value );
-
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIconFrameFocused()' */
-void WidgetSetPushButton_OnSetIconFrameFocused( WidgetSetPushButton _this, XInt32 
-  value );
-
-/* 'C' function for method : 'WidgetSet::PushButton.OnSetIconFrameDefault()' */
-void WidgetSetPushButton_OnSetIconFrameDefault( WidgetSetPushButton _this, XInt32 
-  value );
 
 /* 'C' function for method : 'WidgetSet::PushButton.OnSetIcon()' */
 void WidgetSetPushButton_OnSetIcon( WidgetSetPushButton _this, ResourcesBitmap value );

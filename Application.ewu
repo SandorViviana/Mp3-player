@@ -202,19 +202,11 @@ class PlayerDialog : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::Image Vinyl
-  {
-    preset Bounds = <117,66,434,333>;
-    preset Bitmap = Application::GenericVinyl;
-  }
-
-  $rect <20,20,160,60>
   object WidgetSet::HorizontalSlider Playback
   {
     preset Bounds = <117,387,582,436>;
     preset OnUpdate = null;
-    preset OnChange = OnLoop;
-    preset OnEnd = OnSliderChange;
+    preset OnChange = OnSliderChange;
     preset MaxValue = 100;
     preset CurrentValue = 0;
     preset Appearance = Application::HorizontalSliderConfig;
@@ -298,58 +290,17 @@ class PlayerDialog : Core::Group
   var Application::DeviceClass deviceRef = null;
 
   $rect <20,20,160,60>
-  object WidgetSet::PushButton Play
+  object WidgetSet::PushButton PlayPause
   {
-    preset Bounds = <229,331,309,393>;
-    preset OnRelease = OnPlay;
-    preset IconFrameActive = 0;
-    preset IconFrameFocused = 0;
-    preset IconFrameDefault = 0;
+    preset Bounds = <281,337,369,387>;
+    preset Visible = true;
     preset Icon = Application::PlayIcon;
     preset Label = "";
     preset Appearance = Application::PushButtonConfig;
   }
 
   $rect <20,20,160,60>
-  object WidgetSet::PushButton Pause
-  {
-    preset Bounds = <281,337,369,387>;
-    preset Visible = true;
-    preset OnRelease = OnPause;
-    preset Icon = Application::PauseIcon;
-    preset Label = "";
-    preset Appearance = Application::PushButtonConfig;
-  }
-
-  $rect <900,230,1100,270>
-  $output true
-  slot OnPlay
-  {
-    //Application::Device.Play();
-    deviceRef.Play();
-    //while ( Application::Device.PlayerState==Application::State.Playing) {
-     // Application::Device.CurrentTime=Application::Device.TimeUpdate();
-     // Playback.CurrentValue=Application::Device.CurrentTime;
-     // CurrentTime.String= Application::Device.IntToTimeString( Playback.CurrentValue);
-    //}
-    //Play.Visible=false;
-    //Pause.Visible=true;
-
-  }
-
-  $rect <895,268,1095,308>
-  $output true
-  slot OnPause
-  {
-    //Application::Device.Pause();
-    deviceRef.Pause();
-    //Play.Visible=true;
-    //Pause.Visible=false;
-
-  }
-
-  $rect <20,20,160,60>
-  object WidgetSet::PushButton PushButton
+  object WidgetSet::PushButton Loop
   {
     preset Bounds = <340,337,410,387>;
     preset OnRelease = OnLoop;
@@ -363,6 +314,10 @@ class PlayerDialog : Core::Group
   slot OnLoop
   {
     deviceRef.LoopTrack();
+    if(Application::Device.Loop)
+        Loop.Icon=Application::LoopPressedIcon;
+    else   Loop.Icon=Application::LoopIcon;
+
 
   }
 
@@ -377,6 +332,103 @@ class PlayerDialog : Core::Group
     Playback.CurrentValue=deviceRef.CurrentTime;
     Duration.String=deviceRef.IntToTimeString(deviceRef.Duration);
     CurrentTime.String=deviceRef.IntToTimeString(deviceRef.CurrentTime);
+
+    if(Playback.CurrentValue==Playback.MaxValue && !Application::Device.Loop)
+          OnEnded();
+  }
+
+  $rect <20,20,160,60>
+  object Core::SimpleTouchHandler LoopTouch
+  {
+    preset Point4 = <356,339>;
+    preset Point3 = <393,346>;
+    preset Point2 = <398,386>;
+    preset Point1 = <356,391>;
+    preset OnRelease = OnLoop;
+  }
+
+  $rect <850,390,1050,430>
+  slot PlayPausedPressed
+  {
+    switch(Application::Device.PlayerState)
+    {
+
+          case Application::State.Playing:
+                      PlayPause.Icon=Application::PausePressedIcon;
+          default:
+                      PlayPause.Icon=Application::PlayPressedIcon;
+    }
+  }
+
+  $rect <900,270,1100,310>
+  slot OnPlayPause
+  {
+     trace 120;
+    switch(Application::Device.PlayerState)
+    {
+        case Application::State.Playing:
+        
+            OnPause();
+                 
+        case Application::State.Paused:
+        
+              OnPlay();
+        case Application::State.CanPlay:
+              
+              OnPlay();
+        case Application::State.Ended:
+              {
+                  Application::Device.UpdateCurrentTime(0);
+                  OnPlay();
+              }
+        default:OnPlay();
+
+    }
+
+  }
+
+  $rect <870,519,1070,559>
+  method void OnPlay()
+  {
+    deviceRef.Play();
+    PlayPause.Icon=Application::PauseIcon;
+    Application::Device.UpdatePlayerState( Application::State.Playing );
+  }
+
+  $rect <870,560,1070,600>
+  method void OnPause()
+  {
+    deviceRef.Pause();
+    PlayPause.Icon=Application::PlayIcon;
+    Application::Device.UpdatePlayerState( Application::State.Paused );
+  }
+
+  $rect <870,599,1070,639>
+  method void OnEnded()
+  {
+    Application::Device.UpdatePlayerState( Application::State.Ended);
+    PlayPause.Icon=Application::PlayIcon;
+  }
+
+  $rect <20,20,160,60>
+  object Core::SimpleTouchHandler PlayPauseTouchHandler
+  {
+    preset Point4 = <305,345>;
+    preset Point3 = <340,345>;
+    preset Point2 = <351,380>;
+    preset Point1 = <310,389>;
+    preset OnRelease = OnPlayPause;
+    preset OnPress = PlayPausedPressed;
+  }
+
+  $rect <20,20,160,60>
+  object Views::WarpImage Vinyl
+  {
+    preset Point4 = <159,310>;
+    preset Point3 = <402,309>;
+    preset Point2 = <402,65>;
+    preset Point1 = <159,65>;
+    preset Bitmap = Application::GenericVinyl;
   }
 
   // Directives to adapt the order of the above members according to how these members 
@@ -388,7 +440,6 @@ class PlayerDialog : Core::Group
   $member UpdateLayout
   $member UpdateViewState
   $member Background
-  $member Vinyl
   $member Playback
   $member Title
   $member Artist
@@ -398,13 +449,18 @@ class PlayerDialog : Core::Group
   $member ToTheList
   $member OnSliderChange
   $member deviceRef
-  $member Pause
-  $member Play
-  $member OnPlay
-  $member OnPause
-  $member PushButton
+  $member PlayPause
+  $member Loop
   $member OnLoop
   $member OnTimeUpdate
+  $member LoopTouch
+  $member PlayPausedPressed
+  $member OnPlayPause
+  $member OnPlay
+  $member OnPause
+  $member OnEnded
+  $member PlayPauseTouchHandler
+  $member Vinyl
 
   // Directives to adapt the order of members belonging to this class so they appear 
   // correctly arranged relative to the members inherited from the ancestor (super) 
@@ -923,7 +979,7 @@ class DeviceClass : Templates::DeviceClass
   }
 
   $rect <590,330,790,370>
-  property Application::State PlayerState;
+  property Application::State PlayerState = Application::State.CanPlay;
 
   $rect <590,370,790,410>
   onset PlayerState
@@ -1263,7 +1319,7 @@ class DeviceClass : Templates::DeviceClass
   }
 }
 
-$rect <30,170,230,210>
+$rect <-20,180,180,220>
 autoobject Application::DeviceClass Device;
 
 $rect <60,230,260,270>
@@ -1309,20 +1365,28 @@ $rect <490,199,730,239>
 $output false
 autoobject WidgetSet::PushButtonConfig PushButtonConfig
 {
+  preset PressedFeedbackDuration = 50;
+  preset IconTintActive = #4DFF59FF;
+  preset IconTintFocused = #353535FF;
+  preset IconTintDisabled = #D6D6D6FF;
+  preset IconTintDefault = #3D42FFFF;
   preset LabelFont = Application::TimeFont;
+  preset FaceTintActive = #06FF4CFF;
+  preset FaceTintFocused = #E252FFFF;
+  preset FaceTintDefault = #FFAD33FF;
   preset FaceFrameActive = 0;
   preset FaceFrameFocused = 0;
   preset FaceFrameDefault = 0;
   preset FaceActive = Application::PlayIcon;
-  preset FaceFocused = Application::PlayIcon;
-  preset FaceDefault = Application::PlayIcon;
+  preset FaceFocused = Application::PausePressedIcon;
+  preset FaceDefault = Application::PausePressedIcon;
 }
 
 $rect <640,50,840,90>
 $output false
 resource Resources::Bitmap PauseIcon
 {
-  attr bitmapfile FileName = .\Images and Icons\pause.png;
+  attr bitmapfile FileName = .\Images and Icons\pauseVariant.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
@@ -1334,12 +1398,244 @@ $rect <640,90,840,130>
 $output false
 resource Resources::Bitmap LoopIcon
 {
-  attr bitmapfile FileName = .\Images and Icons\loop.png;
+  attr bitmapfile FileName = .\Images and Icons\loopVariant.png;
   attr bitmapformat Format = Native;
   attr framesize FrameSize;
   attr framedelay FrameDelay;
   attr bitmapdithering Dithering = Auto;
   attr bitmapmode Mode = Default;
+}
+
+$rect <850,-100,1050,-60>
+$output false
+resource Resources::Bitmap PausePressedIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\pauseVariant_pressed.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <847,-66,1047,-26>
+$output false
+resource Resources::Bitmap PlayPressedIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\play_pressed.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <850,-30,1050,10>
+$output false
+resource Resources::Bitmap LoopPressedIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\loop_pressed.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <220,140,420,180>
+$output false
+class VinylView : Core::Group
+{
+  $rect <10,230,210,270>
+  inherited property Bounds = <0,0,190,205>;
+
+  $rect <10,390,210,430>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <10,350,210,390>
+  inherited method UpdateViewState()
+  {
+    // Always invoke the inherited method.
+    super( aState );
+
+    /*
+
+      HINT 1:
+
+      This method is invoked automatically when the state set of the component has
+      been changed. The new state set can be found in the parameter aState.
+      Following are the important states:
+
+        Enabled   --> The component can react to user inputs.
+
+        Selected  --> The component is selected in context of its owner.
+
+        Focused   --> The component is selected in context of its owner and 
+                      the owner can react to keyboard events. In this manner the
+                      component is also able to react to keyboard events.
+
+        Modal     --> The component is modal. All events are redirected to this
+                      component.
+
+      To determine whether a state is currently active or not you have to test
+      the aState parameter. For example to test the 'Selected' state:
+
+        if ( aState.contains( Core::ViewState[ Selected ]))
+        {
+          ... yes, this component is currently selected.
+        }
+
+    */
+
+    /*
+
+      HINT 2:
+
+      Alternatively you can request this method invocation by executing explicitly
+      following code:
+
+
+        InvalidateViewState();
+
+    */
+      
+    /*
+
+      TO DO 1:
+
+      Put here the code to ensure that the visual aspect of the component does
+      reflect its current state. For example, depending on its 'Enabled' state
+      a component may appear with full colors or pale if it is disabled:
+
+        if ( aState.contains( Core::ViewState[ Enabled ]))
+        {
+          SomeBackgroundView.Opacity = 255;
+          SomeTextView.Color         = #000000FF;
+        }
+        else
+        {
+          SomeBackgroundView.Opacity = 128;
+          SomeTextView.Color         = #00000080;
+        }
+
+
+      TO DO 2:
+
+      You can evaluate here also the state of any other member in your component.
+      For example in a push-button component, the button should appear highlighted
+      as long as the user holds the finger within a touch area of the button:
+
+        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
+          HighlightedBackground.Visible = true;
+        else
+          HighlightedBackground.Visible = false;
+
+      The touch handler itself only requests the update method to be called. Use
+      for this purpose 'InvalidateViewState()' method.
+
+
+      TO DO 3:
+
+      You can calculate here also the position/size of views accordingly to the
+      state of any other member in your component. For example in a slider you
+      can calculate the position of the slider knob from some properties like
+      'SliderValue' and 'SliderRange':
+
+        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
+
+      Changing the 'SliderValue' or 'SliderRange' property should only request
+      the update method to be called. Use for this purpose 'InvalidateViewState()'
+      method.
+
+    */
+  }
+
+  // To do:
+  // 
+  // - Adjust the visible size of your component (the thick blue border).
+  // 
+  // - The simplest way to compose the appearance of the component is to use the \
+  // 'Views' and 'Widget Sets' from the Gallery.
+  // 
+  // - To react to touch or keyboard events use the templates from the Gallery folder \
+  // 'Event Handlers'.
+  // 
+  // - To perform transitions (animations) use the templates from the Gallery folder \
+  // 'Effects'.
+  // 
+  // - To implement the interface of the component use the 'Property' template from \
+  // the Gallery folder 'Chora'.
+  // 
+  // - To store values use the 'Variable' and 'Array' templates available in the \
+  // Gallery folder 'Chora'.
+  // 
+  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
+  // in the Gallery folder 'Chora'.
+  // 
+  // - In the method 'UpdateViewState()' you can put code to update the state of \
+  // views enclosed in your component.
+  // 
+  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
+  // calculation for enclosed views.
+  note legend Note1
+  {
+    attr Bounds = <220,230,1000,550>;
+  }
+
+  $rect <20,20,160,60>
+  object Views::WarpImage Vinyl
+  {
+    preset Point4 = <1,200>;
+    preset Point3 = <184,200>;
+    preset Point2 = <184,8>;
+    preset Point1 = <1,8>;
+    preset Bitmap = Application::GenericVinyl;
+  }
+
+  $rect <286,4,486,44>
+  object Effects::FloatEffect AngleEffect
+  {
+    preset Value2 = 359.9;
+  }
+
+  $rect <556,10,756,50>
+  slot OnAngleChange
+  {
+    sender; /* the method is called from the sender object */
+  }
+
+  $rect <280,120,480,160>
+  method void Rotate()
+  {
+    var point desPos=Bounds.orect.center;
+    Vinyl.RotateAndScale( desPos, 1, 1, 1 );
+  }
 }
 
 // Directives to adapt the order of the above members according to how these members 
@@ -1365,3 +1661,7 @@ $member PlayIcon
 $member PushButtonConfig
 $member PauseIcon
 $member LoopIcon
+$member PausePressedIcon
+$member PlayPressedIcon
+$member LoopPressedIcon
+$member VinylView

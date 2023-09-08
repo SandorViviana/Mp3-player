@@ -4,12 +4,16 @@ var EmWiPlayer={
 
  play:function(){
     var audiotrack= document.getElementById("audio");
+    //de inceput animatia pentru vinil
+    // element.classList.add('rotate')
     audiotrack.play();
     console.log("play");
 },
 
 pause:function(){
     var audiotrack= document.getElementById("audio");
+    //de oprit animatia pentru vinil
+     // element.classList.remove('rotate')
     audiotrack.pause();
     console.log("pause");
 },
@@ -32,7 +36,8 @@ initialize:function (){
         var autoobj = EmWiApp._GetAutoObject( EmWiApp.Application.Device);        
         if ( autoobj )  {
             
-            autoobj.UpdateCurrentTime(audioPlayer.currentTime);            
+            autoobj.UpdateCurrentTime(audioPlayer.currentTime); 
+            EmWiApp._RequestUpdate();          
             //autoobj.currentTime=parseInt(audioPlayer.currentTime);
             //console.log(autoobj.currentTime);
             console.log("currentTime javascript event:"+audioPlayer.currentTime);
@@ -44,6 +49,7 @@ initialize:function (){
         console.log("duration javascript: "+audioPlayer.duration);
         if ( autoobj )  {
             autoobj.UpdateDuration(parseInt(audioPlayer.duration));
+            EmWiApp._RequestUpdate(); 
            // console.log("duration javascript: "+audioPlayer.duration);
            // console.log(autoobj.Duration);
         }

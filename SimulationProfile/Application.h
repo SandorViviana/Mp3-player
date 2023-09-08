@@ -73,6 +73,15 @@ EW_DECLARE_BITMAP_RES( ApplicationPauseIcon )
 /* Bitmap resource : 'Application::LoopIcon' */
 EW_DECLARE_BITMAP_RES( ApplicationLoopIcon )
 
+/* Bitmap resource : 'Application::PausePressedIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationPausePressedIcon )
+
+/* Bitmap resource : 'Application::PlayPressedIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationPlayPressedIcon )
+
+/* Bitmap resource : 'Application::LoopPressedIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationLoopPressedIcon )
+
 /* Forward declaration of the class WidgetSet::HorizontalSliderConfig */
 #ifndef _WidgetSetHorizontalSliderConfig_
   EW_DECLARE_CLASS( WidgetSetHorizontalSliderConfig )

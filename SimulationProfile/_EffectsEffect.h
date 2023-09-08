@@ -90,6 +90,7 @@
    direction. */
 EW_DEFINE_FIELDS( EffectsEffect, XObject )
   EW_VARIABLE( timer,           CoreTimer )
+  EW_PROPERTY( OnFinished,      XSlot )
   EW_PROPERTY( OnAnimate,       XSlot )
   EW_VARIABLE( direction,       XInt32 )
   EW_VARIABLE( startDirection,  XInt32 )
@@ -97,6 +98,7 @@ EW_DEFINE_FIELDS( EffectsEffect, XObject )
   EW_VARIABLE( lastFrame,       XFloat )
   EW_VARIABLE( cycleCounter,    XInt32 )
   EW_VARIABLE( startTime,       XUInt32 )
+  EW_PROPERTY( NoOfCycles,      XInt32 )
   EW_PROPERTY( CycleDuration,   XInt32 )
   EW_PROPERTY( Enabled,         XBool )
 EW_END_OF_FIELDS( EffectsEffect )
@@ -124,6 +126,9 @@ XBool EffectsEffect_runFwdRev( EffectsEffect _this );
 /* 'C' function for method : 'Effects::Effect.runFwdFwd()' */
 XBool EffectsEffect_runFwdFwd( EffectsEffect _this );
 
+/* 'C' function for method : 'Effects::Effect.OnSetNoOfCycles()' */
+void EffectsEffect_OnSetNoOfCycles( EffectsEffect _this, XInt32 value );
+
 /* 'C' function for method : 'Effects::Effect.OnSetCycleDuration()' */
 void EffectsEffect_OnSetCycleDuration( EffectsEffect _this, XInt32 value );
 
@@ -135,6 +140,10 @@ void EffectsEffect_Animate( EffectsEffect _this, XFloat aProgress );
 
 /* Wrapper function for the virtual method : 'Effects::Effect.Animate()' */
 void EffectsEffect__Animate( void* _this, XFloat aProgress );
+
+/* The slot method 'StopEffect' stops the running effect if a signal is sent to 
+   this slot method. This causes the animation to pause at its current position. */
+void EffectsEffect_StopEffect( EffectsEffect _this, XObject sender );
 
 /* The slot method 'StartEffect' re-starts the effect if a signal is sent to this 
    slot method. The effect will start from the beginning. */

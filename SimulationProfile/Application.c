@@ -28,6 +28,7 @@
 #include "_ApplicationApplication.h"
 #include "_ApplicationDeviceClass.h"
 #include "_ApplicationPlayerDialog.h"
+#include "_CoreSimpleTouchHandler.h"
 #include "_CoreView.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
@@ -48,16 +49,15 @@
 /* Compressed strings for the language 'Default'. */
 EW_CONST_STRING_PRAGMA static const unsigned int _StringsDefault0[] =
 {
-  0x0000019E, /* ratio 58.94 % */
+  0x00000152, /* ratio 60.36 % */
   0xB8001100, 0x800A8452, 0x00E80034, 0x0CA00360, 0x06098780, 0x40020916, 0x0083C24E,
-  0x787C5CE6, 0x000C2240, 0xFC7C003A, 0xC12050F8, 0x02412218, 0xC72001A8, 0x240D0043,
-  0x80037C32, 0x20001C26, 0x030C5A2E, 0x35800C60, 0x34484D2F, 0x4E21A688, 0xF0006D00,
-  0x693183C4, 0xED47A41D, 0xE0085D28, 0x349CC3A9, 0x58551CCD, 0xAA466AF4, 0xB518C908,
-  0xC6A11398, 0x0C4F0F9C, 0xA8F5D005, 0x2D16A7CF, 0x3173743A, 0x0C9E54A7, 0x0AC51EAD,
-  0xAE4E6B40, 0x646A7346, 0x51EC7618, 0x661F47B3, 0xF1B35990, 0xA715BFCD, 0x539A04FA,
-  0x499A45AB, 0x28758A73, 0x874FA115, 0x7C48370F, 0x4F2C537A, 0x54875E85, 0x00172C8D,
-  0x1106855D, 0xB96AF526, 0x1D97E671, 0x89A64209, 0xD1860016, 0x454F4A00, 0xEAC8947D,
-  0xD211179D, 0x32395BA4, 0x1F2FC4E6, 0x00000406, 0x00000000
+  0x787C5CE6, 0x000C2240, 0xFC7C003A, 0xC12050F8, 0x02412218, 0xC72001A8, 0x24260043,
+  0x10D3441A, 0x6D000800, 0x80018400, 0x3ACE6307, 0xB0026D38, 0x002173A3, 0xBE6F0EA0,
+  0xA8466001, 0x33499A42, 0xA648451A, 0x089BC5A6, 0x787CDE35, 0xA8002642, 0xAD1CC742,
+  0x9BA1D648, 0xEE89378B, 0xA8548864, 0xBF4EA652, 0x91A9BCD6, 0x42AB5521, 0xB87D0AB3,
+  0x38502241, 0x54EEAA00, 0x58C87518, 0x5ECD168B, 0x67308834, 0x9716A6D4, 0xA00ADCE6,
+  0x0A9BC123, 0xE0C65297, 0xC1600017, 0x3912A317, 0xC221545C, 0x426F67A5, 0xEF792006,
+  0x010187CB, 0x00000000
 };
 
 /* Constant values used in this 'C' module only. */
@@ -78,17 +78,29 @@ static const XStringRes _Const000D = { _StringsDefault0, 0x001A };
 static const XRect _Const000E = {{ 375, 436 }, { 425, 486 }};
 static const XRect _Const000F = {{ 369, 0 }, { 419, 66 }};
 static const XRect _Const0010 = {{ 281, 337 }, { 369, 387 }};
-static const XRect _Const0011 = {{ 229, 331 }, { 309, 393 }};
-static const XRect _Const0012 = {{ 340, 337 }, { 410, 387 }};
-static const XStringRes _Const0013 = { _StringsDefault0, 0x0022 };
-static const XStringRes _Const0014 = { _StringsDefault0, 0x002F };
-static const XStringRes _Const0015 = { _StringsDefault0, 0x0055 };
-static const XColor _Const0016 = { 0xF5, 0xF5, 0xF5, 0x93 };
-static const XColor _Const0017 = { 0xFF, 0xFF, 0xFF, 0xFF };
-static const XStringRes _Const0018 = { _StringsDefault0, 0x007C };
-static const XStringRes _Const0019 = { _StringsDefault0, 0x0095 };
-static const XStringRes _Const001A = { _StringsDefault0, 0x00B0 };
-static const XStringRes _Const001B = { _StringsDefault0, 0x00B7 };
+static const XRect _Const0011 = {{ 340, 337 }, { 410, 387 }};
+static const XPoint _Const0012 = { 356, 339 };
+static const XPoint _Const0013 = { 393, 346 };
+static const XPoint _Const0014 = { 398, 386 };
+static const XPoint _Const0015 = { 356, 391 };
+static const XPoint _Const0016 = { 305, 345 };
+static const XPoint _Const0017 = { 340, 345 };
+static const XPoint _Const0018 = { 351, 380 };
+static const XPoint _Const0019 = { 310, 389 };
+static const XStringRes _Const001A = { _StringsDefault0, 0x0022 };
+static const XStringRes _Const001B = { _StringsDefault0, 0x0048 };
+static const XColor _Const001C = { 0xF5, 0xF5, 0xF5, 0x93 };
+static const XColor _Const001D = { 0xFF, 0xFF, 0xFF, 0xFF };
+static const XStringRes _Const001E = { _StringsDefault0, 0x006F };
+static const XStringRes _Const001F = { _StringsDefault0, 0x008A };
+static const XStringRes _Const0020 = { _StringsDefault0, 0x0091 };
+static const XColor _Const0021 = { 0x4D, 0xFF, 0x59, 0xFF };
+static const XColor _Const0022 = { 0x35, 0x35, 0x35, 0xFF };
+static const XColor _Const0023 = { 0xD6, 0xD6, 0xD6, 0xFF };
+static const XColor _Const0024 = { 0x3D, 0x42, 0xFF, 0xFF };
+static const XColor _Const0025 = { 0x06, 0xFF, 0x4C, 0xFF };
+static const XColor _Const0026 = { 0xE2, 0x52, 0xFF, 0xFF };
+static const XColor _Const0027 = { 0xFF, 0xAD, 0x33, 0xFF };
 
 /* User defined inline code: 'Application::Inline' */
  
@@ -204,9 +216,10 @@ void ApplicationPlayerDialog__Init( ApplicationPlayerDialog _this, XObject aLink
   ViewsText__Init( &_this->Duration, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ToTheQueue, &_this->_.XObject, 0 );
   ViewsImage__Init( &_this->ToTheList, &_this->_.XObject, 0 );
-  WidgetSetPushButton__Init( &_this->Pause, &_this->_.XObject, 0 );
-  WidgetSetPushButton__Init( &_this->Play, &_this->_.XObject, 0 );
-  WidgetSetPushButton__Init( &_this->PushButton, &_this->_.XObject, 0 );
+  WidgetSetPushButton__Init( &_this->PlayPause, &_this->_.XObject, 0 );
+  WidgetSetPushButton__Init( &_this->Loop, &_this->_.XObject, 0 );
+  CoreSimpleTouchHandler__Init( &_this->LoopTouch, &_this->_.XObject, 0 );
+  CoreSimpleTouchHandler__Init( &_this->PlayPauseTouchHandler, &_this->_.XObject, 0 );
 
   /* Setup the VMT pointer */
   _this->_.VMT = EW_CLASS( ApplicationPlayerDialog );
@@ -215,6 +228,7 @@ void ApplicationPlayerDialog__Init( ApplicationPlayerDialog _this, XObject aLink
   CoreRectView__OnSetBounds( _this, _Const0000 );
   CoreRectView__OnSetBounds( &_this->Background, _Const0003 );
   CoreRectView__OnSetBounds( &_this->Vinyl, _Const0004 );
+  ViewsImage_OnSetAnimated( &_this->Vinyl, 1 );
   CoreRectView__OnSetBounds( &_this->Playback, _Const0005 );
   WidgetSetHorizontalSlider_OnSetMaxValue( &_this->Playback, 100 );
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->Playback, 0 );
@@ -229,16 +243,19 @@ void ApplicationPlayerDialog__Init( ApplicationPlayerDialog _this, XObject aLink
   CoreRectView__OnSetBounds( &_this->ToTheQueue, _Const000E );
   CoreRectView__OnSetBounds( &_this->ToTheList, _Const000F );
   ViewsImage_OnSetOrientation( &_this->ToTheList, ViewsOrientationRotated_180 );
-  CoreRectView__OnSetBounds( &_this->Pause, _Const0010 );
-  CoreGroup_OnSetVisible((CoreGroup)&_this->Pause, 1 );
-  WidgetSetPushButton_OnSetLabel( &_this->Pause, 0 );
-  CoreRectView__OnSetBounds( &_this->Play, _Const0011 );
-  WidgetSetPushButton_OnSetIconFrameActive( &_this->Play, 0 );
-  WidgetSetPushButton_OnSetIconFrameFocused( &_this->Play, 0 );
-  WidgetSetPushButton_OnSetIconFrameDefault( &_this->Play, 0 );
-  WidgetSetPushButton_OnSetLabel( &_this->Play, 0 );
-  CoreRectView__OnSetBounds( &_this->PushButton, _Const0012 );
-  WidgetSetPushButton_OnSetLabel( &_this->PushButton, 0 );
+  CoreRectView__OnSetBounds( &_this->PlayPause, _Const0010 );
+  CoreGroup_OnSetVisible((CoreGroup)&_this->PlayPause, 1 );
+  WidgetSetPushButton_OnSetLabel( &_this->PlayPause, 0 );
+  CoreRectView__OnSetBounds( &_this->Loop, _Const0011 );
+  WidgetSetPushButton_OnSetLabel( &_this->Loop, 0 );
+  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->LoopTouch, _Const0012 );
+  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->LoopTouch, _Const0013 );
+  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->LoopTouch, _Const0014 );
+  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->LoopTouch, _Const0015 );
+  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->PlayPauseTouchHandler, _Const0016 );
+  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->PlayPauseTouchHandler, _Const0017 );
+  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->PlayPauseTouchHandler, _Const0018 );
+  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->PlayPauseTouchHandler, _Const0019 );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Background ), 0 );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Vinyl ), 0 );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Playback ), 0 );
@@ -248,15 +265,15 @@ void ApplicationPlayerDialog__Init( ApplicationPlayerDialog _this, XObject aLink
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Duration ), 0 );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->ToTheQueue ), 0 );
   CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->ToTheList ), 0 );
-  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Pause ), 0 );
-  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Play ), 0 );
-  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->PushButton ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->PlayPause ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->Loop ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->LoopTouch ), 0 );
+  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->PlayPauseTouchHandler ), 0 );
   ViewsImage_OnSetBitmap( &_this->Background, EwLoadResource( &ApplicationBackground, 
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->Vinyl, EwLoadResource( &ApplicationGenericVinyl, 
   ResourcesBitmap ));
-  _this->Playback.OnChange = EwNewSlot( _this, ApplicationPlayerDialog_OnLoop );
-  _this->Playback.OnEnd = EwNewSlot( _this, ApplicationPlayerDialog_OnSliderChange );
+  _this->Playback.OnChange = EwNewSlot( _this, ApplicationPlayerDialog_OnSliderChange );
   WidgetSetHorizontalSlider_OnSetAppearance( &_this->Playback, EwGetAutoObject( 
   &ApplicationHorizontalSliderConfig, WidgetSetHorizontalSliderConfig ));
   ViewsText_OnSetFont( &_this->Title, EwLoadResource( &ApplicationTitleFont, ResourcesFont ));
@@ -268,21 +285,18 @@ void ApplicationPlayerDialog__Init( ApplicationPlayerDialog _this, XObject aLink
   ResourcesBitmap ));
   ViewsImage_OnSetBitmap( &_this->ToTheList, EwLoadResource( &ResourcesNavigationIconsLarge, 
   ResourcesBitmap ));
-  _this->Pause.OnRelease = EwNewSlot( _this, ApplicationPlayerDialog_OnPause );
-  WidgetSetPushButton_OnSetIcon( &_this->Pause, EwLoadResource( &ApplicationPauseIcon, 
+  WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPlayIcon, 
   ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance( &_this->Pause, EwGetAutoObject( &ApplicationPushButtonConfig, 
+  WidgetSetPushButton_OnSetAppearance( &_this->PlayPause, EwGetAutoObject( &ApplicationPushButtonConfig, 
   WidgetSetPushButtonConfig ));
-  _this->Play.OnRelease = EwNewSlot( _this, ApplicationPlayerDialog_OnPlay );
-  WidgetSetPushButton_OnSetIcon( &_this->Play, EwLoadResource( &ApplicationPlayIcon, 
+  _this->Loop.OnRelease = EwNewSlot( _this, ApplicationPlayerDialog_OnLoop );
+  WidgetSetPushButton_OnSetIcon( &_this->Loop, EwLoadResource( &ApplicationLoopIcon, 
   ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance( &_this->Play, EwGetAutoObject( &ApplicationPushButtonConfig, 
+  WidgetSetPushButton_OnSetAppearance( &_this->Loop, EwGetAutoObject( &ApplicationPushButtonConfig, 
   WidgetSetPushButtonConfig ));
-  _this->PushButton.OnRelease = EwNewSlot( _this, ApplicationPlayerDialog_OnLoop );
-  WidgetSetPushButton_OnSetIcon( &_this->PushButton, EwLoadResource( &ApplicationLoopIcon, 
-  ResourcesBitmap ));
-  WidgetSetPushButton_OnSetAppearance( &_this->PushButton, EwGetAutoObject( &ApplicationPushButtonConfig, 
-  WidgetSetPushButtonConfig ));
+  _this->LoopTouch.OnRelease = EwNewSlot( _this, ApplicationPlayerDialog_OnLoop );
+  _this->PlayPauseTouchHandler.OnRelease = EwNewSlot( _this, ApplicationPlayerDialog_OnPlayPause );
+  _this->PlayPauseTouchHandler.OnPress = EwNewSlot( _this, ApplicationPlayerDialog_PlayPausedPressed );
 
   /* Call the user defined constructor */
   ApplicationPlayerDialog_Init( _this, aArg );
@@ -304,9 +318,10 @@ void ApplicationPlayerDialog__ReInit( ApplicationPlayerDialog _this )
   ViewsText__ReInit( &_this->Duration );
   ViewsImage__ReInit( &_this->ToTheQueue );
   ViewsImage__ReInit( &_this->ToTheList );
-  WidgetSetPushButton__ReInit( &_this->Pause );
-  WidgetSetPushButton__ReInit( &_this->Play );
-  WidgetSetPushButton__ReInit( &_this->PushButton );
+  WidgetSetPushButton__ReInit( &_this->PlayPause );
+  WidgetSetPushButton__ReInit( &_this->Loop );
+  CoreSimpleTouchHandler__ReInit( &_this->LoopTouch );
+  CoreSimpleTouchHandler__ReInit( &_this->PlayPauseTouchHandler );
 }
 
 /* Finalizer method for the class 'Application::PlayerDialog' */
@@ -325,9 +340,10 @@ void ApplicationPlayerDialog__Done( ApplicationPlayerDialog _this )
   ViewsText__Done( &_this->Duration );
   ViewsImage__Done( &_this->ToTheQueue );
   ViewsImage__Done( &_this->ToTheList );
-  WidgetSetPushButton__Done( &_this->Pause );
-  WidgetSetPushButton__Done( &_this->Play );
-  WidgetSetPushButton__Done( &_this->PushButton );
+  WidgetSetPushButton__Done( &_this->PlayPause );
+  WidgetSetPushButton__Done( &_this->Loop );
+  CoreSimpleTouchHandler__Done( &_this->LoopTouch );
+  CoreSimpleTouchHandler__Done( &_this->PlayPauseTouchHandler );
 
   /* Don't forget to deinitialize the super class ... */
   CoreGroup__Done( &_this->_.Super );
@@ -342,14 +358,14 @@ void ApplicationPlayerDialog_Init( ApplicationPlayerDialog _this, XHandle aArg )
   EW_UNUSED_ARG( aArg );
 
   _this->deviceRef = EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass );
-  WidgetSetHorizontalSlider_OnSetOutlet( &_this->Playback, EwNewRef( _this->deviceRef, 
-  ApplicationDeviceClass_OnGetCurrentTime, ApplicationDeviceClass_OnSetCurrentTime ));
   EwAttachRefObserver( EwNewSlot( _this, ApplicationPlayerDialog_OnTimeUpdate ), 
     EwNewRef( _this->deviceRef, ApplicationDeviceClass_OnGetCurrentTime, ApplicationDeviceClass_OnSetCurrentTime ), 
     0 );
   EwAttachRefObserver( EwNewSlot( _this, ApplicationPlayerDialog_OnTimeUpdate ), 
     EwNewRef( _this->deviceRef, ApplicationDeviceClass_OnGetDuration, ApplicationDeviceClass_OnSetDuration ), 
     0 );
+  EwAttachObserver( EwNewSlot( _this, ApplicationPlayerDialog_OnTimeUpdate ), 123 );
+  EwAttachObserver( EwNewSlot( _this, ApplicationPlayerDialog_OnTimeUpdate ), 124 );
   EwPostSignal( EwNewSlot( _this, ApplicationPlayerDialog_OnTimeUpdate ), ((XObject)_this ));
 }
 
@@ -360,38 +376,8 @@ void ApplicationPlayerDialog_OnSliderChange( ApplicationPlayerDialog _this, XObj
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ApplicationDeviceClass_UpdateTimeFromSlider( _this->deviceRef, WidgetSetHorizontalSlider_OnGetCurrentValue( 
+  ApplicationDeviceClass__UpdateTimeFromSlider( _this->deviceRef, WidgetSetHorizontalSlider_OnGetCurrentValue( 
   &_this->Playback ));
-}
-
-/* 'C' function for method : 'Application::PlayerDialog.OnPlay()' */
-void ApplicationPlayerDialog_OnPlay( ApplicationPlayerDialog _this, XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  ApplicationDeviceClass__Play( _this->deviceRef );
-}
-
-/* Wrapper function for the non virtual method : 'Application::PlayerDialog.OnPlay()' */
-void ApplicationPlayerDialog__OnPlay( void* _this, XObject sender )
-{
-  ApplicationPlayerDialog_OnPlay((ApplicationPlayerDialog)_this, sender );
-}
-
-/* 'C' function for method : 'Application::PlayerDialog.OnPause()' */
-void ApplicationPlayerDialog_OnPause( ApplicationPlayerDialog _this, XObject sender )
-{
-  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
-  EW_UNUSED_ARG( sender );
-
-  ApplicationDeviceClass_Pause( _this->deviceRef );
-}
-
-/* Wrapper function for the non virtual method : 'Application::PlayerDialog.OnPause()' */
-void ApplicationPlayerDialog__OnPause( void* _this, XObject sender )
-{
-  ApplicationPlayerDialog_OnPause((ApplicationPlayerDialog)_this, sender );
 }
 
 /* 'C' function for method : 'Application::PlayerDialog.OnLoop()' */
@@ -400,8 +386,14 @@ void ApplicationPlayerDialog_OnLoop( ApplicationPlayerDialog _this, XObject send
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
 
-  ApplicationDeviceClass_LoopTrack( _this->deviceRef );
-  EwTrace( "%s", EwLoadString( &_Const0013 ));
+  ApplicationDeviceClass__LoopTrack( _this->deviceRef );
+
+  if ( EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->Loop )
+    WidgetSetPushButton_OnSetIcon( &_this->Loop, EwLoadResource( &ApplicationLoopPressedIcon, 
+    ResourcesBitmap ));
+  else
+    WidgetSetPushButton_OnSetIcon( &_this->Loop, EwLoadResource( &ApplicationLoopIcon, 
+    ResourcesBitmap ));
 }
 
 /* Wrapper function for the non virtual method : 'Application::PlayerDialog.OnLoop()' */
@@ -420,16 +412,105 @@ void ApplicationPlayerDialog_OnTimeUpdate( ApplicationPlayerDialog _this, XObjec
   if ( _this->Playback.MaxValue != _this->deviceRef->Duration )
   {
     WidgetSetHorizontalSlider_OnSetMaxValue( &_this->Playback, _this->deviceRef->Duration );
-    EwTrace( "%s%i", EwLoadString( &_Const0014 ), _this->Playback.MaxValue );
+    EwTrace( "%s%i", EwLoadString( &_Const001A ), _this->Playback.MaxValue );
   }
 
-  EwTrace( "%s%i", EwLoadString( &_Const0015 ), WidgetSetHorizontalSlider_OnGetCurrentValue( 
+  EwTrace( "%s%i", EwLoadString( &_Const001B ), WidgetSetHorizontalSlider_OnGetCurrentValue( 
     &_this->Playback ));
   WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->Playback, _this->deviceRef->CurrentTime );
-  ViewsText_OnSetString( &_this->Duration, ApplicationDeviceClass_IntToTimeString( 
+  ViewsText_OnSetString( &_this->Duration, ApplicationDeviceClass__IntToTimeString( 
   _this->deviceRef, _this->deviceRef->Duration ));
-  ViewsText_OnSetString( &_this->CurrentTime, ApplicationDeviceClass_IntToTimeString( 
+  ViewsText_OnSetString( &_this->CurrentTime, ApplicationDeviceClass__IntToTimeString( 
   _this->deviceRef, _this->deviceRef->CurrentTime ));
+
+  if (( WidgetSetHorizontalSlider_OnGetCurrentValue( &_this->Playback ) == _this->Playback.MaxValue ) 
+      && !EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->Loop )
+    ApplicationPlayerDialog_OnEnded( _this );
+}
+
+/* 'C' function for method : 'Application::PlayerDialog.PlayPausedPressed()' */
+void ApplicationPlayerDialog_PlayPausedPressed( ApplicationPlayerDialog _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  switch ( EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->PlayerState )
+  {
+    case ApplicationStatePlaying :
+      WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPausePressedIcon, 
+      ResourcesBitmap ));
+    break;
+
+    default : 
+      WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPlayPressedIcon, 
+      ResourcesBitmap ));
+  }
+}
+
+/* 'C' function for method : 'Application::PlayerDialog.OnPlayPause()' */
+void ApplicationPlayerDialog_OnPlayPause( ApplicationPlayerDialog _this, XObject 
+  sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  EwTrace( "%i", 120 );
+
+  switch ( EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->PlayerState )
+  {
+    case ApplicationStatePlaying :
+      ApplicationPlayerDialog_OnPause( _this );
+    break;
+
+    case ApplicationStatePaused :
+      ApplicationPlayerDialog_OnPlay( _this );
+    break;
+
+    case ApplicationStateCanPlay :
+      ApplicationPlayerDialog_OnPlay( _this );
+    break;
+
+    case ApplicationStateEnded :
+    {
+      ApplicationDeviceClass__UpdateCurrentTime( EwGetAutoObject( &ApplicationDevice, 
+      ApplicationDeviceClass ), 0 );
+      ApplicationPlayerDialog_OnPlay( _this );
+    }
+    break;
+
+    default : 
+      ApplicationPlayerDialog_OnPlay( _this );
+  }
+}
+
+/* 'C' function for method : 'Application::PlayerDialog.OnPlay()' */
+void ApplicationPlayerDialog_OnPlay( ApplicationPlayerDialog _this )
+{
+  ApplicationDeviceClass__Play( _this->deviceRef );
+  WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPauseIcon, 
+  ResourcesBitmap ));
+  ApplicationDeviceClass_UpdatePlayerState( EwGetAutoObject( &ApplicationDevice, 
+  ApplicationDeviceClass ), ApplicationStatePlaying );
+}
+
+/* 'C' function for method : 'Application::PlayerDialog.OnPause()' */
+void ApplicationPlayerDialog_OnPause( ApplicationPlayerDialog _this )
+{
+  ApplicationDeviceClass__Pause( _this->deviceRef );
+  WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPlayIcon, 
+  ResourcesBitmap ));
+  ApplicationDeviceClass_UpdatePlayerState( EwGetAutoObject( &ApplicationDevice, 
+  ApplicationDeviceClass ), ApplicationStatePaused );
+}
+
+/* 'C' function for method : 'Application::PlayerDialog.OnEnded()' */
+void ApplicationPlayerDialog_OnEnded( ApplicationPlayerDialog _this )
+{
+  ApplicationDeviceClass_UpdatePlayerState( EwGetAutoObject( &ApplicationDevice, 
+  ApplicationDeviceClass ), ApplicationStateEnded );
+  WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPlayIcon, 
+  ResourcesBitmap ));
 }
 
 /* Variants derived from the class : 'Application::PlayerDialog' */
@@ -506,9 +587,9 @@ void ApplicationHorizontalSliderConfig__Init( WidgetSetHorizontalSliderConfig _t
   ResourcesBitmap ));
   WidgetSetHorizontalSliderConfig_OnSetThumbDefault( _this, EwLoadResource( &ApplicationThumb, 
   ResourcesBitmap ));
-  WidgetSetHorizontalSliderConfig_OnSetTrackRightTintActive( _this, _Const0016 );
-  WidgetSetHorizontalSliderConfig_OnSetTrackRightTintFocused( _this, _Const0016 );
-  WidgetSetHorizontalSliderConfig_OnSetTrackRightTintDefault( _this, _Const0016 );
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightTintActive( _this, _Const001C );
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightTintFocused( _this, _Const001C );
+  WidgetSetHorizontalSliderConfig_OnSetTrackRightTintDefault( _this, _Const001C );
   WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameActive( _this, 0 );
   WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameFocused( _this, 0 );
   WidgetSetHorizontalSliderConfig_OnSetTrackRightFrameDisabled( _this, 0 );
@@ -519,9 +600,9 @@ void ApplicationHorizontalSliderConfig__Init( WidgetSetHorizontalSliderConfig _t
   &WidgetSetMiniHorizontalScrollbarTrackSmall, ResourcesBitmap ));
   WidgetSetHorizontalSliderConfig_OnSetTrackRightDefault( _this, EwLoadResource( 
   &WidgetSetHorizontalSliderTrackSmall, ResourcesBitmap ));
-  WidgetSetHorizontalSliderConfig_OnSetTrackLeftTintActive( _this, _Const0017 );
-  WidgetSetHorizontalSliderConfig_OnSetTrackLeftTintFocused( _this, _Const0017 );
-  WidgetSetHorizontalSliderConfig_OnSetTrackLeftTintDefault( _this, _Const0017 );
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftTintActive( _this, _Const001D );
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftTintFocused( _this, _Const001D );
+  WidgetSetHorizontalSliderConfig_OnSetTrackLeftTintDefault( _this, _Const001D );
   WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameActive( _this, 0 );
   WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameFocused( _this, 0 );
   WidgetSetHorizontalSliderConfig_OnSetTrackLeftFrameDisabled( _this, 0 );
@@ -551,6 +632,8 @@ void ApplicationDeviceClass__Init( ApplicationDeviceClass _this, XObject aLink, 
   _this->_.VMT = EW_CLASS( ApplicationDeviceClass );
 
   /* ... and initialize objects, variables, properties, etc. */
+  _this->PlayerState = ApplicationStateCanPlay;
+
   /* Call the user defined constructor */
   ApplicationDeviceClass_Init( _this, aArg );
 
@@ -619,7 +702,7 @@ void ApplicationDeviceClass_Init( ApplicationDeviceClass _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwPostSignal( EwNewSlot( _this, ApplicationDeviceClass_InitSlot ), ((XObject)_this ));
+  EwPostSignal( EwNewSlot( _this, ApplicationDeviceClass__InitSlot ), ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Application::DeviceClass.OnSetPlayerState()' */
@@ -638,15 +721,39 @@ XEnum ApplicationDeviceClass_OnGetPlayerState( ApplicationDeviceClass _this )
   return _this->PlayerState;
 }
 
-/* 'C' function for method : 'Application::DeviceClass.IntToTimeString()' */
+/* 'C' function for method : 'Application::DeviceClass.IntToTimeString()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 XString ApplicationDeviceClass_IntToTimeString( ApplicationDeviceClass _this, XInt32 
   aArg1 )
+{
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    return ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->IntToTimeString( _this
+  , aArg1 );
+  else
+    return ApplicationDeviceClass___IntToTimeString( _this, aArg1 );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.IntToTimeString()'. 
+   The implementation has been moved here, because the origin function ApplicationDeviceClass_IntToTimeString() 
+   does serve as the dispatcher to the derived class variants only. */
+XString ApplicationDeviceClass___IntToTimeString( ApplicationDeviceClass _this, 
+  XInt32 aArg1 )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( _this );
   EW_UNUSED_ARG( aArg1 );
 
   return EwLoadString( &_Const000B );
+}
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.IntToTimeString()' */
+XString ApplicationDeviceClass__IntToTimeString( void* _this, XInt32 aArg1 )
+{
+  return ((ApplicationDeviceClass)_this)->_.VMT->IntToTimeString((ApplicationDeviceClass)_this
+  , aArg1 );
 }
 
 /* Equivalent of the event TimeUpdate */
@@ -724,29 +831,58 @@ void ApplicationDeviceClass__Play( void* _this )
   ((ApplicationDeviceClass)_this)->_.VMT->Play((ApplicationDeviceClass)_this );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.Pause()' */
+/* 'C' function for method : 'Application::DeviceClass.Pause()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_Pause( ApplicationDeviceClass _this )
+{
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->Pause( _this );
+  else
+    ApplicationDeviceClass___Pause( _this );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.Pause()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_Pause() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___Pause( ApplicationDeviceClass _this )
 {
   ApplicationDeviceClass_UpdatePlayerState( _this, ApplicationStatePaused );
 }
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.Pause()' */
+/* Wrapper function for the virtual method : 'Application::DeviceClass.Pause()' */
 void ApplicationDeviceClass__Pause( void* _this )
 {
-  ApplicationDeviceClass_Pause((ApplicationDeviceClass)_this );
+  ((ApplicationDeviceClass)_this)->_.VMT->Pause((ApplicationDeviceClass)_this );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.LoopTrack()' */
+/* 'C' function for method : 'Application::DeviceClass.LoopTrack()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_LoopTrack( ApplicationDeviceClass _this )
 {
-  EwTrace( "%s", EwLoadString( &_Const0018 ));
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->LoopTrack( _this );
+  else
+    ApplicationDeviceClass___LoopTrack( _this );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.LoopTrack()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_LoopTrack() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___LoopTrack( ApplicationDeviceClass _this )
+{
   ApplicationDeviceClass_OnSetLoop( _this, (XBool)!_this->Loop );
 }
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.LoopTrack()' */
+/* Wrapper function for the virtual method : 'Application::DeviceClass.LoopTrack()' */
 void ApplicationDeviceClass__LoopTrack( void* _this )
 {
-  ApplicationDeviceClass_LoopTrack((ApplicationDeviceClass)_this );
+  ((ApplicationDeviceClass)_this)->_.VMT->LoopTrack((ApplicationDeviceClass)_this );
 }
 
 /* This method is intended to be called by the device to notify the GUI application 
@@ -768,55 +904,133 @@ void ApplicationDeviceClass__UpdatePlayerState( void* _this, XEnum aNewValue )
   ApplicationDeviceClass_UpdatePlayerState((ApplicationDeviceClass)_this, aNewValue );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.UpdateCurrentTime()' */
+/* 'C' function for method : 'Application::DeviceClass.UpdateCurrentTime()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_UpdateCurrentTime( ApplicationDeviceClass _this, XInt32 
+  aNewValue )
+{
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->UpdateCurrentTime( _this
+  , aNewValue );
+  else
+    ApplicationDeviceClass___UpdateCurrentTime( _this, aNewValue );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.UpdateCurrentTime()'. 
+   The implementation has been moved here, because the origin function ApplicationDeviceClass_UpdateCurrentTime() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___UpdateCurrentTime( ApplicationDeviceClass _this, XInt32 
   aNewValue )
 {
   if ( aNewValue != _this->CurrentTime )
   {
-    EwTrace( "%s%i%s%i", EwLoadString( &_Const0019 ), _this->CurrentTime, EwLoadString( 
-      &_Const001A ), aNewValue );
+    EwTrace( "%s%i%s%i", EwLoadString( &_Const001E ), _this->CurrentTime, EwLoadString( 
+      &_Const001F ), aNewValue );
     _this->CurrentTime = aNewValue;
     EwNotifyRefObservers( EwNewRef( _this, ApplicationDeviceClass_OnGetCurrentTime, 
       ApplicationDeviceClass_OnSetCurrentTime ), 0 );
+    EwNotifyObservers( 123 );
   }
 }
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.UpdateCurrentTime()' */
+/* Wrapper function for the virtual method : 'Application::DeviceClass.UpdateCurrentTime()' */
 void ApplicationDeviceClass__UpdateCurrentTime( void* _this, XInt32 aNewValue )
 {
-  ApplicationDeviceClass_UpdateCurrentTime((ApplicationDeviceClass)_this, aNewValue );
+  ((ApplicationDeviceClass)_this)->_.VMT->UpdateCurrentTime((ApplicationDeviceClass)_this
+  , aNewValue );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.UpdateTimeFromSlider()' */
+/* 'C' function for method : 'Application::DeviceClass.UpdateTimeFromSlider()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_UpdateTimeFromSlider( ApplicationDeviceClass _this, 
   XInt32 aArg1 )
 {
-  ApplicationDeviceClass_UpdateCurrentTime( _this, aArg1 );
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->UpdateTimeFromSlider( _this
+  , aArg1 );
+  else
+    ApplicationDeviceClass___UpdateTimeFromSlider( _this, aArg1 );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.UpdateDuration()' */
+/* Implementation of the method : 'Application::DeviceClass.UpdateTimeFromSlider()'. 
+   The implementation has been moved here, because the origin function ApplicationDeviceClass_UpdateTimeFromSlider() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___UpdateTimeFromSlider( ApplicationDeviceClass _this, 
+  XInt32 aArg1 )
+{
+  ApplicationDeviceClass__UpdateCurrentTime( _this, aArg1 );
+}
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.UpdateTimeFromSlider()' */
+void ApplicationDeviceClass__UpdateTimeFromSlider( void* _this, XInt32 aArg1 )
+{
+  ((ApplicationDeviceClass)_this)->_.VMT->UpdateTimeFromSlider((ApplicationDeviceClass)_this
+  , aArg1 );
+}
+
+/* 'C' function for method : 'Application::DeviceClass.UpdateDuration()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_UpdateDuration( ApplicationDeviceClass _this, XInt32 
+  aNewValue )
+{
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->UpdateDuration( _this
+  , aNewValue );
+  else
+    ApplicationDeviceClass___UpdateDuration( _this, aNewValue );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.UpdateDuration()'. The 
+   implementation has been moved here, because the origin function ApplicationDeviceClass_UpdateDuration() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___UpdateDuration( ApplicationDeviceClass _this, XInt32 
   aNewValue )
 {
   if ( aNewValue != _this->Duration )
   {
-    EwTrace( "%s%i%s%i", EwLoadString( &_Const001B ), _this->Duration, EwLoadString( 
-      &_Const001A ), aNewValue );
+    EwTrace( "%s%i%s%i", EwLoadString( &_Const0020 ), _this->Duration, EwLoadString( 
+      &_Const001F ), aNewValue );
     _this->Duration = aNewValue;
     EwNotifyRefObservers( EwNewRef( _this, ApplicationDeviceClass_OnGetDuration, 
       ApplicationDeviceClass_OnSetDuration ), 0 );
+    EwNotifyObservers( 124 );
   }
 }
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.UpdateDuration()' */
+/* Wrapper function for the virtual method : 'Application::DeviceClass.UpdateDuration()' */
 void ApplicationDeviceClass__UpdateDuration( void* _this, XInt32 aNewValue )
 {
-  ApplicationDeviceClass_UpdateDuration((ApplicationDeviceClass)_this, aNewValue );
+  ((ApplicationDeviceClass)_this)->_.VMT->UpdateDuration((ApplicationDeviceClass)_this
+  , aNewValue );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.InitSlot()' */
+/* 'C' function for method : 'Application::DeviceClass.InitSlot()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender )
+{
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->InitSlot( _this
+  , sender );
+  else
+    ApplicationDeviceClass___InitSlot( _this, sender );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.InitSlot()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_InitSlot() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___InitSlot( ApplicationDeviceClass _this, XObject sender )
 {
   XObject thisObject;
 
@@ -827,6 +1041,13 @@ void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject send
   EmWiPlayer.initialize();
 }
 
+/* Wrapper function for the virtual method : 'Application::DeviceClass.InitSlot()' */
+void ApplicationDeviceClass__InitSlot( void* _this, XObject sender )
+{
+  ((ApplicationDeviceClass)_this)->_.VMT->InitSlot((ApplicationDeviceClass)_this
+  , sender );
+}
+
 /* Variants derived from the class : 'Application::DeviceClass' */
 EW_DEFINE_CLASS_VARIANTS( ApplicationDeviceClass )
   EW_STATIC_CLASS_VARIANT( SimulationDeviceClass ),
@@ -835,7 +1056,14 @@ EW_END_OF_CLASS_VARIANTS( ApplicationDeviceClass )
 /* Virtual Method Table (VMT) for the class : 'Application::DeviceClass' */
 EW_DEFINE_CLASS( ApplicationDeviceClass, TemplatesDeviceClass, _.VMT, _.VMT, _.VMT, 
                  _.VMT, _.VMT, _.VMT, "Application::DeviceClass" )
+  ApplicationDeviceClass_IntToTimeString,
   ApplicationDeviceClass_Play,
+  ApplicationDeviceClass_Pause,
+  ApplicationDeviceClass_LoopTrack,
+  ApplicationDeviceClass_UpdateCurrentTime,
+  ApplicationDeviceClass_UpdateTimeFromSlider,
+  ApplicationDeviceClass_UpdateDuration,
+  ApplicationDeviceClass_InitSlot,
 EW_END_OF_CLASS( ApplicationDeviceClass )
 
 /* User defined auto object: 'Application::Device' */
@@ -863,16 +1091,24 @@ EW_DEFINE_AUTOOBJECT( ApplicationPushButtonConfig, WidgetSetPushButtonConfig )
 /* Initializer for the auto object 'Application::PushButtonConfig' */
 void ApplicationPushButtonConfig__Init( WidgetSetPushButtonConfig _this )
 {
+  WidgetSetPushButtonConfig_OnSetPressedFeedbackDuration( _this, 50 );
+  WidgetSetPushButtonConfig_OnSetIconTintActive( _this, _Const0021 );
+  WidgetSetPushButtonConfig_OnSetIconTintFocused( _this, _Const0022 );
+  WidgetSetPushButtonConfig_OnSetIconTintDisabled( _this, _Const0023 );
+  WidgetSetPushButtonConfig_OnSetIconTintDefault( _this, _Const0024 );
   WidgetSetPushButtonConfig_OnSetLabelFont( _this, EwLoadResource( &ApplicationTimeFont, 
   ResourcesFont ));
+  WidgetSetPushButtonConfig_OnSetFaceTintActive( _this, _Const0025 );
+  WidgetSetPushButtonConfig_OnSetFaceTintFocused( _this, _Const0026 );
+  WidgetSetPushButtonConfig_OnSetFaceTintDefault( _this, _Const0027 );
   WidgetSetPushButtonConfig_OnSetFaceFrameActive( _this, 0 );
   WidgetSetPushButtonConfig_OnSetFaceFrameFocused( _this, 0 );
   WidgetSetPushButtonConfig_OnSetFaceFrameDefault( _this, 0 );
   WidgetSetPushButtonConfig_OnSetFaceActive( _this, EwLoadResource( &ApplicationPlayIcon, 
   ResourcesBitmap ));
-  WidgetSetPushButtonConfig_OnSetFaceFocused( _this, EwLoadResource( &ApplicationPlayIcon, 
+  WidgetSetPushButtonConfig_OnSetFaceFocused( _this, EwLoadResource( &ApplicationPausePressedIcon, 
   ResourcesBitmap ));
-  WidgetSetPushButtonConfig_OnSetFaceDefault( _this, EwLoadResource( &ApplicationPlayIcon, 
+  WidgetSetPushButtonConfig_OnSetFaceDefault( _this, EwLoadResource( &ApplicationPausePressedIcon, 
   ResourcesBitmap ));
 }
 
@@ -891,5 +1127,23 @@ EW_RES_WITHOUT_VARIANTS( ApplicationPauseIcon )
 
 /* Table with links to derived variants of the bitmap resource : 'Application::LoopIcon' */
 EW_RES_WITHOUT_VARIANTS( ApplicationLoopIcon )
+
+/* Include a file containing the bitmap resource : 'Application::PausePressedIcon' */
+#include "_ApplicationPausePressedIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Application::PausePressedIcon' */
+EW_RES_WITHOUT_VARIANTS( ApplicationPausePressedIcon )
+
+/* Include a file containing the bitmap resource : 'Application::PlayPressedIcon' */
+#include "_ApplicationPlayPressedIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Application::PlayPressedIcon' */
+EW_RES_WITHOUT_VARIANTS( ApplicationPlayPressedIcon )
+
+/* Include a file containing the bitmap resource : 'Application::LoopPressedIcon' */
+#include "_ApplicationLoopPressedIcon.h"
+
+/* Table with links to derived variants of the bitmap resource : 'Application::LoopPressedIcon' */
+EW_RES_WITHOUT_VARIANTS( ApplicationLoopPressedIcon )
 
 /* Embedded Wizard */

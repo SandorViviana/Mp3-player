@@ -62,12 +62,30 @@ EW_END_OF_FIELDS( ApplicationDeviceClass )
 
 /* Virtual Method Table (VMT) for the class : 'Application::DeviceClass' */
 EW_DEFINE_METHODS( ApplicationDeviceClass, TemplatesDeviceClass )
+  EW_METHOD( IntToTimeString,   XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
   EW_METHOD( Play,              void )( ApplicationDeviceClass _this )
+  EW_METHOD( Pause,             void )( ApplicationDeviceClass _this )
+  EW_METHOD( LoopTrack,         void )( ApplicationDeviceClass _this )
+  EW_METHOD( UpdateCurrentTime, void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
 EW_END_OF_METHODS( ApplicationDeviceClass )
 
 /* Variant Dispatch Method Table for the class : 'Application::DeviceClass' */
 EW_DEFINE_DISPATCHER( ApplicationDeviceClass, TemplatesDeviceClass )
+  EW_METHOD( IntToTimeString,   XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
   EW_METHOD( Play,              void )( ApplicationDeviceClass _this )
+  EW_METHOD( Pause,             void )( ApplicationDeviceClass _this )
+  EW_METHOD( LoopTrack,         void )( ApplicationDeviceClass _this )
+  EW_METHOD( UpdateCurrentTime, void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
 EW_END_OF_DISPATCHER( ApplicationDeviceClass )
 
 /* 'C' function for method : 'Application::DeviceClass.Done()' */
@@ -83,9 +101,20 @@ void ApplicationDeviceClass_OnSetPlayerState( ApplicationDeviceClass _this, XEnu
 /* 'C' function for method : 'Application::DeviceClass.OnGetPlayerState()' */
 XEnum ApplicationDeviceClass_OnGetPlayerState( ApplicationDeviceClass _this );
 
-/* 'C' function for method : 'Application::DeviceClass.IntToTimeString()' */
+/* 'C' function for method : 'Application::DeviceClass.IntToTimeString()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 XString ApplicationDeviceClass_IntToTimeString( ApplicationDeviceClass _this, XInt32 
   aArg1 );
+
+/* Implementation of the method : 'Application::DeviceClass.IntToTimeString()'. 
+   The implementation has been moved here, because the origin function ApplicationDeviceClass_IntToTimeString() 
+   does serve as the dispatcher to the derived class variants only. */
+XString ApplicationDeviceClass___IntToTimeString( ApplicationDeviceClass _this, 
+  XInt32 aArg1 );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.IntToTimeString()' */
+XString ApplicationDeviceClass__IntToTimeString( void* _this, XInt32 aArg1 );
 
 /* Equivalent of the event TimeUpdate */
 void ApplicationDeviceClass_OnSetCurrentTime( ApplicationDeviceClass _this, XInt32 
@@ -126,19 +155,33 @@ void ApplicationDeviceClass__Play( void* _this );
 /* The following define announces the presence of the method Application::DeviceClass.Play(). */
 #define _ApplicationDeviceClass__Play_
 
-/* 'C' function for method : 'Application::DeviceClass.Pause()' */
+/* 'C' function for method : 'Application::DeviceClass.Pause()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_Pause( ApplicationDeviceClass _this );
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.Pause()' */
+/* Implementation of the method : 'Application::DeviceClass.Pause()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_Pause() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___Pause( ApplicationDeviceClass _this );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.Pause()' */
 void ApplicationDeviceClass__Pause( void* _this );
 
 /* The following define announces the presence of the method Application::DeviceClass.Pause(). */
 #define _ApplicationDeviceClass__Pause_
 
-/* 'C' function for method : 'Application::DeviceClass.LoopTrack()' */
+/* 'C' function for method : 'Application::DeviceClass.LoopTrack()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_LoopTrack( ApplicationDeviceClass _this );
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.LoopTrack()' */
+/* Implementation of the method : 'Application::DeviceClass.LoopTrack()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_LoopTrack() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___LoopTrack( ApplicationDeviceClass _this );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.LoopTrack()' */
 void ApplicationDeviceClass__LoopTrack( void* _this );
 
 /* The following define announces the presence of the method Application::DeviceClass.LoopTrack(). */
@@ -155,32 +198,72 @@ void ApplicationDeviceClass__UpdatePlayerState( void* _this, XEnum aNewValue );
 /* The following define announces the presence of the method Application::DeviceClass.UpdatePlayerState(). */
 #define _ApplicationDeviceClass__UpdatePlayerState_
 
-/* 'C' function for method : 'Application::DeviceClass.UpdateCurrentTime()' */
+/* 'C' function for method : 'Application::DeviceClass.UpdateCurrentTime()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_UpdateCurrentTime( ApplicationDeviceClass _this, XInt32 
   aNewValue );
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.UpdateCurrentTime()' */
+/* Implementation of the method : 'Application::DeviceClass.UpdateCurrentTime()'. 
+   The implementation has been moved here, because the origin function ApplicationDeviceClass_UpdateCurrentTime() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___UpdateCurrentTime( ApplicationDeviceClass _this, XInt32 
+  aNewValue );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.UpdateCurrentTime()' */
 void ApplicationDeviceClass__UpdateCurrentTime( void* _this, XInt32 aNewValue );
 
 /* The following define announces the presence of the method Application::DeviceClass.UpdateCurrentTime(). */
 #define _ApplicationDeviceClass__UpdateCurrentTime_
 
-/* 'C' function for method : 'Application::DeviceClass.UpdateTimeFromSlider()' */
+/* 'C' function for method : 'Application::DeviceClass.UpdateTimeFromSlider()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_UpdateTimeFromSlider( ApplicationDeviceClass _this, 
   XInt32 aArg1 );
 
-/* 'C' function for method : 'Application::DeviceClass.UpdateDuration()' */
+/* Implementation of the method : 'Application::DeviceClass.UpdateTimeFromSlider()'. 
+   The implementation has been moved here, because the origin function ApplicationDeviceClass_UpdateTimeFromSlider() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___UpdateTimeFromSlider( ApplicationDeviceClass _this, 
+  XInt32 aArg1 );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.UpdateTimeFromSlider()' */
+void ApplicationDeviceClass__UpdateTimeFromSlider( void* _this, XInt32 aArg1 );
+
+/* The following define announces the presence of the method Application::DeviceClass.UpdateTimeFromSlider(). */
+#define _ApplicationDeviceClass__UpdateTimeFromSlider_
+
+/* 'C' function for method : 'Application::DeviceClass.UpdateDuration()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_UpdateDuration( ApplicationDeviceClass _this, XInt32 
   aNewValue );
 
-/* Wrapper function for the non virtual method : 'Application::DeviceClass.UpdateDuration()' */
+/* Implementation of the method : 'Application::DeviceClass.UpdateDuration()'. The 
+   implementation has been moved here, because the origin function ApplicationDeviceClass_UpdateDuration() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___UpdateDuration( ApplicationDeviceClass _this, XInt32 
+  aNewValue );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.UpdateDuration()' */
 void ApplicationDeviceClass__UpdateDuration( void* _this, XInt32 aNewValue );
 
 /* The following define announces the presence of the method Application::DeviceClass.UpdateDuration(). */
 #define _ApplicationDeviceClass__UpdateDuration_
 
-/* 'C' function for method : 'Application::DeviceClass.InitSlot()' */
+/* 'C' function for method : 'Application::DeviceClass.InitSlot()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender );
+
+/* Implementation of the method : 'Application::DeviceClass.InitSlot()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_InitSlot() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___InitSlot( ApplicationDeviceClass _this, XObject sender );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.InitSlot()' */
+void ApplicationDeviceClass__InitSlot( void* _this, XObject sender );
 
 #ifdef __cplusplus
   }

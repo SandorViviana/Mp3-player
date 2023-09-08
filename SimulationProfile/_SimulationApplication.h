@@ -46,8 +46,8 @@
 #include "_ApplicationPlayerDialog.h"
 #include "_CoreTimer.h"
 #include "_ViewsRectangle.h"
+#include "_ViewsText.h"
 #include "_WidgetSetHorizontalSlider.h"
-#include "_WidgetSetRadioButton.h"
 
 /* Forward declaration of the class Core::Group */
 #ifndef _CoreGroup_
@@ -82,10 +82,10 @@
 
 /* Deklaration of class variant : 'Simulation::Application' */
 EW_DEFINE_VFIELDS( SimulationApplication, XObject, ApplicationApplication )
-  EW_OBJECT  ( RadioButtonStopped, WidgetSetRadioButton )
-  EW_OBJECT  ( RadioButtonPlaying, WidgetSetRadioButton )
   EW_OBJECT  ( DurationSlider,  WidgetSetHorizontalSlider )
   EW_OBJECT  ( CurrentTimeSlider, WidgetSetHorizontalSlider )
+  EW_OBJECT  ( DurationLabel,   ViewsText )
+  EW_OBJECT  ( CurrentTimeLabel, ViewsText )
   EW_PROPERTY( CurrentTime,     XInt32 )
   EW_PROPERTY( Duration,        XInt32 )
 EW_END_OF_VFIELDS( SimulationApplication )
@@ -93,6 +93,11 @@ EW_END_OF_VFIELDS( SimulationApplication )
 /* Virtual Method Table (VMT) for the class variant : 'Simulation::Application' */
 EW_DEFINE_VMETHODS( SimulationApplication, XObject, ApplicationApplication )
 EW_END_OF_VMETHODS( SimulationApplication )
+
+/* The method Init() is invoked automatically after the component has been created. 
+   This method can be overridden and filled with logic containing additional initialization 
+   statements. */
+void SimulationApplication_Init( ApplicationApplication _this, XHandle aArg );
 
 /* 'C' function for method : 'Simulation::Application.OnSetCurrentTime()' */
 void SimulationApplication_OnSetCurrentTime( ApplicationApplication _this, XInt32 
@@ -106,6 +111,14 @@ void SimulationApplication_OnSetDuration( ApplicationApplication _this, XInt32 v
 
 /* 'C' function for method : 'Simulation::Application.OnGetDuration()' */
 XInt32 SimulationApplication_OnGetDuration( ApplicationApplication _this );
+
+/* 'C' function for method : 'Simulation::Application.OnCurrentTimeUpdate()' */
+void SimulationApplication_OnCurrentTimeUpdate( ApplicationApplication _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Simulation::Application.OnDurationUpdate()' */
+void SimulationApplication_OnDurationUpdate( ApplicationApplication _this, XObject 
+  sender );
 
 #ifdef __cplusplus
   }

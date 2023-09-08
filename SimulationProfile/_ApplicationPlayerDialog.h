@@ -43,6 +43,7 @@
 #endif
 
 #include "_CoreGroup.h"
+#include "_CoreSimpleTouchHandler.h"
 #include "_ViewsImage.h"
 #include "_ViewsText.h"
 #include "_WidgetSetHorizontalSlider.h"
@@ -90,9 +91,10 @@ EW_DEFINE_FIELDS( ApplicationPlayerDialog, CoreGroup )
   EW_OBJECT  ( Duration,        ViewsText )
   EW_OBJECT  ( ToTheQueue,      ViewsImage )
   EW_OBJECT  ( ToTheList,       ViewsImage )
-  EW_OBJECT  ( Pause,           WidgetSetPushButton )
-  EW_OBJECT  ( Play,            WidgetSetPushButton )
-  EW_OBJECT  ( PushButton,      WidgetSetPushButton )
+  EW_OBJECT  ( PlayPause,       WidgetSetPushButton )
+  EW_OBJECT  ( Loop,            WidgetSetPushButton )
+  EW_OBJECT  ( LoopTouch,       CoreSimpleTouchHandler )
+  EW_OBJECT  ( PlayPauseTouchHandler, CoreSimpleTouchHandler )
   EW_VARIABLE( deviceRef,       ApplicationDeviceClass )
 EW_END_OF_FIELDS( ApplicationPlayerDialog )
 
@@ -132,24 +134,6 @@ void ApplicationPlayerDialog_Init( ApplicationPlayerDialog _this, XHandle aArg )
 void ApplicationPlayerDialog_OnSliderChange( ApplicationPlayerDialog _this, XObject 
   sender );
 
-/* 'C' function for method : 'Application::PlayerDialog.OnPlay()' */
-void ApplicationPlayerDialog_OnPlay( ApplicationPlayerDialog _this, XObject sender );
-
-/* Wrapper function for the non virtual method : 'Application::PlayerDialog.OnPlay()' */
-void ApplicationPlayerDialog__OnPlay( void* _this, XObject sender );
-
-/* The following define announces the presence of the method Application::PlayerDialog.OnPlay(). */
-#define _ApplicationPlayerDialog__OnPlay_
-
-/* 'C' function for method : 'Application::PlayerDialog.OnPause()' */
-void ApplicationPlayerDialog_OnPause( ApplicationPlayerDialog _this, XObject sender );
-
-/* Wrapper function for the non virtual method : 'Application::PlayerDialog.OnPause()' */
-void ApplicationPlayerDialog__OnPause( void* _this, XObject sender );
-
-/* The following define announces the presence of the method Application::PlayerDialog.OnPause(). */
-#define _ApplicationPlayerDialog__OnPause_
-
 /* 'C' function for method : 'Application::PlayerDialog.OnLoop()' */
 void ApplicationPlayerDialog_OnLoop( ApplicationPlayerDialog _this, XObject sender );
 
@@ -162,6 +146,23 @@ void ApplicationPlayerDialog__OnLoop( void* _this, XObject sender );
 /* 'C' function for method : 'Application::PlayerDialog.OnTimeUpdate()' */
 void ApplicationPlayerDialog_OnTimeUpdate( ApplicationPlayerDialog _this, XObject 
   sender );
+
+/* 'C' function for method : 'Application::PlayerDialog.PlayPausedPressed()' */
+void ApplicationPlayerDialog_PlayPausedPressed( ApplicationPlayerDialog _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Application::PlayerDialog.OnPlayPause()' */
+void ApplicationPlayerDialog_OnPlayPause( ApplicationPlayerDialog _this, XObject 
+  sender );
+
+/* 'C' function for method : 'Application::PlayerDialog.OnPlay()' */
+void ApplicationPlayerDialog_OnPlay( ApplicationPlayerDialog _this );
+
+/* 'C' function for method : 'Application::PlayerDialog.OnPause()' */
+void ApplicationPlayerDialog_OnPause( ApplicationPlayerDialog _this );
+
+/* 'C' function for method : 'Application::PlayerDialog.OnEnded()' */
+void ApplicationPlayerDialog_OnEnded( ApplicationPlayerDialog _this );
 
 #ifdef __cplusplus
   }

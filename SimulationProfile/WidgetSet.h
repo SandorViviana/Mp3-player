@@ -46,15 +46,10 @@
 #include "_WidgetSetHorizontalSliderConfig.h"
 #include "_WidgetSetPushButton.h"
 #include "_WidgetSetPushButtonConfig.h"
-#include "_WidgetSetRadioButton.h"
-#include "_WidgetSetRadioButtonConfig.h"
 #include "_WidgetSetWidgetConfig.h"
 
 /* Bitmap resource used per default by the Widgets customized for the small  size. */
 EW_DECLARE_BITMAP_RES( WidgetSetHorizontalSliderTrackSmall )
-
-/* Bitmap resource used per default by the Widgets customized for the small  size. */
-EW_DECLARE_BITMAP_RES( WidgetSetRadioButtonSmall )
 
 /* Bitmap resource used per default by the Widgets customized for the small  size. */
 EW_DECLARE_BITMAP_RES( WidgetSetVerticalScrollbarThumbSmall )
@@ -67,10 +62,6 @@ EW_DECLARE_BITMAP_RES( WidgetSetHorizontalSliderTrackMedium )
 
 /* Bitmap resource used per default by the Widgets customized for the medium size. */
 EW_DECLARE_BITMAP_RES( WidgetSetThumbKnobMedium )
-
-/* This autoobject provides the default customization for the 'radio button' widget 
-   (WidgetSet::RadioButton) in its small size variant. */
-EW_DECLARE_AUTOOBJECT( WidgetSetRadioButton_Small, WidgetSetRadioButtonConfig )
 
 /* This autoobject provides the default customization for the 'horizontal slider' 
    widget (WidgetSet::HorizontalSlider) in its medium size variant. */

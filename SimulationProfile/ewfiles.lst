@@ -5,5 +5,5 @@ module Resources                file "Resources.c";
 module Views                    file "Views.c";
 module Application              file "Application.c";
 module WidgetSet                file "WidgetSet.c";
-module Templates                file "Templates.c";
 module Simulation               file "Simulation.c";
+module Templates                file "Templates.c";

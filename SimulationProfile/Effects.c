@@ -97,7 +97,10 @@ void EffectsEffect_timerSlot( EffectsEffect _this, XObject sender )
         done = EffectsEffect_runRevFwd( _this );
 
   if ( done )
+  {
     EffectsEffect_OnSetEnabled( _this, 0 );
+    EwSignal( _this->OnFinished, ((XObject)_this ));
+  }
 }
 
 /* 'C' function for method : 'Effects::Effect.run()' */
@@ -113,6 +116,7 @@ XBool EffectsEffect_runRevRev( EffectsEffect _this )
   XInt32 time = (XInt32)( _this->timer->Time - _this->startTime );
   XInt32 period0;
   XInt32 periodN;
+  XBool done;
   XFloat frame;
 
   if ( time < 0 )
@@ -120,6 +124,7 @@ XBool EffectsEffect_runRevRev( EffectsEffect _this )
 
   period0 = _this->CycleDuration;
   periodN = _this->CycleDuration;
+  done = 0;
   frame = _this->lastFrame;
 
   if (( _this->cycleCounter == 0 ) && ( time >= period0 ))
@@ -137,14 +142,20 @@ XBool EffectsEffect_runRevRev( EffectsEffect _this )
     _this->startTime = _this->startTime + ( cycles * periodN );
   }
 
-  if ( _this->cycleCounter > 2 )
+  if (( _this->cycleCounter > 2 ) && ( _this->NoOfCycles == 0 ))
     _this->cycleCounter = 1;
 
-  if ( time >= 0 )
-    frame = 1.0f - ((XFloat)time * _this->invCycleDuration );
+  if (( _this->cycleCounter >= _this->NoOfCycles ) && ( _this->NoOfCycles > 0 ))
+  {
+    done = 1;
+    frame = 0.0f;
+  }
   else
-    if ( frame >= 0.0f )
-      frame = 0.0f;
+    if ( time >= 0 )
+      frame = 1.0f - ((XFloat)time * _this->invCycleDuration );
+    else
+      if ( frame >= 0.0f )
+        frame = 0.0f;
 
   if ( frame != _this->lastFrame )
   {
@@ -152,13 +163,14 @@ XBool EffectsEffect_runRevRev( EffectsEffect _this )
     EffectsEffect_run( _this, frame );
   }
 
-  return 0;
+  return done;
 }
 
 /* 'C' function for method : 'Effects::Effect.runRevFwd()' */
 XBool EffectsEffect_runRevFwd( EffectsEffect _this )
 {
   XInt32 time = (XInt32)( _this->startTime - _this->timer->Time );
+  XInt32 period0 = _this->CycleDuration;
   XInt32 periodN = _this->CycleDuration;
   XBool done = 0;
   XFloat frame = _this->lastFrame;
@@ -175,7 +187,14 @@ XBool EffectsEffect_runRevFwd( EffectsEffect _this )
     _this->startTime = _this->startTime + ( cycles * periodN );
   }
 
-  if (( _this->cycleCounter == 1 ) && ( time < 0 ))
+  if ((( _this->cycleCounter == 1 ) && ( time < 0 )) && ( _this->NoOfCycles > 0 ))
+  {
+    _this->cycleCounter = 0;
+    time = time + period0;
+    _this->startTime = _this->startTime + period0;
+  }
+
+  if ((( _this->cycleCounter == 1 ) && ( time < 0 )) && ( _this->NoOfCycles == 0 ))
   {
     XInt32 cycles = (( -time + periodN ) - 1 ) / periodN;
     time = time + ( cycles * periodN );
@@ -207,6 +226,7 @@ XBool EffectsEffect_runRevFwd( EffectsEffect _this )
 XBool EffectsEffect_runFwdRev( EffectsEffect _this )
 {
   XInt32 time = (XInt32)( _this->startTime - _this->timer->Time );
+  XInt32 period0 = _this->CycleDuration;
   XInt32 periodN = _this->CycleDuration;
   XBool done = 0;
   XFloat frame = _this->lastFrame;
@@ -223,7 +243,14 @@ XBool EffectsEffect_runFwdRev( EffectsEffect _this )
     _this->startTime = _this->startTime + ( cycles * periodN );
   }
 
-  if (( _this->cycleCounter == 1 ) && ( time < 0 ))
+  if ((( _this->cycleCounter == 1 ) && ( time < 0 )) && ( _this->NoOfCycles > 0 ))
+  {
+    _this->cycleCounter = 0;
+    time = time + period0;
+    _this->startTime = _this->startTime + period0;
+  }
+
+  if ((( _this->cycleCounter == 1 ) && ( time < 0 )) && ( _this->NoOfCycles == 0 ))
   {
     XInt32 cycles = (( -time + periodN ) - 1 ) / periodN;
     time = time + ( cycles * periodN );
@@ -257,6 +284,7 @@ XBool EffectsEffect_runFwdFwd( EffectsEffect _this )
   XInt32 time = (XInt32)( _this->timer->Time - _this->startTime );
   XInt32 period0;
   XInt32 periodN;
+  XBool done;
   XFloat frame;
 
   if ( time < 0 )
@@ -264,6 +292,7 @@ XBool EffectsEffect_runFwdFwd( EffectsEffect _this )
 
   period0 = _this->CycleDuration;
   periodN = _this->CycleDuration;
+  done = 0;
   frame = _this->lastFrame;
 
   if (( _this->cycleCounter == 0 ) && ( time >= period0 ))
@@ -281,14 +310,20 @@ XBool EffectsEffect_runFwdFwd( EffectsEffect _this )
     _this->startTime = _this->startTime + ( cycles * periodN );
   }
 
-  if ( _this->cycleCounter > 2 )
+  if (( _this->cycleCounter > 2 ) && ( _this->NoOfCycles == 0 ))
     _this->cycleCounter = 1;
 
-  if ( time >= 0 )
-    frame = (XFloat)time * _this->invCycleDuration;
+  if (( _this->cycleCounter >= _this->NoOfCycles ) && ( _this->NoOfCycles > 0 ))
+  {
+    done = 1;
+    frame = 1.0f;
+  }
   else
-    if ( frame >= 0.0f )
-      frame = 1.0f;
+    if ( time >= 0 )
+      frame = (XFloat)time * _this->invCycleDuration;
+    else
+      if ( frame >= 0.0f )
+        frame = 1.0f;
 
   if ( frame != _this->lastFrame )
   {
@@ -296,7 +331,16 @@ XBool EffectsEffect_runFwdFwd( EffectsEffect _this )
     EffectsEffect_run( _this, frame );
   }
 
-  return 0;
+  return done;
+}
+
+/* 'C' function for method : 'Effects::Effect.OnSetNoOfCycles()' */
+void EffectsEffect_OnSetNoOfCycles( EffectsEffect _this, XInt32 value )
+{
+  if ( value < 0 )
+    value = 0;
+
+  _this->NoOfCycles = value;
 }
 
 /* 'C' function for method : 'Effects::Effect.OnSetCycleDuration()' */
@@ -348,6 +392,16 @@ void EffectsEffect__Animate( void* _this, XFloat aProgress )
   ((EffectsEffect)_this)->_.VMT->Animate((EffectsEffect)_this, aProgress );
 }
 
+/* The slot method 'StopEffect' stops the running effect if a signal is sent to 
+   this slot method. This causes the animation to pause at its current position. */
+void EffectsEffect_StopEffect( EffectsEffect _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  EffectsEffect_OnSetEnabled( _this, 0 );
+}
+
 /* The slot method 'StartEffect' re-starts the effect if a signal is sent to this 
    slot method. The effect will start from the beginning. */
 void EffectsEffect_StartEffect( EffectsEffect _this, XObject sender )
@@ -366,7 +420,7 @@ EW_DEFINE_CLASS_VARIANTS( EffectsEffect )
 EW_END_OF_CLASS_VARIANTS( EffectsEffect )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::Effect' */
-EW_DEFINE_CLASS( EffectsEffect, XObject, timer, timer, OnAnimate, direction, direction, 
+EW_DEFINE_CLASS( EffectsEffect, XObject, timer, timer, OnFinished, direction, direction, 
                  direction, "Effects::Effect" )
   EffectsEffect_Animate,
 EW_END_OF_CLASS( EffectsEffect )
@@ -407,7 +461,8 @@ void EffectsInt32Effect__Done( EffectsInt32Effect _this )
 /* 'C' function for method : 'Effects::Int32Effect.Animate()' */
 void EffectsInt32Effect_Animate( EffectsInt32Effect _this, XFloat aProgress )
 {
-  _this->Value = (XInt32)EwMathRound((XFloat)_this->Value2 * aProgress );
+  _this->Value = _this->Value1 + (XInt32)EwMathRound((XFloat)( _this->Value2 - _this->Value1 ) 
+  * aProgress );
 }
 
 /* Variants derived from the class : 'Effects::Int32Effect' */

@@ -28,12 +28,12 @@ var EmWiApp;if(!EmWiApp)throw new Error("The application file '_project.js' isn'
 );if(EmWiApp.abk)throw new Error("The unit file 'Effects.js' included twice!");EmWiApp.
 abk=(function(){var B=EmWiApp;var D={};
 
-D.FY={Trigger:function(){B.Core.Timer.Trigger.call(this);B.vv(this,0);},_Init:function(
-aArg){B.Core.Timer._Init.call(this,aArg);this.__proto__=D.FY;},_className:"Effects::EffectTimerClass"
-};D.Eb={_Init:function(){D.FY._Init.call(this,0);this.Eq(15);this.Bv(true);},_variants:
+D.Ga={Trigger:function(){B.Core.Timer.Trigger.call(this);B.vv(this,0);},_Init:function(
+aArg){B.Core.Timer._Init.call(this,aArg);this.__proto__=D.Ga;},_className:"Effects::EffectTimerClass"
+};D.Ek={_Init:function(){D.Ga._Init.call(this,0);this.Ey(15);this.Bv(true);},_variants:
 function(){return this;},_this:null};
-D._Init=function(){D.FY.__proto__=B.Core.Timer;};D._ReInit=function(){var A;if((A=
-D.Eb._this))A._ReInit();};D.Bx=function(E){var A;if((A=D.Eb._this)&&(A._cycle!=E
-))A._Done(D.Eb._this=null);};return D;})();
+D._Init=function(){D.Ga.__proto__=B.Core.Timer;};D._ReInit=function(){var A;if((A=
+D.Ek._this))A._ReInit();};D.Bw=function(E){var A;if((A=D.Ek._this)&&(A._cycle!=E
+))A._Done(D.Ek._this=null);};return D;})();
 
 /* Embedded Wizard */
