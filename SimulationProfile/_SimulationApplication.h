@@ -49,6 +49,12 @@
 #include "_ViewsText.h"
 #include "_WidgetSetHorizontalSlider.h"
 
+/* Forward declaration of the class Core::DialogContext */
+#ifndef _CoreDialogContext_
+  EW_DECLARE_CLASS( CoreDialogContext )
+#define _CoreDialogContext_
+#endif
+
 /* Forward declaration of the class Core::Group */
 #ifndef _CoreGroup_
   EW_DECLARE_CLASS( CoreGroup )
@@ -67,10 +73,22 @@
 #define _CoreLayoutContext_
 #endif
 
+/* Forward declaration of the class Core::TaskQueue */
+#ifndef _CoreTaskQueue_
+  EW_DECLARE_CLASS( CoreTaskQueue )
+#define _CoreTaskQueue_
+#endif
+
 /* Forward declaration of the class Core::View */
 #ifndef _CoreView_
   EW_DECLARE_CLASS( CoreView )
 #define _CoreView_
+#endif
+
+/* Forward declaration of the class Effects::Fader */
+#ifndef _EffectsFader_
+  EW_DECLARE_CLASS( EffectsFader )
+#define _EffectsFader_
 #endif
 
 /* Forward declaration of the class Graphics::Canvas */

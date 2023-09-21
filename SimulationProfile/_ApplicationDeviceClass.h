@@ -54,9 +54,13 @@
 /* Deklaration of class : 'Application::DeviceClass' */
 EW_DEFINE_FIELDS( ApplicationDeviceClass, TemplatesDeviceClass )
   EW_VTHISPTR()
+  EW_PROPERTY( TitleOfTrack,    XString )
+  EW_PROPERTY( Artist,          XString )
+  EW_PROPERTY( Src,             XString )
   EW_PROPERTY( PlayerState,     XEnum )
   EW_PROPERTY( CurrentTime,     XInt32 )
   EW_PROPERTY( Duration,        XInt32 )
+  EW_PROPERTY( CurrentFileIndex, XInt32 )
   EW_PROPERTY( Loop,            XBool )
 EW_END_OF_FIELDS( ApplicationDeviceClass )
 
@@ -71,7 +75,13 @@ EW_DEFINE_METHODS( ApplicationDeviceClass, TemplatesDeviceClass )
   EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
-  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
+  EW_METHOD( GetTitleById,      XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetArtistById,     XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetSongById,       XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetSizeOfList,     XInt32 )( ApplicationDeviceClass _this )
 EW_END_OF_METHODS( ApplicationDeviceClass )
 
 /* Variant Dispatch Method Table for the class : 'Application::DeviceClass' */
@@ -85,7 +95,13 @@ EW_DEFINE_DISPATCHER( ApplicationDeviceClass, TemplatesDeviceClass )
   EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
-  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
+  EW_METHOD( GetTitleById,      XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetArtistById,     XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetSongById,       XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetSizeOfList,     XInt32 )( ApplicationDeviceClass _this )
 EW_END_OF_DISPATCHER( ApplicationDeviceClass )
 
 /* 'C' function for method : 'Application::DeviceClass.Done()' */
@@ -100,6 +116,13 @@ void ApplicationDeviceClass_OnSetPlayerState( ApplicationDeviceClass _this, XEnu
 
 /* 'C' function for method : 'Application::DeviceClass.OnGetPlayerState()' */
 XEnum ApplicationDeviceClass_OnGetPlayerState( ApplicationDeviceClass _this );
+
+/* 'C' function for method : 'Application::DeviceClass.OnSetTitleOfTrack()' */
+void ApplicationDeviceClass_OnSetTitleOfTrack( ApplicationDeviceClass _this, XString 
+  value );
+
+/* 'C' function for method : 'Application::DeviceClass.OnSetArtist()' */
+void ApplicationDeviceClass_OnSetArtist( ApplicationDeviceClass _this, XString value );
 
 /* 'C' function for method : 'Application::DeviceClass.IntToTimeString()'
    Please note, this function serves as the dispatcher to the methods overriden 
@@ -138,6 +161,9 @@ XInt32 ApplicationDeviceClass_OnGetDuration( ApplicationDeviceClass _this );
 
 /* 'C' function for method : 'Application::DeviceClass.OnSetLoop()' */
 void ApplicationDeviceClass_OnSetLoop( ApplicationDeviceClass _this, XBool value );
+
+/* 'C' function for method : 'Application::DeviceClass.OnSetSrc()' */
+void ApplicationDeviceClass_OnSetSrc( ApplicationDeviceClass _this, XString value );
 
 /* 'C' function for method : 'Application::DeviceClass.Play()'
    Please note, this function serves as the dispatcher to the methods overriden 
@@ -252,18 +278,76 @@ void ApplicationDeviceClass__UpdateDuration( void* _this, XInt32 aNewValue );
 /* The following define announces the presence of the method Application::DeviceClass.UpdateDuration(). */
 #define _ApplicationDeviceClass__UpdateDuration_
 
-/* 'C' function for method : 'Application::DeviceClass.InitSlot()'
-   Please note, this function serves as the dispatcher to the methods overriden 
-   in the derived class variants. */
+/* 'C' function for method : 'Application::DeviceClass.InitSlot()' */
 void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender );
 
-/* Implementation of the method : 'Application::DeviceClass.InitSlot()'. The implementation 
-   has been moved here, because the origin function ApplicationDeviceClass_InitSlot() 
-   does serve as the dispatcher to the derived class variants only. */
-void ApplicationDeviceClass___InitSlot( ApplicationDeviceClass _this, XObject sender );
+/* 'C' function for method : 'Application::DeviceClass.OnSetCurrentFileIndex()' */
+void ApplicationDeviceClass_OnSetCurrentFileIndex( ApplicationDeviceClass _this, 
+  XInt32 value );
 
-/* Wrapper function for the virtual method : 'Application::DeviceClass.InitSlot()' */
-void ApplicationDeviceClass__InitSlot( void* _this, XObject sender );
+/* 'C' function for method : 'Application::DeviceClass.GetTitleById()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
+XString ApplicationDeviceClass_GetTitleById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* Implementation of the method : 'Application::DeviceClass.GetTitleById()'. The 
+   implementation has been moved here, because the origin function ApplicationDeviceClass_GetTitleById() 
+   does serve as the dispatcher to the derived class variants only. */
+XString ApplicationDeviceClass___GetTitleById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.GetTitleById()' */
+XString ApplicationDeviceClass__GetTitleById( void* _this, XInt32 aArg1 );
+
+/* 'C' function for method : 'Application::DeviceClass.GetArtistById()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
+XString ApplicationDeviceClass_GetArtistById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* Implementation of the method : 'Application::DeviceClass.GetArtistById()'. The 
+   implementation has been moved here, because the origin function ApplicationDeviceClass_GetArtistById() 
+   does serve as the dispatcher to the derived class variants only. */
+XString ApplicationDeviceClass___GetArtistById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.GetArtistById()' */
+XString ApplicationDeviceClass__GetArtistById( void* _this, XInt32 aArg1 );
+
+/* 'C' function for method : 'Application::DeviceClass.GetSongById()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
+XString ApplicationDeviceClass_GetSongById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* Implementation of the method : 'Application::DeviceClass.GetSongById()'. The 
+   implementation has been moved here, because the origin function ApplicationDeviceClass_GetSongById() 
+   does serve as the dispatcher to the derived class variants only. */
+XString ApplicationDeviceClass___GetSongById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.GetSongById()' */
+XString ApplicationDeviceClass__GetSongById( void* _this, XInt32 aArg1 );
+
+/* 'C' function for method : 'Application::DeviceClass.CanGoBefore()' */
+XBool ApplicationDeviceClass_CanGoBefore( ApplicationDeviceClass _this );
+
+/* 'C' function for method : 'Application::DeviceClass.CanGoNext()' */
+XBool ApplicationDeviceClass_CanGoNext( ApplicationDeviceClass _this );
+
+/* 'C' function for method : 'Application::DeviceClass.GetSizeOfList()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
+XInt32 ApplicationDeviceClass_GetSizeOfList( ApplicationDeviceClass _this );
+
+/* Implementation of the method : 'Application::DeviceClass.GetSizeOfList()'. The 
+   implementation has been moved here, because the origin function ApplicationDeviceClass_GetSizeOfList() 
+   does serve as the dispatcher to the derived class variants only. */
+XInt32 ApplicationDeviceClass___GetSizeOfList( ApplicationDeviceClass _this );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.GetSizeOfList()' */
+XInt32 ApplicationDeviceClass__GetSizeOfList( void* _this );
 
 #ifdef __cplusplus
   }

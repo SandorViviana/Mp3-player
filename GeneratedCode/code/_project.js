@@ -29,12 +29,12 @@ var EmWiCompr_12_05;var EmWiApp;if(!EmWiCompr_12_05)throw new Error("The Embedde
 );EmWiApp=(function(){var B={__proto__:EmWiCompr_12_05};
 B.Default=0;
 B.aaF=[800,480];B.qJ=function(){return B.Application.Application;};B.y9="";B.on=0;
-B.aa6=0;B.ju=[];B._Init=function(){B.Core._Init();B.abk._Init();B.Graphics._Init(
-);B.abg._Init();B.abh._Init();B.Application._Init();B.abi._Init();B.abj._Init();
+B.aa6=0;B.ju=[];B._Init=function(){B.Core._Init();B.abj._Init();B.Graphics._Init(
+);B.abg._Init();B.abh._Init();B.Application._Init();B.abi._Init();B.abk._Init();
 B.abl._Init();this.__proto__._Init.apply(this,arguments);};B._ReInit=function(){
-B.Core._ReInit();B.abk._ReInit();B.Graphics._ReInit();B.abg._ReInit();B.abh._ReInit(
-);B.Application._ReInit();B.abi._ReInit();B.abj._ReInit();B.abl._ReInit();};B.aaD=
-function(E){B.Core.Bw(E);B.abk.Bw(E);B.Graphics.Bw(E);B.abg.Bw(E);B.abh.Bw(E);B.
-Application.Bw(E);B.abi.Bw(E);B.abj.Bw(E);B.abl.Bw(E);};return B;})();
+B.Core._ReInit();B.abj._ReInit();B.Graphics._ReInit();B.abg._ReInit();B.abh._ReInit(
+);B.Application._ReInit();B.abi._ReInit();B.abk._ReInit();B.abl._ReInit();};B.aaD=
+function(D){B.Core.CI(D);B.abj.CI(D);B.Graphics.CI(D);B.abg.CI(D);B.abh.CI(D);B.
+Application.CI(D);B.abi.CI(D);B.abk.CI(D);B.abl.CI(D);};return B;})();
 
 /* Embedded Wizard */

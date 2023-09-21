@@ -63,7 +63,13 @@ EW_DEFINE_VMETHODS( SimulationDeviceClass, XObject, ApplicationDeviceClass )
   EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
-  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
+  EW_METHOD( GetTitleById,      XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetArtistById,     XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetSongById,       XString )( ApplicationDeviceClass _this, XInt32 
+    aArg1 )
+  EW_METHOD( GetSizeOfList,     XInt32 )( ApplicationDeviceClass _this )
 EW_END_OF_VMETHODS( SimulationDeviceClass )
 
 /* 'C' function for method : 'Simulation::DeviceClass.IntToTimeString()' */
@@ -88,14 +94,26 @@ void SimulationDeviceClass_UpdateTimeFromSlider( ApplicationDeviceClass _this, X
 void SimulationDeviceClass_UpdateDuration( ApplicationDeviceClass _this, XInt32 
   aNewValue );
 
-/* 'C' function for method : 'Simulation::DeviceClass.InitSlot()' */
-void SimulationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender );
+/* 'C' function for method : 'Simulation::DeviceClass.Pause()' */
+void SimulationDeviceClass_Pause( ApplicationDeviceClass _this );
+
+/* 'C' function for method : 'Simulation::DeviceClass.GetTitleById()' */
+XString SimulationDeviceClass_GetTitleById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* 'C' function for method : 'Simulation::DeviceClass.GetArtistById()' */
+XString SimulationDeviceClass_GetArtistById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
+
+/* 'C' function for method : 'Simulation::DeviceClass.GetSongById()' */
+XString SimulationDeviceClass_GetSongById( ApplicationDeviceClass _this, XInt32 
+  aArg1 );
 
 /* 'C' function for method : 'Simulation::DeviceClass.OnPlayEffect()' */
 void SimulationDeviceClass_OnPlayEffect( ApplicationDeviceClass _this, XObject sender );
 
-/* 'C' function for method : 'Simulation::DeviceClass.Pause()' */
-void SimulationDeviceClass_Pause( ApplicationDeviceClass _this );
+/* 'C' function for method : 'Simulation::DeviceClass.GetSizeOfList()' */
+XInt32 SimulationDeviceClass_GetSizeOfList( ApplicationDeviceClass _this );
 
 /* 'C' function for method : 'Simulation::DeviceClass.OnFinishEffect()' */
 void SimulationDeviceClass_OnFinishEffect( ApplicationDeviceClass _this, XObject 

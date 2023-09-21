@@ -10,7 +10,7 @@ vclass Application : Application::Application
   $rect <20,20,160,60>
   object WidgetSet::HorizontalSlider DurationSlider
   {
-    preset Bounds = <878,155,1078,205>;
+    preset Bounds = <856,157,1056,207>;
     preset Outlet = ^Duration;
     preset MaxValue = 500;
     preset CurrentValue = 1;
@@ -20,7 +20,7 @@ vclass Application : Application::Application
   $rect <20,20,160,60>
   object WidgetSet::HorizontalSlider CurrentTimeSlider
   {
-    preset Bounds = <873,217,1073,267>;
+    preset Bounds = <858,218,1058,268>;
     preset Outlet = ^CurrentTime;
     preset MaxValue = 100;
     preset Appearance = WidgetSet::HorizontalSlider_Medium;
@@ -103,7 +103,7 @@ vclass Application : Application::Application
   $rect <20,20,160,60>
   object Views::Text DurationLabel
   {
-    preset Bounds = <1104,163,1237,194>;
+    preset Bounds = <1059,168,1192,199>;
     preset String = "Duration";
     preset Font = Resources::FontMedium;
   }
@@ -111,7 +111,7 @@ vclass Application : Application::Application
   $rect <20,20,160,60>
   object Views::Text CurrentTimeLabel
   {
-    preset Bounds = <1131,211,1231,241>;
+    preset Bounds = <1062,227,1195,258>;
     preset String = "Current Time";
     preset Font = Resources::FontMedium;
   }
@@ -191,13 +191,6 @@ vclass DeviceClass : Application::DeviceClass
 
   }
 
-  $rect <0,170,200,210>
-  inherited slot InitSlot
-  {
-    // TO DO: Write your code here ... 
-
-  }
-
   $rect <0,80,200,120>
   inherited method LoopTrack()
   {
@@ -266,6 +259,52 @@ vclass DeviceClass : Application::DeviceClass
   $rect <481,158,681,198>
   var bool isPlayEffect = false;
 
+  $rect <740,40,940,80>
+  inherited method GetTitleById()
+  {
+    switch ( aArg1 )
+    {
+                case 0 : return "Introduction et Rondo Capriccioso";
+                case 1 : return "Clair de Lune";
+                case 2 : return "String Quartet No. 2 (2nd mvt)"
+                case 3 :  return "Night on bald mountain";
+                case 4 : return "Tempo di Valse";
+                case 5 : return "Infernal Dance of Kastchei";
+                case 6: return "Vltava";
+                case 7: return "The Call";
+                default : return "Unknown";
+    }
+  }
+
+  $rect <740,0,940,40>
+  inherited method GetArtistById()
+  {
+    switch ( aArg1 )
+    {
+      case 0 : return "Camille Saint-Saens";
+      case 1 : return "Claude Debussy";
+      case 2 : return "Bela Bartok";
+      case 3 : return "Modest Mussorgsky";
+      case 4 : return "Antonin Dvorak";
+      case 5: return "Igor Stravinsky";
+      case 6: return "Bedrich Smetana";
+      case 7: return "Stereohada";
+      default : return "Unknown";
+    }
+  }
+
+  $rect <740,80,940,120>
+  inherited method GetSongById()
+  {
+    return "song url for " + (string)aArg1;
+  }
+
+  $rect <770,160,970,200>
+  inherited method GetSizeOfList()
+  {
+    return 8;
+  }
+
   // Directives to adapt the order of the above members according to how these members 
   // where arranged when the project content was stored. In this manner the storage 
   // and the expected order of the members don't depend. Merging of changes in the 
@@ -276,10 +315,13 @@ vclass DeviceClass : Application::DeviceClass
   $member UpdateCurrentTime
   $member UpdateTimeFromSlider
   $member UpdateDuration
-  $member InitSlot
+  $member Pause
+  $member GetTitleById
+  $member GetArtistById
+  $member GetSongById
   $member PlayEffect
   $member OnPlayEffect
-  $member Pause
+  $member GetSizeOfList
   $member OnFinishEffect
   $member isPlayEffect
 

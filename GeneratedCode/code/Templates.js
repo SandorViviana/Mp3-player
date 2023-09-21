@@ -25,13 +25,13 @@
 *******************************************************************************/
 
 var EmWiApp;if(!EmWiApp)throw new Error("The application file '_project.js' isn't yet loaded!"
-);if(EmWiApp.abj)throw new Error("The unit file 'Templates.js' included twice!");
-EmWiApp.abj=(function(){var B=EmWiApp;var D={};
+);if(EmWiApp.abk)throw new Error("The unit file 'Templates.js' included twice!");
+EmWiApp.abk=(function(){var B=EmWiApp;var C={};
 
-D.DeviceClass={_Init:function(aArg){this.__proto__=D.DeviceClass;B.hJ++;},_Done:function(
-){this.__proto__=null;B.hJ--;},_ReInit:function(){},_Mark:function(E){var A;if((
-A=this.Ak)&&(A._cycle!=E))A._Mark(A._cycle=E);},Ak:null,_cycle:0,_observers:null
+C.DeviceClass={_Init:function(aArg){this.__proto__=C.DeviceClass;B.hJ++;},_Done:function(
+){this.__proto__=null;B.hJ--;},_ReInit:function(){},_Mark:function(D){var A;if((
+A=this.Ac)&&(A._cycle!=D))A._Mark(A._cycle=D);},Ac:null,_cycle:0,_observers:null
 ,_className:"Templates::DeviceClass"};
-D._Init=function(){};D._ReInit=function(){};D.Bw=function(E){};return D;})();
+C._Init=function(){};C._ReInit=function(){};C.CI=function(D){};return C;})();
 
 /* Embedded Wizard */

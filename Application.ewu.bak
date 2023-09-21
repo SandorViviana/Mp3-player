@@ -50,7 +50,7 @@ $output false
 resource Resources::Font TitleFont
 {
   attr fontname FontName = Lucida Sans Typewriter;
-  attr fontheight Height = 38;
+  attr fontheight Height = 32;
   attr fontheightmode HeightMode = Popular;
   attr fontquality Quality = High;
   attr fontranges Ranges = 0x20-0xFF;
@@ -215,7 +215,9 @@ class PlayerDialog : Core::Group
   $rect <20,20,160,60>
   object Views::Text Title
   {
-    preset Bounds = <499,99,645,158>;
+    preset Bounds = <368,60,788,175>;
+    preset AutoSize = false;
+    preset WrapText = true;
     preset String = "Title";
     preset Font = Application::TitleFont;
   }
@@ -223,7 +225,7 @@ class PlayerDialog : Core::Group
   $rect <20,20,160,60>
   object Views::Text Artist
   {
-    preset Bounds = <521,156,621,186>;
+    preset Bounds = <379,157,784,187>;
     preset String = "Artist";
     preset Font = Application::Font;
   }
@@ -248,14 +250,7 @@ class PlayerDialog : Core::Group
   object Views::Image ToTheQueue
   {
     preset Bounds = <375,436,425,486>;
-    preset Bitmap = Resources::NavigationIconsLarge;
-  }
-
-  $rect <20,20,160,60>
-  object Views::Image ToTheList
-  {
-    preset Bounds = <369,0,419,66>;
-    preset Orientation = Views::Orientation.Rotated_180;
+    preset FrameNumber = 1;
     preset Bitmap = Resources::NavigationIconsLarge;
   }
 
@@ -263,19 +258,16 @@ class PlayerDialog : Core::Group
   inherited method Init()
   {
     deviceRef = Application::Device;
-    //Playback.Outlet = ^deviceRef.CurrentTime;
+
     attachobserver OnTimeUpdate, ^deviceRef.CurrentTime;
     attachobserver OnTimeUpdate, ^deviceRef.Duration;
     attachobserver OnTimeUpdate, null, 123;
     attachobserver OnTimeUpdate, null, 124;
     postsignal OnTimeUpdate;
 
-    //Artist.String=Application::Device.Artist;
-    //Title.String=Application::Device.TitleOfTrack;
 
-    //Playback.MaxValue=Application::Device.Duration;
-    //Duration.String=Application::Device.IntToTimeString(Application::Device.Duration);
-    //trace Application::Device;
+
+
   }
 
   // Conceptual equivalent to TimeUpdate
@@ -292,8 +284,10 @@ class PlayerDialog : Core::Group
   $rect <20,20,160,60>
   object WidgetSet::PushButton PlayPause
   {
-    preset Bounds = <281,337,369,387>;
+    preset Bounds = <298,337,353,387>;
     preset Visible = true;
+    preset OnRelease = OnPlayPause;
+    preset OnPress = PlayPausedPressed;
     preset Icon = Application::PlayIcon;
     preset Label = "";
     preset Appearance = Application::PushButtonConfig;
@@ -302,7 +296,7 @@ class PlayerDialog : Core::Group
   $rect <20,20,160,60>
   object WidgetSet::PushButton Loop
   {
-    preset Bounds = <340,337,410,387>;
+    preset Bounds = <344,335,405,385>;
     preset OnRelease = OnLoop;
     preset Icon = Application::LoopIcon;
     preset Label = "";
@@ -324,6 +318,7 @@ class PlayerDialog : Core::Group
   $rect <270,570,470,610>
   slot OnTimeUpdate
   {
+    EnableDisableButtons();
     if(Playback.MaxValue != deviceRef.Duration ){
     Playback.MaxValue=deviceRef.Duration;
     trace "The maximum value of the slider is ", Playback.MaxValue;
@@ -332,19 +327,19 @@ class PlayerDialog : Core::Group
     Playback.CurrentValue=deviceRef.CurrentTime;
     Duration.String=deviceRef.IntToTimeString(deviceRef.Duration);
     CurrentTime.String=deviceRef.IntToTimeString(deviceRef.CurrentTime);
-
-    if(Playback.CurrentValue==Playback.MaxValue && !Application::Device.Loop)
+    if(Playback.CurrentValue==Playback.MaxValue && Playback.CurrentValue!=0)
+     if(!Application::Device.Loop)
+    {    if(Application::Device.CanGoNext())
+                 OnNextMethod();
+                 
+        else   
+        { Application::Device.CurrentFileIndex=-1;
           OnEnded();
-  }
+        }
+     }
 
-  $rect <20,20,160,60>
-  object Core::SimpleTouchHandler LoopTouch
-  {
-    preset Point4 = <356,339>;
-    preset Point3 = <393,346>;
-    preset Point2 = <398,386>;
-    preset Point1 = <356,391>;
-    preset OnRelease = OnLoop;
+    Artist.String=Application::Device.Artist;
+    Title.String=Application::Device.TitleOfTrack;
   }
 
   $rect <850,390,1050,430>
@@ -360,10 +355,9 @@ class PlayerDialog : Core::Group
     }
   }
 
-  $rect <900,270,1100,310>
+  $rect <899,270,1100,310>
   slot OnPlayPause
   {
-     trace 120;
     switch(Application::Device.PlayerState)
     {
         case Application::State.Playing:
@@ -391,6 +385,7 @@ class PlayerDialog : Core::Group
   method void OnPlay()
   {
     deviceRef.Play();
+    signal VinylView.AngleEffect.StartEffect;
     PlayPause.Icon=Application::PauseIcon;
     Application::Device.UpdatePlayerState( Application::State.Playing );
   }
@@ -399,6 +394,7 @@ class PlayerDialog : Core::Group
   method void OnPause()
   {
     deviceRef.Pause();
+    signal VinylView.AngleEffect.StopEffect;
     PlayPause.Icon=Application::PlayIcon;
     Application::Device.UpdatePlayerState( Application::State.Paused );
   }
@@ -408,27 +404,129 @@ class PlayerDialog : Core::Group
   {
     Application::Device.UpdatePlayerState( Application::State.Ended);
     PlayPause.Icon=Application::PlayIcon;
+    signal VinylView.AngleEffect.StopEffect;
+    Application::Device.CurrentFileIndex+=1;
+
+    Playback.CurrentValue=0;
   }
 
   $rect <20,20,160,60>
-  object Core::SimpleTouchHandler PlayPauseTouchHandler
+  object Application::VinylView VinylView
   {
-    preset Point4 = <305,345>;
-    preset Point3 = <340,345>;
-    preset Point2 = <351,380>;
-    preset Point1 = <310,389>;
-    preset OnRelease = OnPlayPause;
-    preset OnPress = PlayPausedPressed;
+    preset Bounds = <-5,-1,474,349>;
+  }
+
+  $rect <10,659,210,699>
+  slot OnOpenQueue
+  {
+    Owner.SwitchToDialog( new Application::QueueView, Effects::SlideUpCentered, null, null, null, null, null, null, null, null, false );
+
+
   }
 
   $rect <20,20,160,60>
-  object Views::WarpImage Vinyl
+  object Core::WipeTouchHandler OpenQueue
   {
-    preset Point4 = <159,310>;
-    preset Point3 = <402,309>;
-    preset Point2 = <402,65>;
-    preset Point1 = <159,65>;
-    preset Bitmap = Application::GenericVinyl;
+    preset Bounds = <302,432,483,486>;
+    preset OnTop = OnOpenQueue;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton PreviousButton
+  {
+    preset Bounds = <249,338,299,387>;
+    preset OnRelease = OnPrevious;
+    preset OnPress = PreviousPressed;
+    preset Icon = Application::PreviousIcon;
+    preset Label = "";
+    preset Appearance = Application::PushButtonConfig;
+  }
+
+  $rect <20,20,160,60>
+  object WidgetSet::PushButton NextButton
+  {
+    preset Bounds = <402,341,452,386>;
+    preset OnRelease = OnNext;
+    preset OnPress = NextPressed;
+    preset Icon = Application::NextIcon;
+    preset Label = "";
+    preset Appearance = Application::PushButtonConfig;
+  }
+
+  $rect <1170,260,1370,300>
+  slot OnPrevious
+  {
+    Application::Device.CurrentFileIndex-=1;
+    if(Application::Device.PlayerState==Application::State.Playing)
+            OnPlay();
+
+  }
+
+  $rect <1159,300,1359,340>
+  slot OnNext
+  {
+    OnNextMethod();
+  }
+
+  $rect <1150,390,1350,430>
+  slot PreviousPressed
+  {
+    PreviousButton.Icon=Application::PreviousPressedIcon;
+  }
+
+  $rect <1140,430,1340,470>
+  slot NextPressed
+  {
+    NextButton.Icon=Application::NextPressedIcon;
+  }
+
+  $rect <870,640,1070,680>
+  method void OnNextMethod()
+  {
+    Application::Device.CurrentFileIndex+=1;
+    if(Application::Device.PlayerState==Application::State.Playing)
+            OnPlay();
+
+
+  }
+
+  $rect <1233,537,1433,577>
+  method void DisablePrevious()
+  {
+     PreviousButton.Enabled=false;
+     PreviousButton.Icon=Application::PreviousDisabledIcon;
+  }
+
+  $rect <1230,579,1430,619>
+  method void DisableNext()
+  {
+     NextButton.Icon=Application::NextDisabledIcon;
+     NextButton.Enabled=false;
+  }
+
+  $rect <1470,530,1670,570>
+  method void EnablePrevious()
+  {
+    PreviousButton.Enabled=true;
+    PreviousButton.Icon=Application::PreviousIcon;
+  }
+
+  $rect <1470,570,1670,610>
+  method void EnableNext()
+  {
+     NextButton.Enabled=true;
+     NextButton.Icon=Application::NextIcon;
+  }
+
+  $rect <1450,400,1650,440>
+  method void EnableDisableButtons()
+  {
+    if(Application::Device.CanGoBefore())
+          EnablePrevious();
+    else DisablePrevious();
+    if(Application::Device.CanGoNext())
+          EnableNext();
+    else DisableNext();
   }
 
   // Directives to adapt the order of the above members according to how these members 
@@ -446,21 +544,32 @@ class PlayerDialog : Core::Group
   $member CurrentTime
   $member Duration
   $member ToTheQueue
-  $member ToTheList
   $member OnSliderChange
   $member deviceRef
   $member PlayPause
   $member Loop
   $member OnLoop
   $member OnTimeUpdate
-  $member LoopTouch
   $member PlayPausedPressed
   $member OnPlayPause
   $member OnPlay
   $member OnPause
   $member OnEnded
-  $member PlayPauseTouchHandler
-  $member Vinyl
+  $member VinylView
+  $member OnOpenQueue
+  $member OpenQueue
+  $member PreviousButton
+  $member NextButton
+  $member OnPrevious
+  $member OnNext
+  $member PreviousPressed
+  $member NextPressed
+  $member OnNextMethod
+  $member DisablePrevious
+  $member DisableNext
+  $member EnablePrevious
+  $member EnableNext
+  $member EnableDisableButtons
 
   // Directives to adapt the order of members belonging to this class so they appear 
   // correctly arranged relative to the members inherited from the ancestor (super) 
@@ -472,179 +581,12 @@ class PlayerDialog : Core::Group
 
 $rect <220,60,420,100>
 $output false
-class ListView : Core::Group
-{
-  $rect <10,230,210,270>
-  inherited property Bounds = <0,0,300,200>;
-
-  $rect <10,390,210,430>
-  inherited method UpdateLayout()
-  {
-    // Always invoke the inherited method.
-    super( aSize );
-
-    /*
-
-      HINT:
-
-      This method exists for sophisticated layout calculation. Please note, that in 
-      most cases it is completely sufficient to use the views property 'Layout' to
-      determine how the view should behave when the component is resized.
-
-    */
-
-    /*
-
-      TO DO:
-
-      Put here the code to calculate new position and size of enclosed views. The
-      current (new) size of the component itself is passed in the parameter aSize.
-      For example:
-
-        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
-
-    */
-  }
-
-  $rect <10,350,210,390>
-  inherited method UpdateViewState()
-  {
-    // Always invoke the inherited method.
-    super( aState );
-
-    /*
-
-      HINT 1:
-
-      This method is invoked automatically when the state set of the component has
-      been changed. The new state set can be found in the parameter aState.
-      Following are the important states:
-
-        Enabled   --> The component can react to user inputs.
-
-        Selected  --> The component is selected in context of its owner.
-
-        Focused   --> The component is selected in context of its owner and 
-                      the owner can react to keyboard events. In this manner the
-                      component is also able to react to keyboard events.
-
-        Modal     --> The component is modal. All events are redirected to this
-                      component.
-
-      To determine whether a state is currently active or not you have to test
-      the aState parameter. For example to test the 'Selected' state:
-
-        if ( aState.contains( Core::ViewState[ Selected ]))
-        {
-          ... yes, this component is currently selected.
-        }
-
-    */
-
-    /*
-
-      HINT 2:
-
-      Alternatively you can request this method invocation by executing explicitly
-      following code:
-
-
-        InvalidateViewState();
-
-    */
-      
-    /*
-
-      TO DO 1:
-
-      Put here the code to ensure that the visual aspect of the component does
-      reflect its current state. For example, depending on its 'Enabled' state
-      a component may appear with full colors or pale if it is disabled:
-
-        if ( aState.contains( Core::ViewState[ Enabled ]))
-        {
-          SomeBackgroundView.Opacity = 255;
-          SomeTextView.Color         = #000000FF;
-        }
-        else
-        {
-          SomeBackgroundView.Opacity = 128;
-          SomeTextView.Color         = #00000080;
-        }
-
-
-      TO DO 2:
-
-      You can evaluate here also the state of any other member in your component.
-      For example in a push-button component, the button should appear highlighted
-      as long as the user holds the finger within a touch area of the button:
-
-        if ( SomeTouchHandler.Down && SomeTouchHandler.Inside )
-          HighlightedBackground.Visible = true;
-        else
-          HighlightedBackground.Visible = false;
-
-      The touch handler itself only requests the update method to be called. Use
-      for this purpose 'InvalidateViewState()' method.
-
-
-      TO DO 3:
-
-      You can calculate here also the position/size of views accordingly to the
-      state of any other member in your component. For example in a slider you
-      can calculate the position of the slider knob from some properties like
-      'SliderValue' and 'SliderRange':
-
-        SliderKnob.Bounds.origin.x = ( SliderValue * Bounds.w ) / SliderRange;
-
-      Changing the 'SliderValue' or 'SliderRange' property should only request
-      the update method to be called. Use for this purpose 'InvalidateViewState()'
-      method.
-
-    */
-  }
-
-  // To do:
-  // 
-  // - Adjust the visible size of your component (the thick blue border).
-  // 
-  // - The simplest way to compose the appearance of the component is to use the \
-  // 'Views' and 'Widget Sets' from the Gallery.
-  // 
-  // - To react to touch or keyboard events use the templates from the Gallery folder \
-  // 'Event Handlers'.
-  // 
-  // - To perform transitions (animations) use the templates from the Gallery folder \
-  // 'Effects'.
-  // 
-  // - To implement the interface of the component use the 'Property' template from \
-  // the Gallery folder 'Chora'.
-  // 
-  // - To store values use the 'Variable' and 'Array' templates available in the \
-  // Gallery folder 'Chora'.
-  // 
-  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
-  // in the Gallery folder 'Chora'.
-  // 
-  // - In the method 'UpdateViewState()' you can put code to update the state of \
-  // views enclosed in your component.
-  // 
-  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
-  // calculation for enclosed views.
-  note legend Note1
-  {
-    attr Bounds = <220,230,1000,550>;
-  }
-}
-
-$rect <220,100,420,140>
-$output false
 class QueueView : Core::Group
 {
-  $rect <10,230,210,270>
-  inherited property Bounds = <0,0,300,200>;
+  $rect <630,590,1430,630>
+  inherited property Bounds = <0,0,800,480>;
 
-  $rect <10,390,210,430>
+  $rect <40,619,240,659>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -673,7 +615,7 @@ class QueueView : Core::Group
     */
   }
 
-  $rect <10,350,210,390>
+  $rect <40,579,240,619>
   inherited method UpdateViewState()
   {
     // Always invoke the inherited method.
@@ -771,36 +713,118 @@ class QueueView : Core::Group
     */
   }
 
-  // To do:
-  // 
-  // - Adjust the visible size of your component (the thick blue border).
-  // 
-  // - The simplest way to compose the appearance of the component is to use the \
-  // 'Views' and 'Widget Sets' from the Gallery.
-  // 
-  // - To react to touch or keyboard events use the templates from the Gallery folder \
-  // 'Event Handlers'.
-  // 
-  // - To perform transitions (animations) use the templates from the Gallery folder \
-  // 'Effects'.
-  // 
-  // - To implement the interface of the component use the 'Property' template from \
-  // the Gallery folder 'Chora'.
-  // 
-  // - To store values use the 'Variable' and 'Array' templates available in the \
-  // Gallery folder 'Chora'.
-  // 
-  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
-  // in the Gallery folder 'Chora'.
-  // 
-  // - In the method 'UpdateViewState()' you can put code to update the state of \
-  // views enclosed in your component.
-  // 
-  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
-  // calculation for enclosed views.
-  note legend Note1
+  $rect <20,20,160,60>
+  object Views::Rectangle Rectangle
   {
-    attr Bounds = <220,230,1000,550>;
+    preset Bounds = <-6,-10,808,480>;
+    preset Color = #121516FF;
+  }
+
+  $rect <20,20,160,60>
+  object Core::VerticalList Queue
+  {
+    preset Layout = Core::Layout[AlignToRight, AlignToTop];
+    preset Bounds = <17,127,779,372>;
+    preset OnLoadItem = OnLoadItem;
+    preset SlideHandler = ScrollHandler;
+    preset ItemHeight = 50;
+    preset NoOfItems = 8;
+    preset ItemClass = Application::QueueItem;
+  }
+
+  // This method is called by 'VerticalList' every time the list loads or updates \
+  // an item.
+  $rect <820,30,1050,70>
+  slot OnLoadItem
+  {
+    // Get the number of the item to load. The list component takes care of the
+    // creation of the corresponding item view. Just access it ...
+    var int32       itemNo   = Queue.Item;
+    var Application::QueueItem itemView = (Application::QueueItem)Queue.View;
+
+    // The implementation of this slot method does not match the item class
+    // specified in the associated list component. Or the slot method is not
+    // called in context of the OnLoadItem list operation. 
+    if ( itemView == null )
+      return;
+
+    // Configure the item view ...
+    itemView.Title.String = Application::Device.GetTitleById(itemNo);
+    itemView.Artist.String=Application::Device.GetArtistById(itemNo);
+    itemView.Source=Application::Device.GetSongById( itemNo );
+    if(itemView.Source==Application::Device.Src)
+            Queue.SelectedItem=itemNo;
+
+    // Ensure that the item has correct size. The position of the item will be
+    // managed by the list component.
+    itemView.Bounds.size = Queue.ViewSize;
+
+     //Queue.NoOfItems=Application::Device.GetSizeOfList();
+
+  }
+
+  $rect <20,20,160,60>
+  object Views::Image Image
+  {
+    preset Bounds = <355,-2,405,48>;
+    preset FrameNumber = 0;
+    preset Bitmap = Resources::NavigationIconsLarge;
+  }
+
+  $rect <20,20,160,60>
+  object Core::WipeTouchHandler BackToPlayer
+  {
+    preset Bounds = <240,-2,517,40>;
+    preset OnBottom = OnReturnToPlayer;
+  }
+
+  $rect <830,90,1030,120>
+  slot OnReturnToPlayer
+  {
+    //this.Visible=false;
+    Owner.DismissDialog( this, Effects::SlideDownCentered, null, null, null, null, false );
+
+
+  }
+
+  $rect <20,20,160,60>
+  object Core::SlideTouchHandler ScrollHandler
+  {
+    preset Bounds = <18,126,781,370>;
+    preset SnapNext = <0,50>;
+  }
+
+  $rect <20,20,160,60>
+  object Core::SimpleTouchHandler SelectHandler
+  {
+    preset Point4 = <19,131>;
+    preset Point3 = <782,130>;
+    preset Point2 = <784,370>;
+    preset Point1 = <19,370>;
+    preset OnRelease = OnSelect;
+    preset RetargetCondition = Core::RetargetReason[WipeDown, WipeUp];
+  }
+
+  $rect <830,139,1030,179>
+  slot OnSelect
+  {
+
+    if ( SelectHandler.AutoDeflected )
+     { 
+     return;
+     }
+
+    var int32 itemNo = Queue.GetItemAtPosition( SelectHandler.CurrentPos );
+
+
+    if ( itemNo >= 0 )
+    {
+
+      Queue.SelectedItem = itemNo;
+      Application::Device.CurrentFileIndex=itemNo;
+
+
+    }
   }
 }
 
@@ -833,7 +857,7 @@ $output false
 resource Resources::Font Font
 {
   attr fontname FontName = Arial;
-  attr fontheight Height = 30;
+  attr fontheight Height = 24;
   attr fontheightmode HeightMode = Popular;
   attr fontquality Quality = High;
   attr fontranges Ranges = 0x20-0xFF;
@@ -873,7 +897,7 @@ resource Resources::Bitmap Thumb
 }
 
 // This object contains configuration information for a slider widget.
-$rect <490,160,780,200>
+$rect <320,220,610,260>
 $output false
 autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
 {
@@ -1155,7 +1179,7 @@ class DeviceClass : Templates::DeviceClass
 
   // Source of the file
   $rect <280,19,480,59>
-  property string Src;
+  property string Src = "";
 
   $rect <280,59,480,99>
   onset Src
@@ -1170,6 +1194,14 @@ class DeviceClass : Templates::DeviceClass
     // TO DO:
     // 
     // Now you can handle the alternation of the property.
+
+    $if $platform == Web.*.*
+       native
+       {
+             EmWiPlayer.setSource(value);   
+       } 
+    $endif
+
   }
 
   $rect <280,99,480,139>
@@ -1315,7 +1347,103 @@ class DeviceClass : Templates::DeviceClass
            EmWiPlayer.initialize();
       
       }
+      CurrentFileIndex=0;
     $endif
+
+  }
+
+  $rect <970,530,1170,570>
+  property int32 CurrentFileIndex = -1;
+
+  $rect <970,570,1170,610>
+  onset CurrentFileIndex
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure CurrentFileIndex == value )
+      return;
+
+    // Remember the property's new value.
+    pure CurrentFileIndex = value;
+
+    TitleOfTrack=GetTitleById(CurrentFileIndex );
+    Artist=GetArtistById( CurrentFileIndex );
+    this.Src=GetSongById(CurrentFileIndex);
+
+
+  }
+
+  $rect <970,610,1170,650>
+  onget CurrentFileIndex
+  {
+    return pure CurrentFileIndex;
+  }
+
+  $rect <1090,250,1290,290>
+  method string GetTitleById( arg int32 aArg1 )
+  {
+    $if $platform == Web.*.*
+       native
+       {
+             return SongList.getTitleByIndex(aArg1);   
+       } 
+    $endif
+    return "";
+  }
+
+  $rect <1090,290,1290,330>
+  method string GetArtistById( arg int32 aArg1 )
+  {
+    $if $platform == Web.*.*
+       native
+       {
+             return SongList.getArtistByIndex(aArg1);   
+       } 
+    $endif
+    return ""; 
+  }
+
+  // Playlist Management
+  note group Note
+  {
+    attr Bounds = <939,499,1240,850>;
+  }
+
+  $rect <1090,339,1290,379>
+  method string GetSongById( arg int32 aArg1 )
+  {
+    $if $platform == Web.*.*
+       native
+       {
+             return SongList.getSongAtIndex(aArg1);   
+       } 
+    $endif
+    return "";
+  }
+
+  $rect <978,686,1178,726>
+  method bool CanGoBefore()
+  {
+    if(this.CurrentFileIndex==0)
+        return false;
+    return true;
+  }
+
+  $rect <979,730,1179,770>
+  method bool CanGoNext()
+  {
+    return !(this.CurrentFileIndex==GetSizeOfList()-1);
+  }
+
+  $rect <979,800,1179,840>
+  method int32 GetSizeOfList()
+  {
+    $if $platform == Web.*.*
+       native
+       {
+             return SongList.getSizeOfList();   
+       } 
+    $endif
+    return 1;
   }
 }
 
@@ -1361,7 +1489,7 @@ resource Resources::Bitmap PlayIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <490,199,730,239>
+$rect <320,259,560,299>
 $output false
 autoobject WidgetSet::PushButtonConfig PushButtonConfig
 {
@@ -1442,12 +1570,12 @@ resource Resources::Bitmap LoopPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <220,140,420,180>
+$rect <220,100,420,140>
 $output false
 class VinylView : Core::Group
 {
-  $rect <10,230,210,270>
-  inherited property Bounds = <0,0,190,205>;
+  $rect <10,290,210,330>
+  inherited property Bounds = <0,0,464,355>;
 
   $rect <10,390,210,430>
   inherited method UpdateLayout()
@@ -1576,6 +1704,131 @@ class VinylView : Core::Group
     */
   }
 
+  $rect <20,20,160,60>
+  object Views::WarpImage Vinyl
+  {
+    preset Point4 = <133,299>;
+    preset Point3 = <347,302>;
+    preset Point2 = <346,77>;
+    preset Point1 = <133,77>;
+    preset SourceAnchor = <125,125>;
+    preset Bitmap = Application::GenericVinyl;
+  }
+
+  $rect <519,140,719,180>
+  method void Rotate()
+  {
+    var point desPos=Bounds.orect.center;
+    Vinyl.RotateAndScale( desPos, -Angle, 0.9, 0.9);
+
+
+
+  }
+
+  $rect <790,70,990,110>
+  property float Angle = 0;
+
+  $rect <790,110,990,150>
+  onset Angle
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Angle == value )
+      return;
+
+    // Remember the property's new value.
+    pure Angle = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <790,150,990,190>
+  onget Angle
+  {
+    return pure Angle;
+  }
+
+  $rect <790,190,990,230>
+  method void UpdateAngle( arg float aNewValue )
+  {
+    // Only if the reported value does differ from the one stored currently in the property.
+    if ( aNewValue != pure Angle )
+    {
+      // Remember the new value in the internal memory of the property.
+      pure Angle = aNewValue;
+
+
+      // Notify all associated property observers.
+      notifyobservers ^Angle;
+    }
+  }
+
+  $rect <580,39,781,79>
+  slot OnAngleEffect
+  {
+    UpdateAngle(AngleEffect.Value);   
+    Rotate();
+
+  }
+
+  $rect <580,0,780,40>
+  object Effects::FloatEffect AngleEffect
+  {
+    preset OnAnimate = OnAngleEffect;
+    preset CycleDuration = 7000;
+    preset Value2 = 359;
+  }
+}
+
+$rect <420,50,620,90>
+$output false
+class QueueItem : Core::Group
+{
+  $rect <10,230,210,270>
+  inherited property Bounds = <5,0,790,50>;
+
+  $rect <10,390,210,430>
+  inherited method UpdateLayout()
+  {
+    // Always invoke the inherited method.
+    super( aSize );
+
+    /*
+
+      HINT:
+
+      This method exists for sophisticated layout calculation. Please note, that in 
+      most cases it is completely sufficient to use the views property 'Layout' to
+      determine how the view should behave when the component is resized.
+
+    */
+
+    /*
+
+      TO DO:
+
+      Put here the code to calculate new position and size of enclosed views. The
+      current (new) size of the component itself is passed in the parameter aSize.
+      For example:
+
+        SomeView.Bounds = rect( 10, 10, aSize.x - 20, aSize.y - 20 );
+
+    */
+  }
+
+  $rect <10,350,210,390>
+  inherited method UpdateViewState()
+  {
+    super( aState );
+
+
+    if ( aState.contains( Core::ViewState[ Selected ]))
+        Rectangle.Color=#6C789FFB;
+    else
+         Rectangle.Color=#909B9FFB;
+  }
+
   // To do:
   // 
   // - Adjust the visible size of your component (the thick blue border).
@@ -1609,30 +1862,179 @@ class VinylView : Core::Group
   }
 
   $rect <20,20,160,60>
-  object Views::WarpImage Vinyl
+  object Views::Rectangle Rectangle
   {
-    preset Point4 = <1,200>;
-    preset Point3 = <184,200>;
-    preset Point2 = <184,8>;
-    preset Point1 = <1,8>;
-    preset Bitmap = Application::GenericVinyl;
+    preset Layout = Core::Layout[AlignToTop];
+    preset Bounds = <0,-5,791,49>;
+    preset ColorBL = #CDCDCDFF;
+    preset ColorBR = #CDCDCDFF;
+    preset Color = #909B9FFB;
   }
 
-  $rect <286,4,486,44>
-  object Effects::FloatEffect AngleEffect;
-
-  $rect <556,10,756,50>
-  slot OnAngleChange
+  $rect <20,20,160,60>
+  object Views::Text Title
   {
-    sender; /* the method is called from the sender object */
+    preset Bounds = <26,-1,523,49>;
+    preset Alignment = Views::TextAlignment[AlignHorzLeft, AlignVertCenter];
+    preset String = "Acid Rain";
+    preset Font = Application::Font;
   }
 
-  $rect <280,120,480,160>
-  method void Rotate()
+  $rect <20,20,160,60>
+  object Views::Text Artist
   {
-    var point desPos=Bounds.orect.center;
-    Vinyl.RotateAndScale( desPos, 1, 1, 1 );
+    preset Bounds = <446,0,783,49>;
+    preset Alignment = Views::TextAlignment[AlignHorzCenter, AlignVertCenter];
+    preset String = "Liquid Tension Experiment";
+    preset Font = Resources::FontSmall;
   }
+
+  $rect <-10,70,190,110>
+  property string SongTitle = "Title";
+
+  $rect <-10,110,190,150>
+  onset SongTitle
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure SongTitle == value )
+      return;
+
+    // Remember the property's new value.
+    pure SongTitle = value;
+    Title.String=value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <-10,150,190,190>
+  onget SongTitle
+  {
+    return pure SongTitle;
+  }
+
+  $rect <290,70,490,110>
+  property string SongArtist = "Artist";
+
+  $rect <290,110,490,150>
+  onset SongArtist
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure SongArtist == value )
+      return;
+
+    // Remember the property's new value.
+    pure SongArtist = value;
+    Artist.String=value;
+
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <290,150,490,190>
+  onget SongArtist
+  {
+    return pure SongArtist;
+  }
+
+  $rect <580,70,780,110>
+  property string Source;
+
+  $rect <580,110,780,150>
+  onset Source
+  {
+    // The value doesn't change - nothing to do.
+    if ( pure Source == value )
+      return;
+
+    // Remember the property's new value.
+    pure Source = value;
+
+    // TO DO:
+    // 
+    // Now you can handle the alternation of the property.
+  }
+
+  $rect <580,150,780,190>
+  onget Source
+  {
+    return pure Source;
+  }
+}
+
+$rect <640,130,840,170>
+$output false
+resource Resources::Bitmap PreviousIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\previous.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <640,170,840,210>
+$output false
+resource Resources::Bitmap NextIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\next.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <850,10,1050,50>
+$output false
+resource Resources::Bitmap PreviousPressedIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\previous_pressed.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <850,50,1050,90>
+$output false
+resource Resources::Bitmap NextPressedIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\next_pressed.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1075,-106,1275,-66>
+$output false
+resource Resources::Bitmap PreviousDisabledIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\previous_disabled.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
+}
+
+$rect <1070,-70,1270,-30>
+$output false
+resource Resources::Bitmap NextDisabledIcon
+{
+  attr bitmapfile FileName = .\Images and Icons\next_disabled.png;
+  attr bitmapformat Format = Native;
+  attr framesize FrameSize;
+  attr framedelay FrameDelay;
+  attr bitmapdithering Dithering = Auto;
+  attr bitmapmode Mode = Default;
 }
 
 // Directives to adapt the order of the above members according to how these members 
@@ -1643,7 +2045,6 @@ $member Inline
 $member Application
 $member TitleFont
 $member PlayerDialog
-$member ListView
 $member QueueView
 $member Background
 $member GenericVinyl
@@ -1662,3 +2063,10 @@ $member PausePressedIcon
 $member PlayPressedIcon
 $member LoopPressedIcon
 $member VinylView
+$member QueueItem
+$member PreviousIcon
+$member NextIcon
+$member PreviousPressedIcon
+$member NextPressedIcon
+$member PreviousDisabledIcon
+$member NextDisabledIcon

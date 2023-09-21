@@ -348,6 +348,12 @@ EW_DEFINE_CLASS( ResourcesFont, CoreResource, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT,
                  _.VMT, "Resources::Font" )
 EW_END_OF_CLASS( ResourcesFont )
 
+/* Include a file containing the font resource : 'Resources::FontSmall' */
+#include "_ResourcesFontSmall.h"
+
+/* Table with links to derived variants of the font resource : 'Resources::FontSmall' */
+EW_RES_WITHOUT_VARIANTS( ResourcesFontSmall )
+
 /* Include a file containing the font resource : 'Resources::FontMedium' */
 #include "_ResourcesFontMedium.h"
 

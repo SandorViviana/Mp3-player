@@ -26,9 +26,9 @@
 
 var EmWiApp;if(!EmWiApp)throw new Error("The application file '_project.js' isn't yet loaded!"
 );if(EmWiApp.abl)throw new Error("The unit file 'Simulation.js' included twice!"
-);EmWiApp.abl=(function(){var B=EmWiApp;var D={};
+);EmWiApp.abl=(function(){var B=EmWiApp;var C={};
 
 
-D._Init=function(){};D._ReInit=function(){};D.Bw=function(E){};return D;})();
+C._Init=function(){};C._ReInit=function(){};C.CI=function(D){};return C;})();
 
 /* Embedded Wizard */

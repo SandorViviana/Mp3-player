@@ -45,6 +45,9 @@
 #include "_ApplicationApplication.h"
 #include "_ApplicationDeviceClass.h"
 #include "_ApplicationPlayerDialog.h"
+#include "_ApplicationQueueItem.h"
+#include "_ApplicationQueueView.h"
+#include "_ApplicationVinylView.h"
 
 /* Font resource : 'Application::TitleFont' */
 EW_DECLARE_FONT_RES( ApplicationTitleFont )
@@ -81,6 +84,24 @@ EW_DECLARE_BITMAP_RES( ApplicationPlayPressedIcon )
 
 /* Bitmap resource : 'Application::LoopPressedIcon' */
 EW_DECLARE_BITMAP_RES( ApplicationLoopPressedIcon )
+
+/* Bitmap resource : 'Application::PreviousIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationPreviousIcon )
+
+/* Bitmap resource : 'Application::NextIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationNextIcon )
+
+/* Bitmap resource : 'Application::PreviousPressedIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationPreviousPressedIcon )
+
+/* Bitmap resource : 'Application::NextPressedIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationNextPressedIcon )
+
+/* Bitmap resource : 'Application::PreviousDisabledIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationPreviousDisabledIcon )
+
+/* Bitmap resource : 'Application::NextDisabledIcon' */
+EW_DECLARE_BITMAP_RES( ApplicationNextDisabledIcon )
 
 /* Forward declaration of the class WidgetSet::HorizontalSliderConfig */
 #ifndef _WidgetSetHorizontalSliderConfig_

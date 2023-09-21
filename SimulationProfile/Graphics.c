@@ -26,6 +26,7 @@
 
 #include "ewlocale.h"
 #include "_GraphicsCanvas.h"
+#include "_GraphicsWarpMatrix.h"
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 #include "Graphics.h"
@@ -619,5 +620,90 @@ EW_DEFINE_CLASS( GraphicsCanvas, ResourcesBitmap, group, group, InvalidArea, Inv
   GraphicsCanvas_OnSetFrameSize,
   GraphicsCanvas_Update,
 EW_END_OF_CLASS( GraphicsCanvas )
+
+/* Initializer for the class 'Graphics::WarpMatrix' */
+void GraphicsWarpMatrix__Init( GraphicsWarpMatrix _this, XObject aLink, XHandle aArg )
+{
+  /* At first initialize the super class ... */
+  XObject__Init( &_this->_.Super, aLink, aArg );
+
+  /* Allow the Immediate Garbage Collection to evalute the members of this class. */
+  _this->_.XObject._.GCT = EW_CLASS_GCT( GraphicsWarpMatrix );
+
+  /* Setup the VMT pointer */
+  _this->_.VMT = EW_CLASS( GraphicsWarpMatrix );
+
+  /* ... and initialize objects, variables, properties, etc. */
+  _this->isIdentity = 1;
+  _this->M11 = 1.0f;
+  _this->M22 = 1.0f;
+  _this->M33 = 1.0f;
+}
+
+/* Re-Initializer for the class 'Graphics::WarpMatrix' */
+void GraphicsWarpMatrix__ReInit( GraphicsWarpMatrix _this )
+{
+  /* At first re-initialize the super class ... */
+  XObject__ReInit( &_this->_.Super );
+}
+
+/* Finalizer method for the class 'Graphics::WarpMatrix' */
+void GraphicsWarpMatrix__Done( GraphicsWarpMatrix _this )
+{
+  /* Finalize this class */
+  _this->_.Super._.VMT = EW_CLASS( XObject );
+
+  /* Don't forget to deinitialize the super class ... */
+  XObject__Done( &_this->_.Super );
+}
+
+/* 'C' function for method : 'Graphics::WarpMatrix.CalculateZ()' */
+XBool GraphicsWarpMatrix_CalculateZ( GraphicsWarpMatrix _this, XFloat aX, XFloat 
+  aY )
+{
+  XFloat z = (( aX * _this->M31 ) + ( aY * _this->M32 )) + _this->M34;
+
+  _this->Z = z;
+  return 1;
+}
+
+/* 'C' function for method : 'Graphics::WarpMatrix.DeriveFromQuad()' */
+GraphicsWarpMatrix GraphicsWarpMatrix_DeriveFromQuad( GraphicsWarpMatrix _this, 
+  XFloat aX1, XFloat aY1, XFloat aX2, XFloat aY2, XFloat aX3, XFloat aY3, XFloat 
+  aX4, XFloat aY4 )
+{
+  XFloat deltaX1 = aX2 - aX3;
+  XFloat deltaY1 = aY2 - aY3;
+  XFloat deltaX2 = aX4 - aX3;
+  XFloat deltaY2 = aY4 - aY3;
+  XFloat sumX = (( aX1 - aX2 ) + aX3 ) - aX4;
+  XFloat sumY = (( aY1 - aY2 ) + aY3 ) - aY4;
+  XFloat det = ( deltaX1 * deltaY2 ) - ( deltaY1 * deltaX2 );
+
+  if ( det == 0.0f )
+    return 0;
+
+  _this->M31 = (( sumX * deltaY2 ) - ( sumY * deltaX2 )) / det;
+  _this->M32 = (( deltaX1 * sumY ) - ( deltaY1 * sumX )) / det;
+  _this->M33 = 0.0f;
+  _this->M34 = 1.0f;
+  _this->M11 = ( aX2 - aX1 ) + ( _this->M31 * aX2 );
+  _this->M12 = ( aX4 - aX1 ) + ( _this->M32 * aX4 );
+  _this->M14 = aX1;
+  _this->M21 = ( aY2 - aY1 ) + ( _this->M31 * aY2 );
+  _this->M22 = ( aY4 - aY1 ) + ( _this->M32 * aY4 );
+  _this->M24 = aY1;
+  _this->isIdentity = 0;
+  return _this;
+}
+
+/* Variants derived from the class : 'Graphics::WarpMatrix' */
+EW_DEFINE_CLASS_VARIANTS( GraphicsWarpMatrix )
+EW_END_OF_CLASS_VARIANTS( GraphicsWarpMatrix )
+
+/* Virtual Method Table (VMT) for the class : 'Graphics::WarpMatrix' */
+EW_DEFINE_CLASS( GraphicsWarpMatrix, XObject, _.VMT, _.VMT, _.VMT, _.VMT, _.VMT, 
+                 _.VMT, "Graphics::WarpMatrix" )
+EW_END_OF_CLASS( GraphicsWarpMatrix )
 
 /* Embedded Wizard */

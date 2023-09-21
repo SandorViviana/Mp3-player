@@ -891,15 +891,15 @@ void WidgetSetHorizontalSlider__Init( WidgetSetHorizontalSlider _this, XObject a
   CoreView_OnSetLayout((CoreView)&_this->TouchHandler, CoreLayoutAlignToBottom | 
   CoreLayoutAlignToLeft | CoreLayoutAlignToRight | CoreLayoutAlignToTop | CoreLayoutResizeHorz 
   | CoreLayoutResizeVert );
-  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->TouchHandler, _Const0003 );
-  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->TouchHandler, _Const0004 );
-  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->TouchHandler, _Const0005 );
-  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->TouchHandler, _Const0006 );
+  CoreQuadView__OnSetPoint4( &_this->TouchHandler, _Const0003 );
+  CoreQuadView__OnSetPoint3( &_this->TouchHandler, _Const0004 );
+  CoreQuadView__OnSetPoint2( &_this->TouchHandler, _Const0005 );
+  CoreQuadView__OnSetPoint1( &_this->TouchHandler, _Const0006 );
   CoreSimpleTouchHandler_OnSetRetargetOffset( &_this->TouchHandler, 16 );
   CoreSimpleTouchHandler_OnSetMaxStrikeCount( &_this->TouchHandler, 100 );
   _this->MaxValue = 100;
   _this->CurrentValue = 50;
-  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->TouchHandler ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->TouchHandler ), 0 );
   _this->RepetitionTimer.OnTrigger = EwNewSlot( _this, WidgetSetHorizontalSlider_onRepetitionTimer );
   _this->KeyHandlerLeft.OnRelease = EwNewSlot( _this, WidgetSetHorizontalSlider_onReleaseKey );
   _this->KeyHandlerLeft.OnPress = EwNewSlot( _this, WidgetSetHorizontalSlider_onPressKey );
@@ -1046,52 +1046,52 @@ void WidgetSetHorizontalSlider_UpdateViewState( WidgetSetHorizontalSlider _this,
   if ( needsTrackLeft && ( _this->frameView2 == 0 ))
   {
     _this->frameView2 = EwNewObject( ViewsFrame, 0 );
-    CoreGroup_Add((CoreGroup)_this, ((CoreView)_this->frameView2 ), 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->frameView2 ), 0 );
     restack = 1;
   }
   else
     if ( !needsTrackLeft && ( _this->frameView2 != 0 ))
     {
-      CoreGroup_Remove((CoreGroup)_this, ((CoreView)_this->frameView2 ));
+      CoreGroup__Remove( _this, ((CoreView)_this->frameView2 ));
       _this->frameView2 = 0;
     }
 
   if ( needsTrackRight && ( _this->frameView3 == 0 ))
   {
     _this->frameView3 = EwNewObject( ViewsFrame, 0 );
-    CoreGroup_Add((CoreGroup)_this, ((CoreView)_this->frameView3 ), 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->frameView3 ), 0 );
     restack = 1;
   }
   else
     if ( !needsTrackRight && ( _this->frameView3 != 0 ))
     {
-      CoreGroup_Remove((CoreGroup)_this, ((CoreView)_this->frameView3 ));
+      CoreGroup__Remove( _this, ((CoreView)_this->frameView3 ));
       _this->frameView3 = 0;
     }
 
   if ( needsThumb && ( _this->imageView == 0 ))
   {
     _this->imageView = EwNewObject( ViewsImage, 0 );
-    CoreGroup_Add((CoreGroup)_this, ((CoreView)_this->imageView ), 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->imageView ), 0 );
     restack = 1;
   }
   else
     if ( !needsThumb && ( _this->imageView != 0 ))
     {
-      CoreGroup_Remove((CoreGroup)_this, ((CoreView)_this->imageView ));
+      CoreGroup__Remove( _this, ((CoreView)_this->imageView ));
       _this->imageView = 0;
     }
 
   if ( restack )
   {
     if ( _this->frameView2 != 0 )
-      CoreGroup_RestackTop((CoreGroup)_this, ((CoreView)_this->frameView2 ));
+      CoreGroup__RestackTop( _this, ((CoreView)_this->frameView2 ));
 
     if ( _this->frameView3 != 0 )
-      CoreGroup_RestackTop((CoreGroup)_this, ((CoreView)_this->frameView3 ));
+      CoreGroup__RestackTop( _this, ((CoreView)_this->frameView3 ));
 
     if ( _this->imageView != 0 )
-      CoreGroup_RestackTop((CoreGroup)_this, ((CoreView)_this->imageView ));
+      CoreGroup__RestackTop( _this, ((CoreView)_this->imageView ));
   }
 
   isEnabled = (( aState & CoreViewStateEnabled ) == CoreViewStateEnabled );
@@ -1714,10 +1714,19 @@ EW_DEFINE_CLASS( WidgetSetHorizontalSlider, CoreGroup, RepetitionTimer, imageVie
   CoreGroup_ChangeViewState,
   WidgetSetHorizontalSlider_OnSetBounds,
   CoreGroup_OnSetFocus,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_SwitchToDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_PresentDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   WidgetSetHorizontalSlider_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_FindSiblingView,
+  CoreGroup_FadeGroup,
+  CoreGroup_RestackTop,
+  CoreGroup_Remove,
+  CoreGroup_Add,
 EW_END_OF_CLASS( WidgetSetHorizontalSlider )
 
 /* Initializer for the class 'WidgetSet::PushButton' */
@@ -1745,13 +1754,13 @@ void WidgetSetPushButton__Init( WidgetSetPushButton _this, XObject aLink, XHandl
   CoreView_OnSetLayout((CoreView)&_this->TouchHandler, CoreLayoutAlignToBottom | 
   CoreLayoutAlignToLeft | CoreLayoutAlignToRight | CoreLayoutAlignToTop | CoreLayoutResizeHorz 
   | CoreLayoutResizeVert );
-  CoreQuadView_OnSetPoint4((CoreQuadView)&_this->TouchHandler, _Const0003 );
-  CoreQuadView_OnSetPoint3((CoreQuadView)&_this->TouchHandler, _Const0009 );
-  CoreQuadView_OnSetPoint2((CoreQuadView)&_this->TouchHandler, _Const000A );
-  CoreQuadView_OnSetPoint1((CoreQuadView)&_this->TouchHandler, _Const0006 );
+  CoreQuadView__OnSetPoint4( &_this->TouchHandler, _Const0003 );
+  CoreQuadView__OnSetPoint3( &_this->TouchHandler, _Const0009 );
+  CoreQuadView__OnSetPoint2( &_this->TouchHandler, _Const000A );
+  CoreQuadView__OnSetPoint1( &_this->TouchHandler, _Const0006 );
   CoreSimpleTouchHandler_OnSetRetargetOffset( &_this->TouchHandler, 16 );
   CoreSimpleTouchHandler_OnSetMaxStrikeCount( &_this->TouchHandler, 100 );
-  CoreGroup_Add((CoreGroup)_this, ((CoreView)&_this->TouchHandler ), 0 );
+  CoreGroup__Add( _this, ((CoreView)&_this->TouchHandler ), 0 );
   _this->FlashTimer.OnTrigger = EwNewSlot( _this, WidgetSetPushButton_onFlashTimer );
   _this->KeyHandler.OnRelease = EwNewSlot( _this, WidgetSetPushButton_onReleaseKey );
   _this->KeyHandler.OnPress = EwNewSlot( _this, WidgetSetPushButton_onPressKey );
@@ -1883,53 +1892,53 @@ void WidgetSetPushButton_UpdateViewState( WidgetSetPushButton _this, XSet aState
   if ( needsFace && ( _this->frameView == 0 ))
   {
     _this->frameView = EwNewObject( ViewsFrame, 0 );
-    CoreGroup_Add((CoreGroup)_this, ((CoreView)_this->frameView ), 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->frameView ), 0 );
     restack = 1;
   }
   else
     if ( !needsFace && ( _this->frameView != 0 ))
     {
-      CoreGroup_Remove((CoreGroup)_this, ((CoreView)_this->frameView ));
+      CoreGroup__Remove( _this, ((CoreView)_this->frameView ));
       _this->frameView = 0;
     }
 
   if ( needsIcon && ( _this->imageView == 0 ))
   {
     _this->imageView = EwNewObject( ViewsImage, 0 );
-    CoreGroup_Add((CoreGroup)_this, ((CoreView)_this->imageView ), 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->imageView ), 0 );
     restack = 1;
   }
   else
     if ( !needsIcon && ( _this->imageView != 0 ))
     {
-      CoreGroup_Remove((CoreGroup)_this, ((CoreView)_this->imageView ));
+      CoreGroup__Remove( _this, ((CoreView)_this->imageView ));
       _this->imageView = 0;
     }
 
   if ( needsLabel && ( _this->textView == 0 ))
   {
     _this->textView = EwNewObject( ViewsText, 0 );
-    CoreGroup_Add((CoreGroup)_this, ((CoreView)_this->textView ), 0 );
+    CoreGroup__Add( _this, ((CoreView)_this->textView ), 0 );
     restack = 1;
     ViewsText_OnSetEnableBidiText( _this->textView, 1 );
   }
   else
     if ( !needsLabel && ( _this->textView != 0 ))
     {
-      CoreGroup_Remove((CoreGroup)_this, ((CoreView)_this->textView ));
+      CoreGroup__Remove( _this, ((CoreView)_this->textView ));
       _this->textView = 0;
     }
 
   if ( restack )
   {
     if ( _this->frameView != 0 )
-      CoreGroup_RestackTop((CoreGroup)_this, ((CoreView)_this->frameView ));
+      CoreGroup__RestackTop( _this, ((CoreView)_this->frameView ));
 
     if ( _this->imageView != 0 )
-      CoreGroup_RestackTop((CoreGroup)_this, ((CoreView)_this->imageView ));
+      CoreGroup__RestackTop( _this, ((CoreView)_this->imageView ));
 
     if ( _this->textView != 0 )
-      CoreGroup_RestackTop((CoreGroup)_this, ((CoreView)_this->textView ));
+      CoreGroup__RestackTop( _this, ((CoreView)_this->textView ));
   }
 
   isEnabled = (( aState & CoreViewStateEnabled ) == CoreViewStateEnabled );
@@ -2101,6 +2110,7 @@ void WidgetSetPushButton_onPressKey( WidgetSetPushButton _this, XObject sender )
     CoreTimer_OnSetEnabled( &_this->FlashTimer, 0 );
 
   _this->onPressKeyTime = _this->KeyHandler.Time;
+  EwPostSignal( _this->OnPress, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'WidgetSet::PushButton.onLeaveTouch()' */
@@ -2160,6 +2170,8 @@ void WidgetSetPushButton_onPressTouch( WidgetSetPushButton _this, XObject sender
 
   if ( _this->FlashTimer.Enabled )
     CoreTimer_OnSetEnabled( &_this->FlashTimer, 0 );
+
+  EwPostSignal( _this->OnPress, ((XObject)_this ));
 }
 
 /* 'C' function for method : 'WidgetSet::PushButton.OnSetIcon()' */
@@ -2221,10 +2233,19 @@ EW_DEFINE_CLASS( WidgetSetPushButton, CoreGroup, FlashTimer, textView, OnRelease
   CoreGroup_ChangeViewState,
   WidgetSetPushButton_OnSetBounds,
   CoreGroup_OnSetFocus,
+  CoreGroup_OnSetOpacity,
+  CoreGroup_SwitchToDialog,
+  CoreGroup_DismissDialog,
+  CoreGroup_PresentDialog,
   CoreGroup_DispatchEvent,
   CoreGroup_BroadcastEvent,
   WidgetSetPushButton_UpdateViewState,
   CoreGroup_InvalidateArea,
+  CoreGroup_FindSiblingView,
+  CoreGroup_FadeGroup,
+  CoreGroup_RestackTop,
+  CoreGroup_Remove,
+  CoreGroup_Add,
 EW_END_OF_CLASS( WidgetSetPushButton )
 
 /* Embedded Wizard */

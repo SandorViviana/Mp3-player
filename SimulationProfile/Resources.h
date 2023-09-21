@@ -45,6 +45,10 @@
 #include "_ResourcesBitmap.h"
 #include "_ResourcesFont.h"
 
+/* The small version of the default font resource. The resource is using 'Roboto' 
+   TrueType font with 18 pixel height. */
+EW_DECLARE_FONT_RES( ResourcesFontSmall )
+
 /* The medium version of the default font resource. The resource is using 'Roboto' 
    TrueType font with 24 pixel height. */
 EW_DECLARE_FONT_RES( ResourcesFontMedium )

@@ -124,7 +124,6 @@ EW_DEFINE_FIELDS( ViewsImage, CoreRectView )
   EW_PROPERTY( Bitmap,          ResourcesBitmap )
   EW_VARIABLE( startTime,       XUInt32 )
   EW_VARIABLE( animFrameNumber, XInt32 )
-  EW_PROPERTY( Orientation,     XEnum )
   EW_PROPERTY( Color,           XColor )
   EW_PROPERTY( Alignment,       XSet )
   EW_PROPERTY( FrameNumber,     XInt32 )
@@ -185,9 +184,6 @@ void ViewsImage_observerSlot( ViewsImage _this, XObject sender );
 
 /* 'C' function for method : 'Views::Image.timerSlot()' */
 void ViewsImage_timerSlot( ViewsImage _this, XObject sender );
-
-/* 'C' function for method : 'Views::Image.OnSetOrientation()' */
-void ViewsImage_OnSetOrientation( ViewsImage _this, XEnum value );
 
 /* 'C' function for method : 'Views::Image.OnSetColor()' */
 void ViewsImage_OnSetColor( ViewsImage _this, XColor value );

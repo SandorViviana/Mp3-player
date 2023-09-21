@@ -140,6 +140,7 @@ EW_DEFINE_FIELDS( ViewsText, CoreRectView )
   EW_VARIABLE( reparsed,        XBool )
   EW_PROPERTY( EnableBidiText,  XBool )
   EW_PROPERTY( Ellipsis,        XBool )
+  EW_PROPERTY( AutoSize,        XBool )
   EW_PROPERTY( WrapText,        XBool )
 EW_END_OF_FIELDS( ViewsText )
 
@@ -219,6 +220,9 @@ void ViewsText_OnSetEnableBidiText( ViewsText _this, XBool value );
 /* The onset method for the property 'Ellipsis' changes the ellipsis mode and forces 
    an update. */
 void ViewsText_OnSetEllipsis( ViewsText _this, XBool value );
+
+/* 'C' function for method : 'Views::Text.OnSetAutoSize()' */
+void ViewsText_OnSetAutoSize( ViewsText _this, XBool value );
 
 /* 'C' function for method : 'Views::Text.OnSetWrapText()' */
 void ViewsText_OnSetWrapText( ViewsText _this, XBool value );

@@ -45,6 +45,7 @@
 #include "_CoreCursorEvent.h"
 #include "_CoreCursorGrabEvent.h"
 #include "_CoreCursorHit.h"
+#include "_CoreDialogContext.h"
 #include "_CoreDragEvent.h"
 #include "_CoreEvent.h"
 #include "_CoreGroup.h"
@@ -58,8 +59,13 @@
 #include "_CoreResource.h"
 #include "_CoreRoot.h"
 #include "_CoreSimpleTouchHandler.h"
+#include "_CoreSlideTouchHandler.h"
+#include "_CoreTask.h"
+#include "_CoreTaskQueue.h"
 #include "_CoreTimer.h"
+#include "_CoreVerticalList.h"
 #include "_CoreView.h"
+#include "_CoreWipeTouchHandler.h"
 
 /* Global constant containing the preferred size of the screen in pixel. */
 extern const XPoint EwScreenSize;
@@ -139,6 +145,20 @@ typedef XEnum CoreFormation;
 #define CoreFormationLeftToRight_BottomToTop                10
 #define CoreFormationRightToLeft_TopToBottom                11
 #define CoreFormationRightToLeft_BottomToTop                12
+
+/* The definition Core::Direction determines available directions the user can navigate 
+   in the GUI. */
+typedef XEnum CoreDirection;
+
+#define CoreDirectionNone                                   0
+#define CoreDirectionTopLeft                                1
+#define CoreDirectionLeft                                   2
+#define CoreDirectionBottomLeft                             3
+#define CoreDirectionTop                                    4
+#define CoreDirectionBottom                                 5
+#define CoreDirectionTopRight                               6
+#define CoreDirectionRight                                  7
+#define CoreDirectionBottomRight                            8
 
 /* The enumeration Core::KeyCode provides a set of predefined keyboard codes very 
    common to mobile and remote control devices, e.g. Menu, Left, Up, Ok, Exit, Play, 
