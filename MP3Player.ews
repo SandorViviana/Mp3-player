@@ -1,12 +1,12 @@
 $version 1.0
 
-attr active = Application::PlayerDialog;
+attr active = Simulation::DeviceClass;
 attr callStackMonitor_Show = false;
 attr codeColSelect = false;
 attr codeFirstPos = <0,0>;
-attr codeInspector = Application::PlayerDialog.OnEnded;
-attr codeSelEnd = <27,2>;
-attr codeSelStart = <27,2>;
+attr codeInspector = Simulation::DeviceClass.GetSizeOfList;
+attr codeSelEnd = <0,0>;
+attr codeSelStart = <0,0>;
 attr connectInspectors = false;
 attr debug_TrackUpdates = false;
 attr extractDoc_ClassOverview = true;
@@ -35,39 +35,15 @@ attr selectedProfiles = SimulationProfile,WebGL;
 view Project
 {
   attr enableWireMode = false;
-  attr scrollTo = <-7,-51>;
+  attr scrollTo = <-7,-7>;
   attr zoom = 1.0;
 }
 
 view unit Application
 {
   attr enableWireMode = false;
-  attr scrollTo = <119,-251>;
+  attr scrollTo = <-315,-224>;
   attr zoom = 0.5;
-}
-
-view class Application::DeviceClass
-{
-  attr codeColSelect = false;
-  attr codeFirstPos = <0,0>;
-  attr codeInspector = CanGoNext;
-  attr codeSelEnd = <49,0>;
-  attr codeSelStart = <49,0>;
-  attr enableWireMode = false;
-  attr scrollTo = <-153,171>;
-  attr zoom = 0.5;
-}
-
-view class Application::PlayerDialog
-{
-  attr codeColSelect = false;
-  attr codeFirstPos = <0,0>;
-  attr codeInspector = OnEnded;
-  attr codeSelEnd = <27,2>;
-  attr codeSelStart = <27,2>;
-  attr enableWireMode = false;
-  attr scrollTo = <-121,27>;
-  attr zoom = 0.75;
 }
 
 view vclass Simulation::Application
@@ -78,8 +54,8 @@ view vclass Simulation::Application
   attr codeSelEnd = <17,4>;
   attr codeSelStart = <17,4>;
   attr enableWireMode = false;
-  attr scrollTo = <188,12>;
-  attr zoom = 0.5;
+  attr scrollTo = <-514,-201>;
+  attr zoom = 0.25;
 }
 
 view unit Simulation
@@ -93,34 +69,36 @@ view vclass Simulation::DeviceClass
 {
   attr codeColSelect = false;
   attr codeFirstPos = <0,0>;
-  attr codeInspector = GetTitleById;
-  attr codeSelEnd = <61,4>;
-  attr codeSelStart = <61,4>;
+  attr codeInspector = GetSizeOfList;
+  attr codeSelEnd = <0,0>;
+  attr codeSelStart = <0,0>;
   attr enableWireMode = false;
-  attr scrollTo = <-23,-105>;
+  attr scrollTo = <-199,-153>;
   attr zoom = 0.75;
 }
 
 view class Application::QueueView
 {
   attr codeColSelect = false;
-  attr codeFirstPos = <0,1>;
+  attr codeFirstPos = <0,7>;
   attr codeInspector = OnSelect;
-  attr codeSelEnd = <46,13>;
-  attr codeSelStart = <46,13>;
+  attr codeSelEnd = <46,17>;
+  attr codeSelStart = <46,17>;
   attr enableWireMode = false;
-  attr scrollTo = <-199,-64>;
+  attr scrollTo = <-199,-16>;
   attr zoom = 0.5;
 }
 
-view class Application::QueueItem
+view unit Core
 {
-  attr codeColSelect = false;
-  attr codeFirstPos = <0,0>;
-  attr codeInspector = UpdateViewState;
-  attr codeSelEnd = <32,5>;
-  attr codeSelStart = <32,5>;
   attr enableWireMode = false;
-  attr scrollTo = <-91,-45>;
-  attr zoom = 1.5;
+  attr scrollTo = <-7,-7>;
+  attr zoom = 1.0;
+}
+
+view class Application::Application
+{
+  attr enableWireMode = false;
+  attr scrollTo = <-7,105>;
+  attr zoom = 1.0;
 }

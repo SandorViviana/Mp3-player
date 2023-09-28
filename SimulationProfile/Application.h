@@ -127,9 +127,8 @@ typedef XEnum ApplicationState;
 #define ApplicationStateCanPlay                             0
 #define ApplicationStatePlaying                             1
 #define ApplicationStatePaused                              2
-#define ApplicationStateSeeking                             3
-#define ApplicationStateError                               4
-#define ApplicationStateEnded                               5
+#define ApplicationStateError                               3
+#define ApplicationStateEnded                               4
 
 /* User defined auto object: 'Application::PushButtonConfig' */
 EW_DECLARE_AUTOOBJECT( ApplicationPushButtonConfig, WidgetSetPushButtonConfig )

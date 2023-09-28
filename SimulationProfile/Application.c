@@ -92,7 +92,7 @@ static const XRect _Const000D = {{ 375, 436 }, { 425, 486 }};
 static const XRect _Const000E = {{ 298, 337 }, { 353, 387 }};
 static const XRect _Const000F = {{ 344, 335 }, { 405, 385 }};
 static const XRect _Const0010 = {{ -5, -1 }, { 474, 349 }};
-static const XRect _Const0011 = {{ 302, 432 }, { 483, 486 }};
+static const XRect _Const0011 = {{ 7, 432 }, { 800, 486 }};
 static const XRect _Const0012 = {{ 249, 338 }, { 299, 387 }};
 static const XRect _Const0013 = {{ 402, 341 }, { 452, 386 }};
 static const XStringRes _Const0014 = { _StringsDefault0, 0x0022 };
@@ -101,7 +101,7 @@ static const XRect _Const0016 = {{ -6, -10 }, { 808, 480 }};
 static const XColor _Const0017 = { 0x12, 0x15, 0x16, 0xFF };
 static const XRect _Const0018 = {{ 17, 127 }, { 779, 372 }};
 static const XRect _Const0019 = {{ 355, -2 }, { 405, 48 }};
-static const XRect _Const001A = {{ 240, -2 }, { 517, 40 }};
+static const XRect _Const001A = {{ 3, -2 }, { 797, 51 }};
 static const XRect _Const001B = {{ 18, 126 }, { 781, 370 }};
 static const XPoint _Const001C = { 0, 50 };
 static const XPoint _Const001D = { 19, 131 };
@@ -135,9 +135,6 @@ static const XStringRes _Const0038 = { _StringsDefault0, 0x00A9 };
 static const XRect _Const0039 = {{ 446, 0 }, { 783, 49 }};
 static const XStringRes _Const003A = { _StringsDefault0, 0x00B5 };
 static const XColor _Const003B = { 0x6C, 0x78, 0x9F, 0xFB };
-
-/* User defined inline code: 'Application::Inline' */
- 
 
 /* Initializer for the class 'Application::Application' */
 void ApplicationApplication__Init( ApplicationApplication _this, XObject aLink, XHandle aArg )
@@ -853,7 +850,10 @@ void ApplicationQueueView_OnLoadItem( ApplicationQueueView _this, XObject sender
   EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass ), itemNo ));
 
   if ( !EwCompString( itemView->Source, EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->Src ))
+  {
     CoreVerticalList_OnSetSelectedItem( &_this->Queue, itemNo );
+    CoreVerticalList_EnsureVisible( &_this->Queue, itemNo, 1, 0, EwNullSlot );
+  }
 
   CoreRectView__OnSetBounds( itemView, EwSetRectSize( itemView->Super2.Bounds, _this->Queue.ViewSize ));
 }
@@ -888,6 +888,14 @@ void ApplicationQueueView_OnSelect( ApplicationQueueView _this, XObject sender )
     CoreVerticalList_OnSetSelectedItem( &_this->Queue, itemNo );
     ApplicationDeviceClass_OnSetCurrentFileIndex( EwGetAutoObject( &ApplicationDevice, 
     ApplicationDeviceClass ), itemNo );
+    CoreVerticalList_EnsureVisible( &_this->Queue, itemNo, 1, 0, EwNullSlot );
+    CoreGroup__DismissDialog( _this->Super3.Owner, ((CoreGroup)_this ), ((EffectsTransition)EwGetAutoObject( 
+    &EffectsSlideDownCentered, EffectsSlideTransition )), 0, 0, EwNullSlot, EwNullSlot, 
+    0 );
+
+    if ( EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->PlayerState 
+        == ApplicationStatePlaying )
+      ApplicationDeviceClass__Play( EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass ));
   }
 }
 

@@ -1,7 +1,7 @@
 ﻿$version 12.05
 
 // This is the root component of the entire GUI application.
-$rect <20,20,220,60>
+$rect <-270,-179,-70,-139>
 class Application : Core::Root
 {
   $rect <820,10,1020,50>
@@ -45,7 +45,7 @@ class Application : Core::Root
   }
 }
 
-$rect <430,-100,630,-60>
+$rect <789,-190,989,-150>
 $output false
 resource Resources::Font TitleFont
 {
@@ -61,13 +61,13 @@ resource Resources::Font TitleFont
   attr fontrowdistance RowDistance;
 }
 
-$rect <220,20,420,60>
+$rect <-290,-50,-90,-10>
 class PlayerDialog : Core::Group
 {
-  $rect <920,40,1120,80>
+  $rect <900,-10,1100,30>
   inherited property Bounds = <0,0,800,480>;
 
-  $rect <19,560,219,600>
+  $rect <900,110,1100,150>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -96,7 +96,7 @@ class PlayerDialog : Core::Group
     */
   }
 
-  $rect <19,520,219,560>
+  $rect <900,70,1100,110>
   inherited method UpdateViewState()
   {
     // Always invoke the inherited method.
@@ -254,7 +254,7 @@ class PlayerDialog : Core::Group
     preset Bitmap = Resources::NavigationIconsLarge;
   }
 
-  $rect <19,600,219,640>
+  $rect <900,150,1100,190>
   inherited method Init()
   {
     deviceRef = Application::Device;
@@ -271,13 +271,13 @@ class PlayerDialog : Core::Group
   }
 
   // Conceptual equivalent to TimeUpdate
-  $rect <280,530,477,570>
+  $rect <1133,160,1330,200>
   slot OnSliderChange
   {
     deviceRef.UpdateTimeFromSlider(Playback.CurrentValue);
   }
 
-  $rect <560,530,760,570>
+  $rect <890,379,1090,419>
   $output true
   var Application::DeviceClass deviceRef = null;
 
@@ -303,7 +303,7 @@ class PlayerDialog : Core::Group
     preset Appearance = Application::PushButtonConfig;
   }
 
-  $rect <890,310,1090,350>
+  $rect <-8,790,192,830>
   $output true
   slot OnLoop
   {
@@ -315,7 +315,7 @@ class PlayerDialog : Core::Group
 
   }
 
-  $rect <270,570,470,610>
+  $rect <1123,200,1323,240>
   slot OnTimeUpdate
   {
     EnableDisableButtons();
@@ -342,7 +342,7 @@ class PlayerDialog : Core::Group
     Title.String=Application::Device.TitleOfTrack;
   }
 
-  $rect <850,390,1050,430>
+  $rect <252,670,452,710>
   slot PlayPausedPressed
   {
     switch(Application::Device.PlayerState)
@@ -355,7 +355,7 @@ class PlayerDialog : Core::Group
     }
   }
 
-  $rect <899,270,1100,310>
+  $rect <1,670,202,710>
   slot OnPlayPause
   {
     switch(Application::Device.PlayerState)
@@ -381,7 +381,7 @@ class PlayerDialog : Core::Group
 
   }
 
-  $rect <870,519,1070,559>
+  $rect <972,670,1172,710>
   method void OnPlay()
   {
     deviceRef.Play();
@@ -390,7 +390,7 @@ class PlayerDialog : Core::Group
     Application::Device.UpdatePlayerState( Application::State.Playing );
   }
 
-  $rect <870,560,1070,600>
+  $rect <972,720,1172,760>
   method void OnPause()
   {
     deviceRef.Pause();
@@ -399,7 +399,7 @@ class PlayerDialog : Core::Group
     Application::Device.UpdatePlayerState( Application::State.Paused );
   }
 
-  $rect <870,599,1070,639>
+  $rect <972,769,1172,809>
   method void OnEnded()
   {
     Application::Device.CurrentFileIndex+=1;
@@ -416,7 +416,7 @@ class PlayerDialog : Core::Group
     preset Bounds = <-5,-1,474,349>;
   }
 
-  $rect <10,659,210,699>
+  $rect <1120,259,1320,299>
   slot OnOpenQueue
   {
     Owner.SwitchToDialog( new Application::QueueView, Effects::SlideUpCentered, null, null, null, null, null, null, null, null, false );
@@ -427,7 +427,7 @@ class PlayerDialog : Core::Group
   $rect <20,20,160,60>
   object Core::WipeTouchHandler OpenQueue
   {
-    preset Bounds = <302,432,483,486>;
+    preset Bounds = <7,432,800,486>;
     preset OnTop = OnOpenQueue;
   }
 
@@ -453,7 +453,7 @@ class PlayerDialog : Core::Group
     preset Appearance = Application::PushButtonConfig;
   }
 
-  $rect <1170,260,1370,300>
+  $rect <-8,889,192,929>
   slot OnPrevious
   {
     Application::Device.CurrentFileIndex-=1;
@@ -462,25 +462,25 @@ class PlayerDialog : Core::Group
 
   }
 
-  $rect <1159,300,1359,340>
+  $rect <-8,960,192,1000>
   slot OnNext
   {
     OnNextMethod();
   }
 
-  $rect <1150,390,1350,430>
+  $rect <252,889,452,929>
   slot PreviousPressed
   {
     PreviousButton.Icon=Application::PreviousPressedIcon;
   }
 
-  $rect <1140,430,1340,470>
+  $rect <252,960,452,1000>
   slot NextPressed
   {
     NextButton.Icon=Application::NextPressedIcon;
   }
 
-  $rect <870,640,1070,680>
+  $rect <971,960,1171,1000>
   method void OnNextMethod()
   {
     Application::Device.CurrentFileIndex+=1;
@@ -490,35 +490,35 @@ class PlayerDialog : Core::Group
 
   }
 
-  $rect <1233,537,1433,577>
+  $rect <701,880,901,920>
   method void DisablePrevious()
   {
      PreviousButton.Enabled=false;
      PreviousButton.Icon=Application::PreviousDisabledIcon;
   }
 
-  $rect <1230,579,1430,619>
+  $rect <691,960,891,1000>
   method void DisableNext()
   {
      NextButton.Icon=Application::NextDisabledIcon;
      NextButton.Enabled=false;
   }
 
-  $rect <1470,530,1670,570>
+  $rect <492,880,692,920>
   method void EnablePrevious()
   {
     PreviousButton.Enabled=true;
     PreviousButton.Icon=Application::PreviousIcon;
   }
 
-  $rect <1470,570,1670,610>
+  $rect <491,960,691,1000>
   method void EnableNext()
   {
      NextButton.Enabled=true;
      NextButton.Icon=Application::NextIcon;
   }
 
-  $rect <1450,400,1650,440>
+  $rect <581,820,781,860>
   method void EnableDisableButtons()
   {
     if(Application::Device.CanGoBefore())
@@ -527,6 +527,42 @@ class PlayerDialog : Core::Group
     if(Application::Device.CanGoNext())
           EnableNext();
     else DisableNext();
+  }
+
+  // Player controls
+  note group Note
+  {
+    attr Bounds = <-38,531,1261,1040>;
+  }
+
+  // Slot methods
+  note group Note1
+  {
+    attr Bounds = <-19,630,221,1020>;
+  }
+
+  // Pressed buttons
+  note group Note2
+  {
+    attr Bounds = <240,630,461,1020>;
+  }
+
+  // Enable/Disable
+  note group Note3
+  {
+    attr Bounds = <491,754,920,1020>;
+  }
+
+  // State changers
+  note group Note4
+  {
+    attr Bounds = <941,629,1242,826>;
+  }
+
+  // Additional methods
+  note group Note5
+  {
+    attr Bounds = <941,889,1240,1020>;
   }
 
   // Directives to adapt the order of the above members according to how these members 
@@ -570,6 +606,12 @@ class PlayerDialog : Core::Group
   $member EnablePrevious
   $member EnableNext
   $member EnableDisableButtons
+  $member Note
+  $member Note1
+  $member Note2
+  $member Note3
+  $member Note4
+  $member Note5
 
   // Directives to adapt the order of members belonging to this class so they appear 
   // correctly arranged relative to the members inherited from the ancestor (super) 
@@ -579,14 +621,14 @@ class PlayerDialog : Core::Group
   $reorder Init 2
 }
 
-$rect <220,60,420,100>
+$rect <-290,-10,-90,30>
 $output false
 class QueueView : Core::Group
 {
-  $rect <630,590,1430,630>
+  $rect <861,0,1050,40>
   inherited property Bounds = <0,0,800,480>;
 
-  $rect <40,619,240,659>
+  $rect <50,550,250,590>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -615,7 +657,7 @@ class QueueView : Core::Group
     */
   }
 
-  $rect <40,579,240,619>
+  $rect <50,510,250,550>
   inherited method UpdateViewState()
   {
     // Always invoke the inherited method.
@@ -734,7 +776,7 @@ class QueueView : Core::Group
 
   // This method is called by 'VerticalList' every time the list loads or updates \
   // an item.
-  $rect <820,30,1050,70>
+  $rect <450,510,680,550>
   slot OnLoadItem
   {
     // Get the number of the item to load. The list component takes care of the
@@ -753,7 +795,9 @@ class QueueView : Core::Group
     itemView.Artist.String=Application::Device.GetArtistById(itemNo);
     itemView.Source=Application::Device.GetSongById( itemNo );
     if(itemView.Source==Application::Device.Src)
-            Queue.SelectedItem=itemNo;
+         {   Queue.SelectedItem=itemNo;
+             Queue.EnsureVisible( itemNo, true, null, null );
+         }
 
     // Ensure that the item has correct size. The position of the item will be
     // managed by the list component.
@@ -774,11 +818,11 @@ class QueueView : Core::Group
   $rect <20,20,160,60>
   object Core::WipeTouchHandler BackToPlayer
   {
-    preset Bounds = <240,-2,517,40>;
+    preset Bounds = <3,-2,797,51>;
     preset OnBottom = OnReturnToPlayer;
   }
 
-  $rect <830,90,1030,120>
+  $rect <859,202,1059,242>
   slot OnReturnToPlayer
   {
     //this.Visible=false;
@@ -805,10 +849,9 @@ class QueueView : Core::Group
     preset RetargetCondition = Core::RetargetReason[WipeDown, WipeUp];
   }
 
-  $rect <830,139,1030,179>
+  $rect <859,240,1059,280>
   slot OnSelect
   {
-
     if ( SelectHandler.AutoDeflected )
      { 
      return;
@@ -822,13 +865,17 @@ class QueueView : Core::Group
 
       Queue.SelectedItem = itemNo;
       Application::Device.CurrentFileIndex=itemNo;
+      Queue.EnsureVisible( itemNo, true, null, null );
+      Owner.DismissDialog( this, Effects::SlideDownCentered, null, null, null, null, false );
+       if(Application::Device.PlayerState==Application::State.Playing) 
+              Application::Device.Play();
 
 
     }
   }
 }
 
-$rect <640,-100,840,-60>
+$rect <340,-190,540,-150>
 $output false
 resource Resources::Bitmap Background
 {
@@ -840,7 +887,7 @@ resource Resources::Bitmap Background
   attr bitmapmode Mode = Default;
 }
 
-$rect <640,-60,840,-20>
+$rect <340,-150,540,-110>
 $output false
 resource Resources::Bitmap GenericVinyl
 {
@@ -852,7 +899,7 @@ resource Resources::Bitmap GenericVinyl
   attr bitmapmode Mode = Default;
 }
 
-$rect <430,-60,630,-20>
+$rect <789,-150,989,-110>
 $output false
 resource Resources::Font Font
 {
@@ -868,7 +915,7 @@ resource Resources::Font Font
   attr fontrowdistance RowDistance;
 }
 
-$rect <430,-20,630,20>
+$rect <789,-110,989,-70>
 $output false
 resource Resources::Font TimeFont
 {
@@ -884,7 +931,7 @@ resource Resources::Font TimeFont
   attr fontrowdistance RowDistance;
 }
 
-$rect <640,-30,840,10>
+$rect <339,-110,539,-70>
 $output false
 resource Resources::Bitmap Thumb
 {
@@ -897,7 +944,7 @@ resource Resources::Bitmap Thumb
 }
 
 // This object contains configuration information for a slider widget.
-$rect <320,220,610,260>
+$rect <360,219,650,259>
 $output false
 autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
 {
@@ -933,15 +980,7 @@ autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
   preset TrackLeftDefault = WidgetSet::HorizontalSliderTrackSmall;
 }
 
-$rect <-373,112,-173,152>
-inline Inline
-{
-  $if $platform == Web.X.*.*
-     <script src="player.js"></script> 
-  $endif               
-}
-
-$rect <-373,72,-173,112>
+$rect <-69,150,131,190>
 class DeviceClass : Templates::DeviceClass
 {
   $rect <30,80,230,120>
@@ -1002,10 +1041,10 @@ class DeviceClass : Templates::DeviceClass
     attr Bounds = <10,0,250,140>;
   }
 
-  $rect <590,330,790,370>
+  $rect <540,379,740,419>
   property Application::State PlayerState = Application::State.CanPlay;
 
-  $rect <590,370,790,410>
+  $rect <540,419,740,459>
   onset PlayerState
   {
     // The value doesn't change - nothing to do.
@@ -1020,7 +1059,7 @@ class DeviceClass : Templates::DeviceClass
     // Now you can handle the alternation of the property.
   }
 
-  $rect <580,410,780,450>
+  $rect <530,459,730,499>
   onget PlayerState
   {
     return pure PlayerState;
@@ -1028,10 +1067,10 @@ class DeviceClass : Templates::DeviceClass
 
   // It should be deduced from the mp3 file tags. It can be omitted in the device \
   // class
-  $rect <250,510,450,550>
+  $rect <781,59,981,99>
   property string TitleOfTrack = "Title";
 
-  $rect <250,550,450,590>
+  $rect <781,99,981,139>
   onset TitleOfTrack
   {
     // The value doesn't change - nothing to do.
@@ -1046,17 +1085,17 @@ class DeviceClass : Templates::DeviceClass
     // Now you can handle the alternation of the property.
   }
 
-  $rect <250,590,450,630>
+  $rect <781,139,981,179>
   onget TitleOfTrack
   {
     return pure TitleOfTrack;
   }
 
   // See TitleOfTheTrack
-  $rect <19,510,219,550>
+  $rect <550,59,750,99>
   property string Artist = "Artist";
 
-  $rect <19,550,219,590>
+  $rect <550,99,750,139>
   onset Artist
   {
     // The value doesn't change - nothing to do.
@@ -1071,13 +1110,13 @@ class DeviceClass : Templates::DeviceClass
     // Now you can handle the alternation of the property.
   }
 
-  $rect <19,590,219,630>
+  $rect <550,139,750,179>
   onget Artist
   {
     return pure Artist;
   }
 
-  $rect <500,190,700,230>
+  $rect <30,540,230,580>
   method string IntToTimeString( arg int32 aArg1 )
   {
     //var string timeString="";
@@ -1100,12 +1139,12 @@ class DeviceClass : Templates::DeviceClass
   }
 
   // the current playback position in seconds
-  $rect <30,190,230,230>
+  $rect <300,200,500,240>
   $output true
   property int32 CurrentTime;
 
   // Equivalent of the event TimeUpdate
-  $rect <30,230,230,270>
+  $rect <300,240,500,280>
   onset CurrentTime
   {
     // The value doesn't change - nothing to do.
@@ -1120,17 +1159,17 @@ class DeviceClass : Templates::DeviceClass
     // Now you can handle the alternation of the property.
   }
 
-  $rect <30,270,230,310>
+  $rect <300,280,500,320>
   onget CurrentTime
   {
     return pure CurrentTime;
   }
 
-  $rect <260,190,460,230>
+  $rect <530,200,730,240>
   $output true
   property int32 Duration;
 
-  $rect <260,230,460,270>
+  $rect <530,240,730,280>
   $output true
   onset Duration
   {
@@ -1146,17 +1185,17 @@ class DeviceClass : Templates::DeviceClass
     // Now you can handle the alternation of the property.
   }
 
-  $rect <260,270,460,310>
+  $rect <530,280,730,320>
   onget Duration
   {
     return pure Duration;
   }
 
-  $rect <20,370,220,410>
+  $rect <290,390,490,430>
   $output true
   property bool Loop = false;
 
-  $rect <20,410,220,450>
+  $rect <290,430,490,470>
   onset Loop
   {
     // The value doesn't change - nothing to do.
@@ -1171,17 +1210,17 @@ class DeviceClass : Templates::DeviceClass
     // Now you can handle the alternation of the property.
   }
 
-  $rect <20,450,220,490>
+  $rect <290,470,490,510>
   onget Loop
   {
     return pure Loop;
   }
 
   // Source of the file
-  $rect <280,19,480,59>
+  $rect <300,59,500,99>
   property string Src = "";
 
-  $rect <280,59,480,99>
+  $rect <300,99,500,139>
   onset Src
   {
     // The value doesn't change - nothing to do.
@@ -1204,23 +1243,13 @@ class DeviceClass : Templates::DeviceClass
 
   }
 
-  $rect <280,99,480,139>
+  $rect <300,139,500,179>
   onget Src
   {
     return pure Src;
   }
 
-  // It might prove useless
-  $rect <510,19,710,59>
-  property string CurrentSrc;
-
-  $rect <510,59,710,99>
-  onget CurrentSrc
-  {
-    return pure CurrentSrc;
-  }
-
-  $rect <720,10,920,50>
+  $rect <30,310,230,350>
   $output true
   method void Play()
   {
@@ -1234,7 +1263,7 @@ class DeviceClass : Templates::DeviceClass
     //this.UpdatePlayerState( Application::State.Playing);              
   }
 
-  $rect <720,50,920,90>
+  $rect <30,350,230,390>
   $output true
   method void Pause()
   {
@@ -1251,7 +1280,7 @@ class DeviceClass : Templates::DeviceClass
     this.UpdatePlayerState( Application::State.Paused);
   }
 
-  $rect <720,90,920,130>
+  $rect <30,390,230,430>
   $output true
   method void LoopTrack()
   {
@@ -1267,7 +1296,7 @@ class DeviceClass : Templates::DeviceClass
 
   // This method is intended to be called by the device to notify the GUI application \
   // about an alternation of its setting or state value.
-  $rect <580,450,780,490>
+  $rect <530,499,730,539>
   $output true
   method void UpdatePlayerState( arg Application::State aNewValue )
   {
@@ -1282,7 +1311,7 @@ class DeviceClass : Templates::DeviceClass
     }
   }
 
-  $rect <20,310,220,350>
+  $rect <290,320,490,360>
   $output true
   method void UpdateCurrentTime( arg int32 aNewValue )
   {
@@ -1300,7 +1329,7 @@ class DeviceClass : Templates::DeviceClass
      
   }
 
-  $rect <720,130,920,170>
+  $rect <30,430,230,470>
   $output true
   method void UpdateTimeFromSlider( arg int32 aArg1 )
   {
@@ -1316,7 +1345,7 @@ class DeviceClass : Templates::DeviceClass
 
   }
 
-  $rect <260,310,460,350>
+  $rect <530,320,730,360>
   $output true
   method void UpdateDuration( arg int32 aNewValue )
   {
@@ -1334,7 +1363,7 @@ class DeviceClass : Templates::DeviceClass
      
   }
 
-  $rect <510,240,710,280>
+  $rect <30,200,230,240>
   slot InitSlot
   {
     $if !$prototyper
@@ -1352,10 +1381,10 @@ class DeviceClass : Templates::DeviceClass
 
   }
 
-  $rect <970,530,1170,570>
+  $rect <1180,279,1380,319>
   property int32 CurrentFileIndex = -1;
 
-  $rect <970,570,1170,610>
+  $rect <1180,319,1380,359>
   onset CurrentFileIndex
   {
     // The value doesn't change - nothing to do.
@@ -1372,13 +1401,13 @@ class DeviceClass : Templates::DeviceClass
 
   }
 
-  $rect <970,610,1170,650>
+  $rect <1180,359,1380,399>
   onget CurrentFileIndex
   {
     return pure CurrentFileIndex;
   }
 
-  $rect <1090,250,1290,290>
+  $rect <1179,61,1379,101>
   method string GetTitleById( arg int32 aArg1 )
   {
     $if $platform == Web.*.*
@@ -1390,7 +1419,7 @@ class DeviceClass : Templates::DeviceClass
     return "";
   }
 
-  $rect <1090,290,1290,330>
+  $rect <1179,101,1379,141>
   method string GetArtistById( arg int32 aArg1 )
   {
     $if $platform == Web.*.*
@@ -1405,10 +1434,10 @@ class DeviceClass : Templates::DeviceClass
   // Playlist Management
   note group Note
   {
-    attr Bounds = <939,499,1240,850>;
+    attr Bounds = <1150,240,1410,599>;
   }
 
-  $rect <1090,339,1290,379>
+  $rect <1179,150,1379,190>
   method string GetSongById( arg int32 aArg1 )
   {
     $if $platform == Web.*.*
@@ -1420,7 +1449,7 @@ class DeviceClass : Templates::DeviceClass
     return "";
   }
 
-  $rect <978,686,1178,726>
+  $rect <1180,420,1380,460>
   method bool CanGoBefore()
   {
     if(this.CurrentFileIndex==0)
@@ -1428,13 +1457,13 @@ class DeviceClass : Templates::DeviceClass
     return true;
   }
 
-  $rect <979,730,1179,770>
+  $rect <1181,464,1381,504>
   method bool CanGoNext()
   {
     return !(this.CurrentFileIndex==GetSizeOfList()-1);
   }
 
-  $rect <979,800,1179,840>
+  $rect <1180,530,1380,570>
   method int32 GetSizeOfList()
   {
     $if $platform == Web.*.*
@@ -1445,12 +1474,42 @@ class DeviceClass : Templates::DeviceClass
     $endif
     return 1;
   }
+
+  // Data retrieval
+  note group Note2
+  {
+    attr Bounds = <1149,10,1399,231>;
+  }
+
+  // Initialization
+  note group Note3
+  {
+    attr Bounds = <10,150,250,259>;
+  }
+
+  // Properties
+  note group Note4
+  {
+    attr Bounds = <270,0,1069,579>;
+  }
+
+  // Manipulation methods
+  note group Note5
+  {
+    attr Bounds = <10,270,250,490>;
+  }
+
+  // Time formatting
+  note group Note6
+  {
+    attr Bounds = <10,500,250,590>;
+  }
 }
 
-$rect <-20,180,180,220>
+$rect <-288,150,-88,190>
 autoobject Application::DeviceClass Device;
 
-$rect <60,230,260,270>
+$rect <760,219,960,259>
 $output false
 enum State
 {
@@ -1464,11 +1523,7 @@ enum State
   $rect <220,10,420,50>
   item Paused;
 
-  // It exists concomitantely with either Playing or Paused 
   $rect <440,10,640,50>
-  item Seeking;
-
-  $rect <660,10,860,50>
   item Error;
 
   // In a sense, a particular case of Paused. It depends on the implementation. It \
@@ -1477,7 +1532,7 @@ enum State
   item Ended;
 }
 
-$rect <640,10,840,50>
+$rect <339,-70,539,-30>
 $output false
 resource Resources::Bitmap PlayIcon
 {
@@ -1489,7 +1544,7 @@ resource Resources::Bitmap PlayIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <320,259,560,299>
+$rect <360,259,600,299>
 $output false
 autoobject WidgetSet::PushButtonConfig PushButtonConfig
 {
@@ -1510,7 +1565,7 @@ autoobject WidgetSet::PushButtonConfig PushButtonConfig
   preset FaceDefault = Application::PausePressedIcon;
 }
 
-$rect <640,50,840,90>
+$rect <339,-30,539,10>
 $output false
 resource Resources::Bitmap PauseIcon
 {
@@ -1522,7 +1577,7 @@ resource Resources::Bitmap PauseIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <640,90,840,130>
+$rect <339,10,539,50>
 $output false
 resource Resources::Bitmap LoopIcon
 {
@@ -1534,7 +1589,7 @@ resource Resources::Bitmap LoopIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,-100,1050,-60>
+$rect <559,-30,759,10>
 $output false
 resource Resources::Bitmap PausePressedIcon
 {
@@ -1546,7 +1601,7 @@ resource Resources::Bitmap PausePressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <847,-66,1047,-26>
+$rect <559,-70,759,-30>
 $output false
 resource Resources::Bitmap PlayPressedIcon
 {
@@ -1558,7 +1613,7 @@ resource Resources::Bitmap PlayPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,-30,1050,10>
+$rect <559,10,759,50>
 $output false
 resource Resources::Bitmap LoopPressedIcon
 {
@@ -1570,14 +1625,14 @@ resource Resources::Bitmap LoopPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <220,100,420,140>
+$rect <-70,40,130,80>
 $output false
 class VinylView : Core::Group
 {
-  $rect <10,290,210,330>
+  $rect <530,0,730,40>
   inherited property Bounds = <0,0,464,355>;
 
-  $rect <10,390,210,430>
+  $rect <-10,419,190,459>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -1606,7 +1661,7 @@ class VinylView : Core::Group
     */
   }
 
-  $rect <10,350,210,390>
+  $rect <-10,379,190,419>
   inherited method UpdateViewState()
   {
     // Always invoke the inherited method.
@@ -1715,7 +1770,7 @@ class VinylView : Core::Group
     preset Bitmap = Application::GenericVinyl;
   }
 
-  $rect <519,140,719,180>
+  $rect <979,110,1179,150>
   method void Rotate()
   {
     var point desPos=Bounds.orect.center;
@@ -1725,10 +1780,10 @@ class VinylView : Core::Group
 
   }
 
-  $rect <790,70,990,110>
+  $rect <539,190,739,230>
   property float Angle = 0;
 
-  $rect <790,110,990,150>
+  $rect <539,230,739,270>
   onset Angle
   {
     // The value doesn't change - nothing to do.
@@ -1743,13 +1798,13 @@ class VinylView : Core::Group
     // Now you can handle the alternation of the property.
   }
 
-  $rect <790,150,990,190>
+  $rect <539,270,739,310>
   onget Angle
   {
     return pure Angle;
   }
 
-  $rect <790,190,990,230>
+  $rect <539,310,739,350>
   method void UpdateAngle( arg float aNewValue )
   {
     // Only if the reported value does differ from the one stored currently in the property.
@@ -1764,7 +1819,7 @@ class VinylView : Core::Group
     }
   }
 
-  $rect <580,39,781,79>
+  $rect <749,110,950,150>
   slot OnAngleEffect
   {
     UpdateAngle(AngleEffect.Value);   
@@ -1772,7 +1827,7 @@ class VinylView : Core::Group
 
   }
 
-  $rect <580,0,780,40>
+  $rect <539,110,739,150>
   object Effects::FloatEffect AngleEffect
   {
     preset OnAnimate = OnAngleEffect;
@@ -1781,14 +1836,14 @@ class VinylView : Core::Group
   }
 }
 
-$rect <420,50,620,90>
+$rect <-70,-10,130,30>
 $output false
 class QueueItem : Core::Group
 {
-  $rect <10,230,210,270>
+  $rect <840,0,1040,40>
   inherited property Bounds = <5,0,790,50>;
 
-  $rect <10,390,210,430>
+  $rect <-10,270,190,310>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -1817,7 +1872,7 @@ class QueueItem : Core::Group
     */
   }
 
-  $rect <10,350,210,390>
+  $rect <-10,230,190,270>
   inherited method UpdateViewState()
   {
     super( aState );
@@ -1829,36 +1884,11 @@ class QueueItem : Core::Group
          Rectangle.Color=#909B9FFB;
   }
 
-  // To do:
-  // 
-  // - Adjust the visible size of your component (the thick blue border).
-  // 
-  // - The simplest way to compose the appearance of the component is to use the \
-  // 'Views' and 'Widget Sets' from the Gallery.
-  // 
-  // - To react to touch or keyboard events use the templates from the Gallery folder \
-  // 'Event Handlers'.
-  // 
-  // - To perform transitions (animations) use the templates from the Gallery folder \
-  // 'Effects'.
-  // 
-  // - To implement the interface of the component use the 'Property' template from \
-  // the Gallery folder 'Chora'.
-  // 
-  // - To store values use the 'Variable' and 'Array' templates available in the \
-  // Gallery folder 'Chora'.
-  // 
-  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
-  // in the Gallery folder 'Chora'.
-  // 
-  // - In the method 'UpdateViewState()' you can put code to update the state of \
-  // views enclosed in your component.
-  // 
-  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
-  // calculation for enclosed views.
+  // The class implements a GUI component for displaying the title and the artist \
+  // of an audiotrack
   note legend Note1
   {
-    attr Bounds = <220,230,1000,550>;
+    attr Bounds = <219,230,920,299>;
   }
 
   $rect <20,20,160,60>
@@ -1965,7 +1995,7 @@ class QueueItem : Core::Group
   }
 }
 
-$rect <640,130,840,170>
+$rect <339,50,539,90>
 $output false
 resource Resources::Bitmap PreviousIcon
 {
@@ -1977,7 +2007,7 @@ resource Resources::Bitmap PreviousIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <640,170,840,210>
+$rect <339,90,539,130>
 $output false
 resource Resources::Bitmap NextIcon
 {
@@ -1989,7 +2019,7 @@ resource Resources::Bitmap NextIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,10,1050,50>
+$rect <559,50,759,90>
 $output false
 resource Resources::Bitmap PreviousPressedIcon
 {
@@ -2001,7 +2031,7 @@ resource Resources::Bitmap PreviousPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,50,1050,90>
+$rect <559,90,759,130>
 $output false
 resource Resources::Bitmap NextPressedIcon
 {
@@ -2013,7 +2043,7 @@ resource Resources::Bitmap NextPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <1075,-106,1275,-66>
+$rect <778,50,978,90>
 $output false
 resource Resources::Bitmap PreviousDisabledIcon
 {
@@ -2025,7 +2055,7 @@ resource Resources::Bitmap PreviousDisabledIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <1070,-70,1270,-30>
+$rect <778,90,978,130>
 $output false
 resource Resources::Bitmap NextDisabledIcon
 {
@@ -2037,36 +2067,38 @@ resource Resources::Bitmap NextDisabledIcon
   attr bitmapmode Mode = Default;
 }
 
-// Directives to adapt the order of the above members according to how these members 
-// where arranged when the project content was stored. In this manner the storage 
-// and the expected order of the members don't depend. Merging of changes in the 
-// project files is simplified.
-$member Inline
-$member Application
-$member TitleFont
-$member PlayerDialog
-$member QueueView
-$member Background
-$member GenericVinyl
-$member Font
-$member TimeFont
-$member Thumb
-$member HorizontalSliderConfig
-$member DeviceClass
-$member Device
-$member State
-$member PlayIcon
-$member PushButtonConfig
-$member PauseIcon
-$member LoopIcon
-$member PausePressedIcon
-$member PlayPressedIcon
-$member LoopPressedIcon
-$member VinylView
-$member QueueItem
-$member PreviousIcon
-$member NextIcon
-$member PreviousPressedIcon
-$member NextPressedIcon
-$member PreviousDisabledIcon
-$member NextDisabledIcon
+// Resources
+note group Note
+{
+  attr Bounds = <318,-240,1019,150>;
+}
+
+// Application class
+note group Note1
+{
+  attr Bounds = <-299,-230,0,-120>;
+}
+
+// Pannels and item views
+note group Note2
+{
+  attr Bounds = <-299,-110,150,90>;
+}
+
+// Device
+note group Note3
+{
+  attr Bounds = <-299,110,161,219>;
+}
+
+// GUI widgets configuration
+note group Note4
+{
+  attr Bounds = <320,170,670,320>;
+}
+
+// Enums
+note group Note5
+{
+  attr Bounds = <710,170,1019,320>;
+}

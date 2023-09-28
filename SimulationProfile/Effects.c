@@ -164,6 +164,7 @@ void EffectsEffect_timerSlot( EffectsEffect _this, XObject sender )
   if ( done )
   {
     EffectsEffect_OnSetEnabled( _this, 0 );
+    EwSignal( _this->privateOnFinished, ((XObject)_this ));
     EwSignal( _this->OnFinished, ((XObject)_this ));
   }
 }
@@ -1009,8 +1010,8 @@ EW_DEFINE_CLASS_VARIANTS( EffectsEffect )
 EW_END_OF_CLASS_VARIANTS( EffectsEffect )
 
 /* Virtual Method Table (VMT) for the class : 'Effects::Effect' */
-EW_DEFINE_CLASS( EffectsEffect, XObject, timingList, timingList, OnFinished, direction, 
-                 direction, direction, "Effects::Effect" )
+EW_DEFINE_CLASS( EffectsEffect, XObject, timingList, timingList, privateOnFinished, 
+                 direction, direction, direction, "Effects::Effect" )
   EffectsEffect_Animate,
 EW_END_OF_CLASS( EffectsEffect )
 

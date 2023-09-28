@@ -32,6 +32,6 @@ C.DeviceClass={_Init:function(aArg){this.__proto__=C.DeviceClass;B.hJ++;},_Done:
 ){this.__proto__=null;B.hJ--;},_ReInit:function(){},_Mark:function(D){var A;if((
 A=this.Ac)&&(A._cycle!=D))A._Mark(A._cycle=D);},Ac:null,_cycle:0,_observers:null
 ,_className:"Templates::DeviceClass"};
-C._Init=function(){};C._ReInit=function(){};C.CI=function(D){};return C;})();
+C._Init=function(){};C._ReInit=function(){};C.CK=function(D){};return C;})();
 
 /* Embedded Wizard */

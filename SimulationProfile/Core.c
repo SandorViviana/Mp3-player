@@ -53,6 +53,7 @@
 #include "_EffectsEffectTimerClass.h"
 #include "_EffectsFader.h"
 #include "_EffectsFaderTask.h"
+#include "_EffectsInt32Effect.h"
 #include "_EffectsShowHideTransition.h"
 #include "_EffectsTransition.h"
 #include "_GraphicsCanvas.h"
@@ -6117,6 +6118,18 @@ CoreView CoreVerticalList_confirmHeadItem( CoreVerticalList _this )
   return item;
 }
 
+/* 'C' function for method : 'Core::VerticalList.onFinishScrollSlot()' */
+void CoreVerticalList_onFinishScrollSlot( CoreVerticalList _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  _this->scrollEffect->Outlet = EwNullRef;
+  _this->scrollEffect->Super1.privateOnFinished = EwNullSlot;
+  _this->scrollEffect = 0;
+  EwSignal( _this->onDoneScroll, ((XObject)_this ));
+}
+
 /* 'C' function for method : 'Core::VerticalList.onSlideSlot()' */
 void CoreVerticalList_onSlideSlot( CoreVerticalList _this, XObject sender )
 {
@@ -6131,6 +6144,14 @@ void CoreVerticalList_onStartSlideSlot( CoreVerticalList _this, XObject sender )
 {
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( sender );
+
+  if ( _this->scrollEffect != 0 )
+  {
+    EffectsEffect_OnSetEnabled((EffectsEffect)_this->scrollEffect, 0 );
+    _this->scrollEffect->Outlet = EwNullRef;
+    _this->scrollEffect->Super1.privateOnFinished = EwNullSlot;
+    _this->scrollEffect = 0;
+  }
 
   {
     XRect area = CoreVerticalList_GetItemsArea( _this, 0, _this->NoOfItems - 1 );
@@ -6281,6 +6302,79 @@ void CoreVerticalList_OnSetItemClass( CoreVerticalList _this, XClass value )
   CoreGroup__InvalidateArea( _this, EwGetRectORect( _this->Super2.Bounds ));
 }
 
+/* The method EnsureVisible() scrolls the content of the list until the list item 
+   with the index aItem lies partially or fully within the view's area @Bounds. 
+   The first list item has the index 0, the second 1, and so far. The respective 
+   mode is determined by the parameter aFullyVisible.
+   This scroll operation can optionally be animated by an effect passed in the parameter 
+   aAnimationEffect. If aAnimationEffect == null, no animation is used and the scrolling 
+   is executed immediately. After the operation is done, a signal is sent to the 
+   optional slot method specified in the parameter aOnDoneScroll.
+   Please note, calling the method EnsureVisible() while an animation is running 
+   will terminate it abruptly without the slot method aOnDoneScroll being notified. 
+   More flexible approach to stop an activate animation is to use the method @StopScrollEffect(). 
+   Whether an animation is currently running can be queried by using the method 
+   @IsScrollEffectActive(). */
+void CoreVerticalList_EnsureVisible( CoreVerticalList _this, XInt32 aItem, XBool 
+  aFullyVisible, EffectsInt32Effect aAnimationEffect, XSlot aOnDoneScroll )
+{
+  XRect r;
+  XRect bounds;
+  XRect inter;
+  XInt32 ofs;
+
+  if (( aItem < 0 ) || ( aItem >= _this->NoOfItems ))
+    return;
+
+  r = CoreVerticalList_GetItemsArea( _this, aItem, aItem );
+  bounds = _this->Super2.Bounds;
+  inter = EwIntersectRect( r, bounds );
+
+  if (( !aFullyVisible && !EwIsRectEmpty( inter )) || ( aFullyVisible && !EwCompRect( 
+      inter, r )))
+  {
+    EwSignal( aOnDoneScroll, ((XObject)_this ));
+    return;
+  }
+
+  ofs = 0;
+
+  if ( r.Point2.Y > bounds.Point2.Y )
+    ofs = r.Point2.Y - bounds.Point2.Y;
+
+  if ( ofs > ( r.Point1.Y - bounds.Point1.Y ))
+    ofs = r.Point1.Y - bounds.Point1.Y;
+
+  if ( _this->scrollEffect != 0 )
+  {
+    EffectsEffect_OnSetEnabled((EffectsEffect)_this->scrollEffect, 0 );
+    _this->scrollEffect->Outlet = EwNullRef;
+    _this->scrollEffect->Super1.privateOnFinished = EwNullSlot;
+    _this->onDoneScroll = EwNullSlot;
+  }
+
+  _this->scrollEffect = aAnimationEffect;
+
+  if ( _this->scrollEffect == 0 )
+  {
+    CoreVerticalList_OnSetScrollOffset( _this, _this->ScrollOffset - ofs );
+    EwSignal( aOnDoneScroll, ((XObject)_this ));
+  }
+  else
+  {
+    EffectsEffect_OnSetEnabled((EffectsEffect)_this->scrollEffect, 0 );
+    EffectsEffect_OnSetNoOfCycles((EffectsEffect)_this->scrollEffect, 1 );
+    _this->scrollEffect->Outlet = EwNewRef( _this, CoreVerticalList_OnGetScrollOffset, 
+    CoreVerticalList_OnSetScrollOffset );
+    _this->scrollEffect->Value1 = _this->ScrollOffset;
+    _this->scrollEffect->Value2 = _this->ScrollOffset - ofs;
+    _this->scrollEffect->Super1.privateOnFinished = EwNewSlot( _this, CoreVerticalList_onFinishScrollSlot );
+    EffectsEffect_OnSetReversed((EffectsEffect)_this->scrollEffect, 0 );
+    EffectsEffect_OnSetEnabled((EffectsEffect)_this->scrollEffect, 1 );
+    _this->onDoneScroll = aOnDoneScroll;
+  }
+}
+
 /* The method GetItemAtPosition() tries to determine an item at the given position 
    aPosition. This position is valid in the coordinate space of the view's @Owner. 
    If an item could be found, the method returns its index. The first item has the 
@@ -6341,12 +6435,18 @@ XRect CoreVerticalList_GetItemsArea( CoreVerticalList _this, XInt32 aFirstItem,
   return area;
 }
 
+/* Default onget method for the property 'ScrollOffset' */
+XInt32 CoreVerticalList_OnGetScrollOffset( CoreVerticalList _this )
+{
+  return _this->ScrollOffset;
+}
+
 /* Variants derived from the class : 'Core::VerticalList' */
 EW_DEFINE_CLASS_VARIANTS( CoreVerticalList )
 EW_END_OF_CLASS_VARIANTS( CoreVerticalList )
 
 /* Virtual Method Table (VMT) for the class : 'Core::VerticalList' */
-EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, itemsPool, OnLoadItem, 
+EW_DEFINE_CLASS( CoreVerticalList, CoreGroup, itemsPool, itemsPool, onDoneScroll, 
                  validTail, validTail, validTail, "Core::VerticalList" )
   CoreRectView_initLayoutContext,
   CoreView_GetRoot,

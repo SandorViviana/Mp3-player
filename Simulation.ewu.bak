@@ -266,7 +266,7 @@ vclass DeviceClass : Application::DeviceClass
     {
                 case 0 : return "Introduction et Rondo Capriccioso";
                 case 1 : return "Clair de Lune";
-                case 2 : return "String Quartet No. 2 (2nd mvt)"
+                case 2 : return "String Quartet No. 2 (2nd mvt)";
                 case 3 :  return "Night on bald mountain";
                 case 4 : return "Tempo di Valse";
                 case 5 : return "Infernal Dance of Kastchei";

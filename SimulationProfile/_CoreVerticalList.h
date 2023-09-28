@@ -98,6 +98,12 @@
 #define _EffectsFader_
 #endif
 
+/* Forward declaration of the class Effects::Int32Effect */
+#ifndef _EffectsInt32Effect_
+  EW_DECLARE_CLASS( EffectsInt32Effect )
+#define _EffectsInt32Effect_
+#endif
+
 /* Forward declaration of the class Effects::Transition */
 #ifndef _EffectsTransition_
   EW_DECLARE_CLASS( EffectsTransition )
@@ -158,8 +164,10 @@
    the list size changes. */
 EW_DEFINE_FIELDS( CoreVerticalList, CoreGroup )
   EW_VARIABLE( itemsPool,       CoreView )
+  EW_VARIABLE( scrollEffect,    EffectsInt32Effect )
   EW_VARIABLE( View,            CoreView )
   EW_PROPERTY( SlideHandler,    CoreSlideTouchHandler )
+  EW_VARIABLE( onDoneScroll,    XSlot )
   EW_PROPERTY( OnLoadItem,      XSlot )
   EW_VARIABLE( validTail,       XInt32 )
   EW_VARIABLE( validHead,       XInt32 )
@@ -311,6 +319,9 @@ CoreView CoreVerticalList_releaseHeadItem( CoreVerticalList _this );
 /* 'C' function for method : 'Core::VerticalList.confirmHeadItem()' */
 CoreView CoreVerticalList_confirmHeadItem( CoreVerticalList _this );
 
+/* 'C' function for method : 'Core::VerticalList.onFinishScrollSlot()' */
+void CoreVerticalList_onFinishScrollSlot( CoreVerticalList _this, XObject sender );
+
 /* 'C' function for method : 'Core::VerticalList.onSlideSlot()' */
 void CoreVerticalList_onSlideSlot( CoreVerticalList _this, XObject sender );
 
@@ -336,6 +347,22 @@ void CoreVerticalList_OnSetNoOfItems( CoreVerticalList _this, XInt32 value );
 /* 'C' function for method : 'Core::VerticalList.OnSetItemClass()' */
 void CoreVerticalList_OnSetItemClass( CoreVerticalList _this, XClass value );
 
+/* The method EnsureVisible() scrolls the content of the list until the list item 
+   with the index aItem lies partially or fully within the view's area @Bounds. 
+   The first list item has the index 0, the second 1, and so far. The respective 
+   mode is determined by the parameter aFullyVisible.
+   This scroll operation can optionally be animated by an effect passed in the parameter 
+   aAnimationEffect. If aAnimationEffect == null, no animation is used and the scrolling 
+   is executed immediately. After the operation is done, a signal is sent to the 
+   optional slot method specified in the parameter aOnDoneScroll.
+   Please note, calling the method EnsureVisible() while an animation is running 
+   will terminate it abruptly without the slot method aOnDoneScroll being notified. 
+   More flexible approach to stop an activate animation is to use the method @StopScrollEffect(). 
+   Whether an animation is currently running can be queried by using the method 
+   @IsScrollEffectActive(). */
+void CoreVerticalList_EnsureVisible( CoreVerticalList _this, XInt32 aItem, XBool 
+  aFullyVisible, EffectsInt32Effect aAnimationEffect, XSlot aOnDoneScroll );
+
 /* The method GetItemAtPosition() tries to determine an item at the given position 
    aPosition. This position is valid in the coordinate space of the view's @Owner. 
    If an item could be found, the method returns its index. The first item has the 
@@ -355,6 +382,9 @@ XInt32 CoreVerticalList_GetItemAtPosition( CoreVerticalList _this, XPoint aPos )
    actually within the list view. */
 XRect CoreVerticalList_GetItemsArea( CoreVerticalList _this, XInt32 aFirstItem, 
   XInt32 aLastItem );
+
+/* Default onget method for the property 'ScrollOffset' */
+XInt32 CoreVerticalList_OnGetScrollOffset( CoreVerticalList _this );
 
 #ifdef __cplusplus
   }

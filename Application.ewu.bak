@@ -1,7 +1,7 @@
 ﻿$version 12.05
 
 // This is the root component of the entire GUI application.
-$rect <20,20,220,60>
+$rect <-270,-179,-70,-139>
 class Application : Core::Root
 {
   $rect <820,10,1020,50>
@@ -45,7 +45,7 @@ class Application : Core::Root
   }
 }
 
-$rect <430,-100,630,-60>
+$rect <1090,-110,1290,-70>
 $output false
 resource Resources::Font TitleFont
 {
@@ -61,7 +61,7 @@ resource Resources::Font TitleFont
   attr fontrowdistance RowDistance;
 }
 
-$rect <220,20,420,60>
+$rect <-290,-50,-90,-10>
 class PlayerDialog : Core::Group
 {
   $rect <920,40,1120,80>
@@ -402,12 +402,12 @@ class PlayerDialog : Core::Group
   $rect <870,599,1070,639>
   method void OnEnded()
   {
-    Application::Device.UpdatePlayerState( Application::State.Ended);
-    PlayPause.Icon=Application::PlayIcon;
-    signal VinylView.AngleEffect.StopEffect;
     Application::Device.CurrentFileIndex+=1;
 
     Playback.CurrentValue=0;
+    Application::Device.UpdatePlayerState( Application::State.Ended);
+    PlayPause.Icon=Application::PlayIcon;
+    signal VinylView.AngleEffect.StopEffect;
   }
 
   $rect <20,20,160,60>
@@ -427,7 +427,7 @@ class PlayerDialog : Core::Group
   $rect <20,20,160,60>
   object Core::WipeTouchHandler OpenQueue
   {
-    preset Bounds = <302,432,483,486>;
+    preset Bounds = <7,432,800,486>;
     preset OnTop = OnOpenQueue;
   }
 
@@ -579,14 +579,14 @@ class PlayerDialog : Core::Group
   $reorder Init 2
 }
 
-$rect <220,60,420,100>
+$rect <-290,-10,-90,30>
 $output false
 class QueueView : Core::Group
 {
-  $rect <630,590,1430,630>
+  $rect <861,0,1050,40>
   inherited property Bounds = <0,0,800,480>;
 
-  $rect <40,619,240,659>
+  $rect <50,550,250,590>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -615,7 +615,7 @@ class QueueView : Core::Group
     */
   }
 
-  $rect <40,579,240,619>
+  $rect <50,510,250,550>
   inherited method UpdateViewState()
   {
     // Always invoke the inherited method.
@@ -734,7 +734,7 @@ class QueueView : Core::Group
 
   // This method is called by 'VerticalList' every time the list loads or updates \
   // an item.
-  $rect <820,30,1050,70>
+  $rect <450,510,680,550>
   slot OnLoadItem
   {
     // Get the number of the item to load. The list component takes care of the
@@ -753,7 +753,9 @@ class QueueView : Core::Group
     itemView.Artist.String=Application::Device.GetArtistById(itemNo);
     itemView.Source=Application::Device.GetSongById( itemNo );
     if(itemView.Source==Application::Device.Src)
-            Queue.SelectedItem=itemNo;
+         {   Queue.SelectedItem=itemNo;
+             Queue.EnsureVisible( itemNo, true, null, null );
+         }
 
     // Ensure that the item has correct size. The position of the item will be
     // managed by the list component.
@@ -774,11 +776,11 @@ class QueueView : Core::Group
   $rect <20,20,160,60>
   object Core::WipeTouchHandler BackToPlayer
   {
-    preset Bounds = <240,-2,517,40>;
+    preset Bounds = <3,-2,797,51>;
     preset OnBottom = OnReturnToPlayer;
   }
 
-  $rect <830,90,1030,120>
+  $rect <859,202,1059,242>
   slot OnReturnToPlayer
   {
     //this.Visible=false;
@@ -805,10 +807,9 @@ class QueueView : Core::Group
     preset RetargetCondition = Core::RetargetReason[WipeDown, WipeUp];
   }
 
-  $rect <830,139,1030,179>
+  $rect <859,240,1059,280>
   slot OnSelect
   {
-
     if ( SelectHandler.AutoDeflected )
      { 
      return;
@@ -822,6 +823,10 @@ class QueueView : Core::Group
 
       Queue.SelectedItem = itemNo;
       Application::Device.CurrentFileIndex=itemNo;
+      Queue.EnsureVisible( itemNo, true, null, null );
+      Owner.DismissDialog( this, Effects::SlideDownCentered, null, null, null, null, false );
+       if(Application::Device.PlayerState==Application::State.Playing) 
+              Application::Device.Play();
 
 
     }
@@ -852,7 +857,7 @@ resource Resources::Bitmap GenericVinyl
   attr bitmapmode Mode = Default;
 }
 
-$rect <430,-60,630,-20>
+$rect <1090,-70,1290,-30>
 $output false
 resource Resources::Font Font
 {
@@ -868,7 +873,7 @@ resource Resources::Font Font
   attr fontrowdistance RowDistance;
 }
 
-$rect <430,-20,630,20>
+$rect <1090,-30,1290,10>
 $output false
 resource Resources::Font TimeFont
 {
@@ -897,7 +902,7 @@ resource Resources::Bitmap Thumb
 }
 
 // This object contains configuration information for a slider widget.
-$rect <320,220,610,260>
+$rect <320,220,610,259>
 $output false
 autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
 {
@@ -933,15 +938,7 @@ autoobject WidgetSet::HorizontalSliderConfig HorizontalSliderConfig
   preset TrackLeftDefault = WidgetSet::HorizontalSliderTrackSmall;
 }
 
-$rect <-373,112,-173,152>
-inline Inline
-{
-  $if $platform == Web.X.*.*
-     <script src="player.js"></script> 
-  $endif               
-}
-
-$rect <-373,72,-173,112>
+$rect <-179,310,21,350>
 class DeviceClass : Templates::DeviceClass
 {
   $rect <30,80,230,120>
@@ -1450,7 +1447,7 @@ class DeviceClass : Templates::DeviceClass
 $rect <-20,180,180,220>
 autoobject Application::DeviceClass Device;
 
-$rect <60,230,260,270>
+$rect <-310,200,-110,240>
 $output false
 enum State
 {
@@ -1534,7 +1531,7 @@ resource Resources::Bitmap LoopIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,-100,1050,-60>
+$rect <860,50,1060,90>
 $output false
 resource Resources::Bitmap PausePressedIcon
 {
@@ -1546,7 +1543,7 @@ resource Resources::Bitmap PausePressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <847,-66,1047,-26>
+$rect <860,10,1060,50>
 $output false
 resource Resources::Bitmap PlayPressedIcon
 {
@@ -1558,7 +1555,7 @@ resource Resources::Bitmap PlayPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,-30,1050,10>
+$rect <860,90,1060,130>
 $output false
 resource Resources::Bitmap LoopPressedIcon
 {
@@ -1570,7 +1567,7 @@ resource Resources::Bitmap LoopPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <220,100,420,140>
+$rect <-70,40,130,80>
 $output false
 class VinylView : Core::Group
 {
@@ -1781,14 +1778,14 @@ class VinylView : Core::Group
   }
 }
 
-$rect <420,50,620,90>
+$rect <-70,-10,130,30>
 $output false
 class QueueItem : Core::Group
 {
-  $rect <10,230,210,270>
+  $rect <840,0,1040,40>
   inherited property Bounds = <5,0,790,50>;
 
-  $rect <10,390,210,430>
+  $rect <-10,270,190,310>
   inherited method UpdateLayout()
   {
     // Always invoke the inherited method.
@@ -1817,7 +1814,7 @@ class QueueItem : Core::Group
     */
   }
 
-  $rect <10,350,210,390>
+  $rect <-10,230,190,270>
   inherited method UpdateViewState()
   {
     super( aState );
@@ -1829,36 +1826,11 @@ class QueueItem : Core::Group
          Rectangle.Color=#909B9FFB;
   }
 
-  // To do:
-  // 
-  // - Adjust the visible size of your component (the thick blue border).
-  // 
-  // - The simplest way to compose the appearance of the component is to use the \
-  // 'Views' and 'Widget Sets' from the Gallery.
-  // 
-  // - To react to touch or keyboard events use the templates from the Gallery folder \
-  // 'Event Handlers'.
-  // 
-  // - To perform transitions (animations) use the templates from the Gallery folder \
-  // 'Effects'.
-  // 
-  // - To implement the interface of the component use the 'Property' template from \
-  // the Gallery folder 'Chora'.
-  // 
-  // - To store values use the 'Variable' and 'Array' templates available in the \
-  // Gallery folder 'Chora'.
-  // 
-  // - To implement behavior use the 'Method' and 'Slot Method' templates available \
-  // in the Gallery folder 'Chora'.
-  // 
-  // - In the method 'UpdateViewState()' you can put code to update the state of \
-  // views enclosed in your component.
-  // 
-  // - In the method 'UpdateLayout()' you can put code to perform sophisticated layout \
-  // calculation for enclosed views.
+  // The class implements a GUI component for displaying the title and the artist \
+  // of an audiotrack
   note legend Note1
   {
-    attr Bounds = <220,230,1000,550>;
+    attr Bounds = <219,230,920,299>;
   }
 
   $rect <20,20,160,60>
@@ -1989,7 +1961,7 @@ resource Resources::Bitmap NextIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,10,1050,50>
+$rect <860,130,1060,170>
 $output false
 resource Resources::Bitmap PreviousPressedIcon
 {
@@ -2001,7 +1973,7 @@ resource Resources::Bitmap PreviousPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <850,50,1050,90>
+$rect <860,170,1060,210>
 $output false
 resource Resources::Bitmap NextPressedIcon
 {
@@ -2013,7 +1985,7 @@ resource Resources::Bitmap NextPressedIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <1075,-106,1275,-66>
+$rect <1079,130,1279,170>
 $output false
 resource Resources::Bitmap PreviousDisabledIcon
 {
@@ -2025,7 +1997,7 @@ resource Resources::Bitmap PreviousDisabledIcon
   attr bitmapmode Mode = Default;
 }
 
-$rect <1070,-70,1270,-30>
+$rect <1079,170,1279,210>
 $output false
 resource Resources::Bitmap NextDisabledIcon
 {
@@ -2037,36 +2009,20 @@ resource Resources::Bitmap NextDisabledIcon
   attr bitmapmode Mode = Default;
 }
 
-// Directives to adapt the order of the above members according to how these members 
-// where arranged when the project content was stored. In this manner the storage 
-// and the expected order of the members don't depend. Merging of changes in the 
-// project files is simplified.
-$member Inline
-$member Application
-$member TitleFont
-$member PlayerDialog
-$member QueueView
-$member Background
-$member GenericVinyl
-$member Font
-$member TimeFont
-$member Thumb
-$member HorizontalSliderConfig
-$member DeviceClass
-$member Device
-$member State
-$member PlayIcon
-$member PushButtonConfig
-$member PauseIcon
-$member LoopIcon
-$member PausePressedIcon
-$member PlayPressedIcon
-$member LoopPressedIcon
-$member VinylView
-$member QueueItem
-$member PreviousIcon
-$member NextIcon
-$member PreviousPressedIcon
-$member NextPressedIcon
-$member PreviousDisabledIcon
-$member NextDisabledIcon
+// Resources
+note group Note
+{
+  attr Bounds = <619,-160,1320,230>;
+}
+
+// Application class
+note group Note1
+{
+  attr Bounds = <-299,-230,0,-120>;
+}
+
+// Pannels and item views
+note group Note2
+{
+  attr Bounds = <-299,-110,150,90>;
+}

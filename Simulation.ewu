@@ -4,7 +4,7 @@ $rect <10,10,210,50>
 $variant SimulationProfile
 vclass Application : Application::Application
 {
-  $rect <20,20,220,60>
+  $rect <-10,499,190,539>
   inherited property Bounds = <0,0,1600,480>;
 
   $rect <20,20,160,60>
@@ -26,10 +26,10 @@ vclass Application : Application::Application
     preset Appearance = WidgetSet::HorizontalSlider_Medium;
   }
 
-  $rect <1730,210,1930,250>
+  $rect <1690,139,1890,179>
   property int32 CurrentTime;
 
-  $rect <1731,250,1931,290>
+  $rect <1690,179,1890,219>
   onset CurrentTime
   {
     // The value doesn't change - nothing to do.
@@ -45,16 +45,16 @@ vclass Application : Application::Application
     Application::Device.UpdateCurrentTime( value );
   }
 
-  $rect <1731,290,1931,330>
+  $rect <1690,219,1890,259>
   onget CurrentTime
   {
     return pure CurrentTime;
   }
 
-  $rect <1731,-10,1931,30>
+  $rect <1920,141,2120,181>
   property int32 Duration;
 
-  $rect <1731,30,1931,70>
+  $rect <1920,181,2120,221>
   onset Duration
   {
     // The value doesn't change - nothing to do.
@@ -72,13 +72,13 @@ vclass Application : Application::Application
 
   }
 
-  $rect <1731,70,1931,110>
+  $rect <1920,221,2120,261>
   onget Duration
   {
     return pure Duration;
   }
 
-  $rect <1730,390,1930,430>
+  $rect <1690,-10,1890,30>
   inherited method Init()
   {
     attachobserver OnCurrentTimeUpdate, ^Application::Device.CurrentTime;
@@ -88,13 +88,13 @@ vclass Application : Application::Application
 
   }
 
-  $rect <1730,430,1930,470>
+  $rect <1699,310,1899,350>
   slot OnCurrentTimeUpdate
   {
      CurrentTimeSlider.CurrentValue=Application::Device.CurrentTime;
   }
 
-  $rect <1730,470,1930,510>
+  $rect <1920,310,2120,350>
   slot OnDurationUpdate
   {
     DurationSlider.CurrentValue=Application::Device.Duration;
@@ -140,7 +140,7 @@ $rect <10,50,210,90>
 $variant SimulationProfile
 vclass DeviceClass : Application::DeviceClass
 {
-  $rect <0,0,200,40>
+  $rect <290,-20,490,20>
   inherited method Play()
   {
     PlayEffect.Value1 = CurrentTime;
@@ -153,7 +153,7 @@ vclass DeviceClass : Application::DeviceClass
 
   }
 
-  $rect <230,40,430,80>
+  $rect <0,40,200,80>
   object Effects::Int32Effect PlayEffect
   {
     preset OnFinished = OnFinishEffect;
@@ -163,7 +163,7 @@ vclass DeviceClass : Application::DeviceClass
     preset Value1 = 0;
   }
 
-  $rect <230,80,430,120>
+  $rect <0,80,200,120>
   slot OnPlayEffect
   {
      isPlayEffect = true;
@@ -171,27 +171,27 @@ vclass DeviceClass : Application::DeviceClass
      isPlayEffect = false;
   }
 
-  $rect <0,40,200,80>
+  $rect <279,20,479,60>
   inherited method Pause()
   {
     this.UpdatePlayerState( Application::State.Paused);
     signal PlayEffect.StopEffect;
   }
 
-  $rect <0,230,200,270>
+  $rect <380,160,580,200>
   inherited method IntToTimeString()
   {
     return (string)(aArg1/60)+":"+(string)(aArg1%60);
   }
 
-  $rect <0,130,200,170>
+  $rect <279,100,479,140>
   inherited method UpdateTimeFromSlider()
   {
     UpdateCurrentTime(aArg1);
 
   }
 
-  $rect <0,80,200,120>
+  $rect <279,60,479,100>
   inherited method LoopTrack()
   {
     this.Loop=!this.Loop;
@@ -208,7 +208,7 @@ vclass DeviceClass : Application::DeviceClass
 
   }
 
-  $rect <230,120,430,160>
+  $rect <0,120,200,160>
   slot OnFinishEffect
   {
     if(this.Loop)
@@ -256,10 +256,10 @@ vclass DeviceClass : Application::DeviceClass
 
   }
 
-  $rect <481,158,681,198>
+  $rect <0,-20,200,20>
   var bool isPlayEffect = false;
 
-  $rect <740,40,940,80>
+  $rect <740,49,940,89>
   inherited method GetTitleById()
   {
     switch ( aArg1 )
@@ -276,7 +276,7 @@ vclass DeviceClass : Application::DeviceClass
     }
   }
 
-  $rect <740,0,940,40>
+  $rect <740,9,940,49>
   inherited method GetArtistById()
   {
     switch ( aArg1 )
@@ -293,16 +293,34 @@ vclass DeviceClass : Application::DeviceClass
     }
   }
 
-  $rect <740,80,940,120>
+  $rect <740,89,940,129>
   inherited method GetSongById()
   {
     return "song url for " + (string)aArg1;
   }
 
-  $rect <770,160,970,200>
+  $rect <740,128,940,168>
   inherited method GetSizeOfList()
   {
     return 8;
+  }
+
+  // Simulation effects
+  note group Note
+  {
+    attr Bounds = <-30,-70,250,180>;
+  }
+
+  // Overridden functions
+  note group Note1
+  {
+    attr Bounds = <260,-80,990,240>;
+  }
+
+  // Data section
+  note group Note2
+  {
+    attr Bounds = <720,-30,970,190>;
   }
 
   // Directives to adapt the order of the above members according to how these members 
@@ -324,6 +342,9 @@ vclass DeviceClass : Application::DeviceClass
   $member GetSizeOfList
   $member OnFinishEffect
   $member isPlayEffect
+  $member Note
+  $member Note1
+  $member Note2
 
   // Directives to adapt the order of members belonging to this class so they appear 
   // correctly arranged relative to the members inherited from the ancestor (super) 
