@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js" type="text/javascript"></script>
+<title>Test</title>
+    </head>
+    <body>
+      <audio id="audio" width="100px" height="30px"  controls>
+   
+    </audio>
+    <div>
+      <input type="file" id="input" accept=".mp3">
+    </div>
+      <div class="slidecontainer">
+        <span id="currentTime"></span>
+        <input type="range" min="0" max="100" value="0" class="slider" id="playback" width="300px" >
+        <span id="duration"></span>
+        
+      </div>
+     
+
+
+        <div class="controls" padding="5%">
+<button id="canPlay">canPlay</button>
+<script>
+var button = document.getElementById("canPlay");
+var audiotrack= document.getElementById("audio");
+button.onclick = function(){
+  audiotrack.oncanplay=function() {
+alert("The browser can play audio!!!");}
+}
+</script>
+<button id="play">play</button>
+<script>
+  var button = document.getElementById("play");
+  button.onclick=function(){
+    var audiotrack= document.getElementById("audio");
+    audiotrack.play();
+    console.log("play");
+  }
+</script>
+<button id="pause">pause</button>
+<script>
+  var button = document.getElementById("pause");
+  button.onclick=function(){
+    var audiotrack= document.getElementById("audio");
+    audiotrack.pause();
+    console.log("pause");}
+</script>
+<button id="loop" >loop</button>
+<script>
+   var button = document.getElementById("loop");
+  button.onclick=function(){
+    var audiotrack= document.getElementById("audio");
+    audiotrack.loop=!audiotrack.loop;
+    if(audiotrack.loop){
+    console.log("loop");
+    button.textContent='unloop';
+  }
+  else {console.log("unloop");
+  button.textContent='loop';
+  }}
+</script>
+      </div>
+<script>
+  var audiotrack=document.getElementById("audio");
+  var slider = document.getElementById("playback");
+  audiotrack.addEventListener("loadedmetadata", function() {
+      slider.setAttribute("max", audiotrack.duration);
+      var total = document.getElementById("duration");
+      total.innerHTML=new Date(audiotrack.duration*1000).toISOString().slice(14, 19);
+  })
+</script>
+
+<script>
+  var audiotrack=document.getElementById("audio");
+  var slider = document.getElementById("playback");
+  var output = document.getElementById("currentTime");
+  output.innerHTML = new Date(slider.value*1000).toISOString().slice(14, 19);
+  audiotrack.ontimeupdate=function(){slider.value=audiotrack.currentTime;
+    output.innerHTML =new Date(slider.value*1000).toISOString().slice(14, 19);
+    }
+  slider.oninput = function() {
+      output.innerHTML = new Date(slider.value*1000).toISOString().slice(14, 19);
+      audiotrack.currentTime = this.value;
+        }
+</script>
+       <div>
+            <p><b>Title:</b> <span id="title"></span></p>
+            <p><b>Artist:</b> <span id="artist"></span></p>
+            <p><b>Album:</b> <span id="album"></span></p>
+          </div>
+        
+          <script>
+const jsmediatags=window.jsmediatags;
+
+inputTypeFile=document.querySelector("#input");
+inputTypeFile.addEventListener("change", function(event) {
+  var file = event.target.files[0];
+  jsmediatags.read(file, {
+    onSuccess: function(tag){
+                  document.querySelector("#title").textContent=tag.tags.title;
+                  document.querySelector("#artist").textContent=tag.tags.artist;
+                  document.querySelector("#album").textContent=tag.tags.album;
+                  document.getElementById("audio").src=URL.createObjectURL(file);
+
+                },
+                onError:function(error){
+                  console.log(error);
+                }
+});
+}); 
+          </script>
+
+
+
+    </body>
+</html>
+  
+
