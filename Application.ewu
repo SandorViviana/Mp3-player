@@ -333,7 +333,7 @@ class PlayerDialog : Core::Group
                  OnNextMethod();
                  
         else   
-        { Application::Device.CurrentFileIndex=-1;
+        { 
           OnEnded();
         }
      }
@@ -402,9 +402,9 @@ class PlayerDialog : Core::Group
   $rect <972,769,1172,809>
   method void OnEnded()
   {
-    Application::Device.CurrentFileIndex+=1;
+    Application::Device.CurrentFileIndex=0;
 
-    Playback.CurrentValue=0;
+    //Playback.CurrentValue=0;
     Application::Device.UpdatePlayerState( Application::State.Ended);
     PlayPause.Icon=Application::PlayIcon;
     signal VinylView.AngleEffect.StopEffect;

@@ -395,6 +395,15 @@ void SimulationDeviceClass_UpdateDuration( ApplicationDeviceClass _this, XInt32
   }
 }
 
+/* 'C' function for method : 'Simulation::DeviceClass.InitSlot()' */
+void SimulationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender )
+{
+  /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
+  EW_UNUSED_ARG( sender );
+
+  ApplicationDeviceClass_OnSetCurrentFileIndex((ApplicationDeviceClass)_this, 0 );
+}
+
 /* 'C' function for method : 'Simulation::DeviceClass.Pause()' */
 void SimulationDeviceClass_Pause( ApplicationDeviceClass _this )
 {
@@ -526,7 +535,11 @@ void SimulationDeviceClass_OnFinishEffect( ApplicationDeviceClass _this, XObject
     ApplicationDeviceClass__Play( _this );
   }
   else
-    ApplicationDeviceClass_UpdatePlayerState( _this, ApplicationStateEnded );
+    if ( _this->CurrentFileIndex < ( ApplicationDeviceClass__GetSizeOfList( _this ) 
+        - 1 ))
+      ApplicationDeviceClass__UpdateCurrentTime( _this, 0 );
+    else
+      ApplicationDeviceClass_UpdatePlayerState( _this, ApplicationStateEnded );
 }
 
 /* Variants derived from the class : 'Simulation::DeviceClass' */
@@ -544,6 +557,7 @@ EW_DEFINE_VCLASS( SimulationDeviceClass, XObject, ApplicationDeviceClass, PlayEf
   SimulationDeviceClass_UpdateCurrentTime,
   SimulationDeviceClass_UpdateTimeFromSlider,
   SimulationDeviceClass_UpdateDuration,
+  SimulationDeviceClass_InitSlot,
   SimulationDeviceClass_GetTitleById,
   SimulationDeviceClass_GetArtistById,
   SimulationDeviceClass_GetSongById,

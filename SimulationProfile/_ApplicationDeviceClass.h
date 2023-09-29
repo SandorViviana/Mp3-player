@@ -75,6 +75,7 @@ EW_DEFINE_METHODS( ApplicationDeviceClass, TemplatesDeviceClass )
   EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
   EW_METHOD( GetTitleById,      XString )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( GetArtistById,     XString )( ApplicationDeviceClass _this, XInt32 
@@ -95,6 +96,7 @@ EW_DEFINE_DISPATCHER( ApplicationDeviceClass, TemplatesDeviceClass )
   EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
   EW_METHOD( GetTitleById,      XString )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( GetArtistById,     XString )( ApplicationDeviceClass _this, XInt32 
@@ -278,8 +280,18 @@ void ApplicationDeviceClass__UpdateDuration( void* _this, XInt32 aNewValue );
 /* The following define announces the presence of the method Application::DeviceClass.UpdateDuration(). */
 #define _ApplicationDeviceClass__UpdateDuration_
 
-/* 'C' function for method : 'Application::DeviceClass.InitSlot()' */
+/* 'C' function for method : 'Application::DeviceClass.InitSlot()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender );
+
+/* Implementation of the method : 'Application::DeviceClass.InitSlot()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_InitSlot() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___InitSlot( ApplicationDeviceClass _this, XObject sender );
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.InitSlot()' */
+void ApplicationDeviceClass__InitSlot( void* _this, XObject sender );
 
 /* 'C' function for method : 'Application::DeviceClass.OnSetCurrentFileIndex()' */
 void ApplicationDeviceClass_OnSetCurrentFileIndex( ApplicationDeviceClass _this, 

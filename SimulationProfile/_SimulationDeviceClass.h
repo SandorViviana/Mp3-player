@@ -63,6 +63,7 @@ EW_DEFINE_VMETHODS( SimulationDeviceClass, XObject, ApplicationDeviceClass )
   EW_METHOD( UpdateTimeFromSlider, void )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( UpdateDuration,    void )( ApplicationDeviceClass _this, XInt32 aNewValue )
+  EW_METHOD( InitSlot,          void )( ApplicationDeviceClass _this, XObject sender )
   EW_METHOD( GetTitleById,      XString )( ApplicationDeviceClass _this, XInt32 
     aArg1 )
   EW_METHOD( GetArtistById,     XString )( ApplicationDeviceClass _this, XInt32 
@@ -93,6 +94,9 @@ void SimulationDeviceClass_UpdateTimeFromSlider( ApplicationDeviceClass _this, X
 /* 'C' function for method : 'Simulation::DeviceClass.UpdateDuration()' */
 void SimulationDeviceClass_UpdateDuration( ApplicationDeviceClass _this, XInt32 
   aNewValue );
+
+/* 'C' function for method : 'Simulation::DeviceClass.InitSlot()' */
+void SimulationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender );
 
 /* 'C' function for method : 'Simulation::DeviceClass.Pause()' */
 void SimulationDeviceClass_Pause( ApplicationDeviceClass _this );

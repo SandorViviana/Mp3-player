@@ -478,11 +478,7 @@ void ApplicationPlayerDialog_OnTimeUpdate( ApplicationPlayerDialog _this, XObjec
         ApplicationDeviceClass )))
       ApplicationPlayerDialog_OnNextMethod( _this );
     else
-    {
-      ApplicationDeviceClass_OnSetCurrentFileIndex( EwGetAutoObject( &ApplicationDevice, 
-      ApplicationDeviceClass ), -1 );
       ApplicationPlayerDialog_OnEnded( _this );
-    }
   }
 
   ViewsText_OnSetString( &_this->Artist, EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )->Artist );
@@ -570,12 +566,8 @@ void ApplicationPlayerDialog_OnPause( ApplicationPlayerDialog _this )
 /* 'C' function for method : 'Application::PlayerDialog.OnEnded()' */
 void ApplicationPlayerDialog_OnEnded( ApplicationPlayerDialog _this )
 {
-  /* List of temporarily used variables */
-  void* _tmpO0;
-  ((void)( _tmpO0 = EwGetAutoObject( &ApplicationDevice, ApplicationDeviceClass )), 
-  ApplicationDeviceClass_OnSetCurrentFileIndex((ApplicationDeviceClass)_tmpO0, ((ApplicationDeviceClass)_tmpO0)->CurrentFileIndex 
-  + 1 ));
-  WidgetSetHorizontalSlider_OnSetCurrentValue( &_this->Playback, 0 );
+  ApplicationDeviceClass_OnSetCurrentFileIndex( EwGetAutoObject( &ApplicationDevice, 
+  ApplicationDeviceClass ), 0 );
   ApplicationDeviceClass_UpdatePlayerState( EwGetAutoObject( &ApplicationDevice, 
   ApplicationDeviceClass ), ApplicationStateEnded );
   WidgetSetPushButton_OnSetIcon( &_this->PlayPause, EwLoadResource( &ApplicationPlayIcon, 
@@ -1100,7 +1092,7 @@ void ApplicationDeviceClass_Init( ApplicationDeviceClass _this, XHandle aArg )
   /* Dummy expressions to avoid the 'C' warning 'unused argument'. */
   EW_UNUSED_ARG( aArg );
 
-  EwPostSignal( EwNewSlot( _this, ApplicationDeviceClass_InitSlot ), ((XObject)_this ));
+  EwPostSignal( EwNewSlot( _this, ApplicationDeviceClass__InitSlot ), ((XObject)_this ));
 }
 
 /* 'C' function for method : 'Application::DeviceClass.OnSetPlayerState()' */
@@ -1439,8 +1431,24 @@ void ApplicationDeviceClass__UpdateDuration( void* _this, XInt32 aNewValue )
   , aNewValue );
 }
 
-/* 'C' function for method : 'Application::DeviceClass.InitSlot()' */
+/* 'C' function for method : 'Application::DeviceClass.InitSlot()'
+   Please note, this function serves as the dispatcher to the methods overriden 
+   in the derived class variants. */
 void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject sender )
+{
+  XObject _vthis = _this->_vthis;
+
+  if ( _vthis && _vthis->_.VMT )
+    ((const struct _dmt_ApplicationDeviceClass*)(_vthis->_.VMT))->InitSlot( _this
+  , sender );
+  else
+    ApplicationDeviceClass___InitSlot( _this, sender );
+}
+
+/* Implementation of the method : 'Application::DeviceClass.InitSlot()'. The implementation 
+   has been moved here, because the origin function ApplicationDeviceClass_InitSlot() 
+   does serve as the dispatcher to the derived class variants only. */
+void ApplicationDeviceClass___InitSlot( ApplicationDeviceClass _this, XObject sender )
 {
   XObject thisObject;
 
@@ -1450,6 +1458,13 @@ void ApplicationDeviceClass_InitSlot( ApplicationDeviceClass _this, XObject send
   thisObject = ((XObject)_this );
   EmWiPlayer.initialize();
   ApplicationDeviceClass_OnSetCurrentFileIndex( _this, 0 );
+}
+
+/* Wrapper function for the virtual method : 'Application::DeviceClass.InitSlot()' */
+void ApplicationDeviceClass__InitSlot( void* _this, XObject sender )
+{
+  ((ApplicationDeviceClass)_this)->_.VMT->InitSlot((ApplicationDeviceClass)_this
+  , sender );
 }
 
 /* 'C' function for method : 'Application::DeviceClass.OnSetCurrentFileIndex()' */
@@ -1634,6 +1649,7 @@ EW_DEFINE_CLASS( ApplicationDeviceClass, TemplatesDeviceClass, TitleOfTrack, Tit
   ApplicationDeviceClass_UpdateCurrentTime,
   ApplicationDeviceClass_UpdateTimeFromSlider,
   ApplicationDeviceClass_UpdateDuration,
+  ApplicationDeviceClass_InitSlot,
   ApplicationDeviceClass_GetTitleById,
   ApplicationDeviceClass_GetArtistById,
   ApplicationDeviceClass_GetSongById,
